@@ -4,5 +4,10 @@ import 'package:mechanix/models/task_model.dart';
 
 class UniversalController extends GetxController {
   List<TaskModel> tasks = <TaskModel>[].obs;
-  List<EngineModel> engines = <EngineModel>[].obs;
+  List<EngineModel> engines = <EngineModel>[
+    EngineModel(name: 'Engine 1', type: 'Generator'),
+    EngineModel(name: 'Engine 1', type: 'Generator'),
+    EngineModel(name: 'Engine 1', type: 'Generator'),
+    EngineModel(name: 'Engine 1', type: 'Generator'),
+  ].obs;
 }

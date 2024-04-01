@@ -5,6 +5,7 @@ import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
+import 'package:mechanix/helpers/dropdown.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/add_task/select_location.dart';
@@ -37,18 +38,17 @@ class CustomStepperBody1 extends StatelessWidget {
             color: Colors.grey.shade300,
             child: Column(
               children: [
-                Obx(
-                  () => HeadingAndTextfield(
-                      title: 'Select Location',
-                      onTap: () => Get.to(() => GoogleMapScreen()),
-                      hintText: controller.selectedAddress?.value == ""
-                          ? 'Select Location'
-                          : controller.selectedAddress?.value,
-                      // controller: controller.selectedLocation,
-                      readOnly: true,
-                      prefixIcon: Icon(Icons.location_on_outlined,
-                          color: AppColors.blueTextColor)),
-                ),
+                HeadingAndTextfield(
+                    title: 'Select Location',
+                    // hintText: controller.selectedAddress?.value == ""
+                    //     ? 'Select Location'
+                    //     : controller.selectedAddress?.value,
+                    controller: controller.selectedAddress,
+                    suffixIcon: InkWell(
+                      onTap: () => Get.to(() => SelectLocationScreen()),
+                      child: Icon(Icons.location_on_outlined,
+                          color: AppColors.blueTextColor),
+                    )),
                 Row(
                   children: [
                     Flexible(
@@ -95,26 +95,52 @@ class CustomStepperBody1 extends StatelessWidget {
                     ],
                   ),
                 ),
-                Obx(
-                  () => HeadingAndTextfield(
-                    title: 'Engine Brand',
-                    hintText: controller.engineBrand.value == ''
-                        ? 'Select Engine Brand'
-                        : controller.engineBrand.value,
-                    readOnly: true,
-                    onTap: () {
-                      universalController.engines.isEmpty
-                          ? ToastMessage.showToastMessage(
-                              message:
-                                  'Please Add Engines first from the Engine section.',
-                              backgroundColor: Colors.red)
-                          : _openSelectEngineDialog(
-                              context: context,
-                              controller: universalController,
-                              taskController: controller,
-                            );
-                    },
-                  ),
+                // Obx(
+                //   () => HeadingAndTextfield(
+                //     title: 'Engine Brand',
+                //     hintText: controller.engineBrand.value == ''
+                //         ? 'Select Engine Brand'
+                //         : controller.engineBrand.value,
+                //     readOnly: true,
+                //     onTap: () {
+                //       universalController.engines.isEmpty
+                //           ? ToastMessage.showToastMessage(
+                //               message:
+                //                   'Please Add Engines first from the Engine section.',
+                //               backgroundColor: Colors.red)
+                //           : _openSelectEngineDialog(
+                //               context: context,
+                //               controller: universalController,
+                //               taskController: controller,
+                //             );
+                //     },
+                //   ),
+                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextWidget(
+                      text: 'Engine Brand',
+                      fontWeight: FontWeight.w600,
+                      maxLines: 2,
+                    ),
+                    CustomDropdown(
+                      items: universalController.engines,
+                      hintText: 'Select Engine Brand',
+                      onTap: () {
+                        debugPrint('Dropdown tapped');
+                        universalController.engines.isEmpty
+                            ? ToastMessage.showToastMessage(
+                                message:
+                                    'Please Add Engines first from the Engine section.',
+                                backgroundColor: Colors.red)
+                            : null;
+                      },
+                      onChanged: (value) {
+                        controller.engineBrand.value = value!.name!;
+                      },
+                    ),
+                  ],
                 ),
                 HeadingAndTextfield(
                   title: 'Name of JOURNEYMAN',
@@ -202,21 +228,22 @@ _openSelectEngineDialog(
                       text: 'Engines',
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   itemCount: controller.engines.length,
-                  //   itemBuilder: (context, index) {
-                  //     final engine = controller.engines[index];
-                  //     return CustomEngineCard(
-                  //       model: engine,
-                  //       onTap: () {
-                  //         taskController.engineBrand.value = engine.name ?? '';
-                  //         Get.back();
-                  //       },
-                  //     );
-                  //   },
-                  // ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.engines.length,
+                    itemBuilder: (context, index) {
+                      final engine = controller.engines[index];
+                      return null;
+                      // return CustomEngineCard(
+                      //   model: engine,
+                      //   onTap: () {
+                      //     taskController.engineBrand.value = engine.name ?? '';
+                      //     Get.back();
+                      //   },
+                      // );
+                    },
+                  ),
                 ],
               ),
             ),

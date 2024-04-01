@@ -12,14 +12,22 @@ class ProfileSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Container(
+      child: SizedBox(
         height: context.height,
         width: context.width * 0.25,
-        decoration: reusableContainerDecoration(),
+        // decoration: reusableContainerDecoration(),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const ProfileHeader(),
+              // const ProfileHeader(),
+              Container(
+                height: context.height * 0.15,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/user2.jpg"))),
+              ),
               CustomTextWidget(
                 text: 'James Anderson',
                 fontWeight: FontWeight.w500,
@@ -85,39 +93,14 @@ class ProfileHeader extends StatelessWidget {
                 bottomRight: Radius.circular(20.0),
               ),
             ),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back_ios_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                      CustomTextWidget(
-                        text: 'Profile',
-                        textColor: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                Row(
+                  children: [],
                 ),
-                const SizedBox(height: 16.0),
+                SizedBox(height: 16.0),
               ],
             ),
           ),

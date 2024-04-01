@@ -21,45 +21,48 @@ class AddTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SafeArea(
-        child: Container(
-          color: Colors.transparent,
-          child: DefaultTabController(
-            length: 4,
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                body: NestedScrollView(
-                    controller: controller.scrollController,
-                    // floatHeaderSlivers: true,
-                    headerSliverBuilder: (context, innerBoxIsScrolled) {
-                      return [
-                        SliverAppBar(
-                          expandedHeight: context.height * 0.25,
-                          pinned: true,
-                          floating: true,
-                          primary: false,
-                          backgroundColor: Colors.transparent,
-                          excludeHeaderSemantics: false,
-                          forceMaterialTransparency: false,
-                          flexibleSpace: ListView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              // AddTaskAppbar(controller: controller),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Container(
+            color: Colors.transparent,
+            child: DefaultTabController(
+              length: 4,
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: NestedScrollView(
+                      controller: controller.scrollController,
+                      // floatHeaderSlivers: true,
+                      headerSliverBuilder: (context, innerBoxIsScrolled) {
+                        return [
+                          SliverAppBar(
+                            expandedHeight: context.height * 0.25,
+                            pinned: true,
+                            floating: true,
+                            primary: false,
+                            backgroundColor: Colors.transparent,
+                            excludeHeaderSemantics: false,
+                            forceMaterialTransparency: false,
+                            flexibleSpace: ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                // AddTaskAppbar(controller: controller),
 
-                              TopSection(controller: controller),
-                            ],
+                                TopSection(controller: controller),
+                              ],
+                            ),
                           ),
-                        ),
-                      ];
-                    },
-                    body: BottomPageViewSection(controller: controller)),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => controller.scrollUp(),
-                  backgroundColor: AppColors.primaryColor,
-                  mini: true,
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons.arrow_upward_rounded),
+                        ];
+                      },
+                      body: BottomPageViewSection(controller: controller)),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () => controller.scrollUp(),
+                    backgroundColor: AppColors.primaryColor,
+                    mini: true,
+                    shape: const CircleBorder(),
+                    child: const Icon(Icons.arrow_upward_rounded),
+                  ),
                 ),
               ),
             ),
@@ -126,14 +129,12 @@ class TopSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      // height: context.height * 0.25,
-      // decoration: reusableDecoration(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: context.width,
             child: Obx(
               () => ReUsableContainer(
                 color: AppColors.primaryColor,
@@ -201,10 +202,10 @@ class BottomPageViewSection extends StatelessWidget {
               sizing: StackFit.expand,
               index: controller.activePageIndex.value,
               children: [
-                CustomStepperBody1(key: PageStorageKey('Page1')),
-                CustomStepperBody2(key: PageStorageKey('Page2')),
-                CustomStepperBody3(key: PageStorageKey('Page3')),
-                CustomStepperBody4(key: PageStorageKey('Page4')),
+                CustomStepperBody1(key: const PageStorageKey('Page1')),
+                CustomStepperBody2(key: const PageStorageKey('Page2')),
+                CustomStepperBody3(key: const PageStorageKey('Page3')),
+                CustomStepperBody4(key: const PageStorageKey('Page4')),
               ],
             ),
           ),
