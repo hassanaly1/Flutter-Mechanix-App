@@ -33,6 +33,7 @@ class QrCodeScanner extends StatelessWidget {
                 controller: MobileScannerController(
                   //this only scans the same qr code only once
                   detectionSpeed: DetectionSpeed.noDuplicates,
+
                   returnImage: true,
                 ),
                 onDetect: (capture) {

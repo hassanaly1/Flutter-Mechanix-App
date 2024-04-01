@@ -16,7 +16,7 @@ class StepperHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Padding(
-          padding: const EdgeInsets.only(top: 16.0, left: 8.8, right: 8.0),
+          padding: const EdgeInsets.only(top: 2.0, left: 8.8, right: 8.0),
           child: EasyStepper(
             activeStep: controller.activePageIndex.value,
             onStepReached: (index) {

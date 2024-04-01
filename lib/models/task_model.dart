@@ -3,7 +3,7 @@ import 'package:mechanix/models/single_part_model.dart';
 
 class TaskModel {
   //Page1 -> 14 fields.
-  String? location;
+  String? selectedAddress;
   double? setUnits;
   double? unitHours;
   DateTime? selectedDate;
@@ -141,7 +141,7 @@ class TaskModel {
   // Constructor
   TaskModel({
     //Page1 -> 14 fields.
-    this.location,
+    this.selectedAddress,
     this.setUnits,
     this.unitHours,
     this.selectedDate,

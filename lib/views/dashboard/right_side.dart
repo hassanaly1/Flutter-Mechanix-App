@@ -1,36 +1,41 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
-import 'package:mechanix/views/dashboard/customize_units.dart';
-import 'package:mechanix/views/dashboard/engines.dart';
+import 'package:mechanix/views/add_task/add_task.dart';
 import 'package:mechanix/views/dashboard/home.dart';
-import 'package:mechanix/views/dashboard/reports.dart';
-import 'package:mechanix/views/dashboard/start_task.dart';
-import 'package:mechanix/views/dashboard/view_task.dart';
+import 'package:mechanix/views/dashboard/profile_section.dart';
+import 'package:mechanix/views/engines.dart';
+import 'package:mechanix/views/reports.dart';
+import 'package:mechanix/views/view_task.dart';
 
 class RightSideWidget extends StatelessWidget {
   const RightSideWidget({
     super.key,
     required this.pageController,
     required this.sideMenu,
+    required this.tabController,
   });
 
   final PageController pageController;
   final SideMenuController sideMenu;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: PageView(
+      child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
+        // controller: pageController,
+        controller: tabController,
         children: [
           HomeSection(sideMenu: sideMenu),
-          const StartTaskSection(),
-          const ViewTaskSection(),
-          const ReportSection(),
-          const CustomizeUnitSection(),
-          const EngineSection(),
-          const SizedBox.shrink(),
+          const SizedBox.shrink(), //Drawer
+          AddTaskScreen(sideMenu: sideMenu),
+          ViewAllTasksScreen(sideMenu: sideMenu),
+          ReportsScreen(sideMenu: sideMenu),
+          const SizedBox.shrink(), //Customize Units
+          EnginesScreen(sideMenu: sideMenu),
+          const SizedBox.shrink(), //Drawer
+          ProfileSection(sideMenu: sideMenu),
         ],
       ),
     );

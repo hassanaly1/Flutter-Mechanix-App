@@ -1,7 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
-import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
-import 'package:mechanix/views/dashboard/profile_section.dart';
+import 'package:mechanix/helpers/custom_text.dart';
+import 'package:mechanix/helpers/reusable_container.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +20,18 @@ class SideMenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: reusableContainerDecoration(),
+      child: ReUsableContainer(
         child: SideMenu(
           controller: sideMenu,
           style: SideMenuStyle(
-            displayMode: SideMenuDisplayMode.auto,
-            showHamburger: context.isLandscape ? true : false,
+            compactSideMenuWidth: 200,
+            displayMode: SideMenuDisplayMode.open,
+            showHamburger: false,
+            itemInnerSpacing: 8.0,
             hoverColor: AppColors.primaryColor,
             selectedColor: AppColors.blueTextColor,
+            toggleColor: Colors.red,
+            selectedIconColor: Colors.white,
             selectedTitleTextStyle: const TextStyle(
               fontFamily: 'Poppins',
               fontStyle: FontStyle.normal,
@@ -43,20 +46,40 @@ class SideMenuCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: Colors.black54,
             ),
-            selectedIconColor: Colors.white,
+          ),
+          title: Column(
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 120,
+                  maxWidth: 120,
+                ),
+                child: Image.asset(
+                  'assets/images/app-logo.png',
+                ),
+              ),
+              CustomTextWidget(
+                text: 'Mechanix',
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+              ),
+              const Divider(
+                indent: 8.0,
+                endIndent: 8.0,
+              ),
+            ],
           ),
           items: [
             SideMenuItem(
-              title: 'Home',
-              onTap: (index, _) {
-                sideMenu.changePage(index);
+                title: 'Home',
+                onTap: (index, _) {
+                  sideMenu.changePage(index);
+                },
+                icon: const Icon(CupertinoIcons.home)),
+            SideMenuItem(
+              builder: (context, displayMode) {
+                return const Divider(endIndent: 8, indent: 8);
               },
-              icon: const Icon(CupertinoIcons.home),
-              badgeContent: const Text(
-                '3',
-                style: TextStyle(color: Colors.white),
-              ),
-              tooltipContent: "This is a tooltip for Dashboard item",
             ),
             SideMenuExpansionItem(
               title: "Tasks",
@@ -68,10 +91,6 @@ class SideMenuCard extends StatelessWidget {
                     sideMenu.changePage(index);
                   },
                   icon: const Icon(FontAwesomeIcons.plus),
-                  badgeContent: const Text(
-                    '3',
-                    style: TextStyle(color: Colors.white),
-                  ),
                   tooltipContent: "Start Task",
                 ),
                 SideMenuItem(
@@ -90,18 +109,21 @@ class SideMenuCard extends StatelessWidget {
                 sideMenu.changePage(index);
               },
               icon: const Icon(Symbols.lab_profile),
-              trailing: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.all(Radius.circular(6))),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 3),
-                    child: Text(
-                      'New',
-                      style: TextStyle(fontSize: 11, color: Colors.grey[800]),
-                    ),
-                  )),
+              trailing: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(Radius.circular(6))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0, vertical: 3),
+                      child: Text(
+                        'New',
+                        style: TextStyle(fontSize: 11, color: Colors.grey[800]),
+                      ),
+                    )),
+              ),
             ),
             SideMenuItem(
               title: 'Customize Units',
@@ -122,9 +144,12 @@ class SideMenuCard extends StatelessWidget {
                 return const Divider(endIndent: 8, indent: 8);
               },
             ),
-            const SideMenuItem(
-              title: 'Exit',
-              icon: Icon(Icons.exit_to_app),
+            SideMenuItem(
+              title: 'Profile',
+              onTap: (index, _) {
+                sideMenu.changePage(index);
+              },
+              icon: const Icon(Symbols.manufacturing),
             ),
           ],
         ),

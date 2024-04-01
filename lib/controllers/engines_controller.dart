@@ -8,6 +8,7 @@ class EnginesController extends GetxController {
   RxString engineImage = ''.obs;
   TextEditingController engineName = TextEditingController();
   TextEditingController engineSubtitle = TextEditingController();
+  RxString engineType = 'Generator'.obs;
   GlobalKey qrFormKey = GlobalKey<FormState>();
   RxString qrCodeData = ''.obs;
 
@@ -17,6 +18,7 @@ class EnginesController extends GetxController {
     var newEngineData = EngineModel(
       name: engineName.text.trim(),
       subtitle: engineSubtitle.text.trim(),
+      type: engineType.value,
       image: engineImage.value,
       qrCode: qrCodeData.value,
     );
@@ -27,5 +29,6 @@ class EnginesController extends GetxController {
     engineImage.value = '';
     engineName.clear();
     engineSubtitle.clear();
+    engineType.value = '';
   }
 }

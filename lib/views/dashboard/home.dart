@@ -21,57 +21,62 @@ class HomeSection extends StatelessWidget {
         color: Colors.transparent,
         padding: EdgeInsets.symmetric(horizontal: context.width * 0.05),
         // decoration: reusableContainerDecoration(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            DashboardCard(
-              // onTap: () => pageController.jumpToPage(1),
-              onTap: () => sideMenu.changePage(1),
-              // onTap: () => Get.to(
-              //   () => AddTaskScreen(),
-              //   transition: Transition.size,
-              // ),
-              title: 'Start New Task',
-              subtitle: 'Equipment Repair',
-              image: 'assets/images/start-task.png',
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SmallCard(
-                  // onTap: () => Get.to(
-                  //   () => const ReportsScreen(),
-                  //   transition: Transition.zoom,
-                  // ),
-                  title: 'Reports',
-                  icon: Symbols.lab_profile,
-                ),
-                SmallCard(
-                  onTap: () {},
-                  title: 'Customize Units',
-                  icon: Symbols.dashboard_customize,
-                ),
-                const SmallCard(
-                  // onTap: () => Get.to(
-                  //   () => EnginesScreen(),
-                  //   transition: Transition.zoom,
-                  // ),
-                  title: 'Engines',
-                  icon: Symbols.manufacturing,
-                ),
-              ],
-            ),
-            const DashboardCard(
-              // onTap: () => Get.to(
-              //   () => ViewAllTasksScreen(),
-              //   transition: Transition.size,
-              // ),
-              title: 'View Tasks',
-              subtitle:
-                  'Click here to view all submitted repair forms and their details.',
-              image: 'assets/images/view-task.png',
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              DashboardCard(
+                // onTap: () => pageController.jumpToPage(1),
+                onTap: () => sideMenu.changePage(2),
+                // onTap: () => Get.to(
+                //   () => AddTaskScreen(),
+                //   transition: Transition.size,
+                // ),
+                title: 'Start New Task',
+                subtitle: 'Equipment Repair',
+                image: 'assets/images/start-task.png',
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  SmallCard(
+                    onTap: () => sideMenu.changePage(4),
+                    // onTap: () => Get.to(
+                    //   () => const ReportsScreen(),
+                    //   transition: Transition.zoom,
+                    // ),
+                    title: 'Reports',
+                    icon: Symbols.lab_profile,
+                  ),
+                  SmallCard(
+                    onTap: () => sideMenu.changePage(5),
+                    title: 'Customize Units',
+                    icon: Symbols.dashboard_customize,
+                  ),
+                  SmallCard(
+                    // onTap: () => Get.to(
+                    //   () => EnginesScreen(),
+                    //   transition: Transition.zoom,
+                    // ),
+                    onTap: () => sideMenu.changePage(6),
+                    title: 'Engines',
+                    icon: Symbols.manufacturing,
+                  ),
+                ],
+              ),
+              DashboardCard(
+                // onTap: () => Get.to(
+                //   () => ViewAllTasksScreen(),
+                //   transition: Transition.size,
+                // ),
+                onTap: () => sideMenu.changePage(3),
+                title: 'View Tasks',
+                subtitle:
+                    'Click here to view all submitted repair forms and their details.',
+                image: 'assets/images/view-task.png',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -91,17 +96,26 @@ class SmallCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: onTap,
-          child: ReUsableContainer(
-            color: AppColors.blueTextColor,
-            child: Icon(icon, color: Colors.white, size: 40.0),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: context.isLandscape ? context.width * 0.02 : 0.0),
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap,
+            child: ReUsableContainer(
+              color: AppColors.blueTextColor,
+              child: Padding(
+                padding: EdgeInsets.all(context.isLandscape ? 8.0 : 4.0),
+                child: Icon(icon,
+                    color: Colors.white,
+                    size: context.isLandscape ? 60.0 : 40.0),
+              ),
+            ),
           ),
-        ),
-        CustomTextWidget(text: title, fontSize: 12.0)
-      ],
+          CustomTextWidget(text: title, fontSize: 12.0)
+        ],
+      ),
     );
   }
 }
@@ -128,7 +142,7 @@ class DashboardCard extends StatelessWidget {
         child: ReUsableContainer(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Column(
@@ -138,16 +152,17 @@ class DashboardCard extends StatelessWidget {
                       text: title,
                       fontSize: 18.0,
                       fontWeight: FontWeight.w700,
+                      maxLines: 2,
                     ),
                     CustomTextWidget(
                       text: subtitle,
-                      maxLines: 3,
-                      fontSize: 12.0,
+                      maxLines: 5,
+                      fontSize: 10.0,
                     )
                   ],
                 ),
               ),
-              Expanded(child: Image.asset(image, height: context.height * 0.18))
+              Image.asset(image, height: context.height * 0.18)
             ],
           ),
         ),

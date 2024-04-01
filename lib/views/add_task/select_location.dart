@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -10,10 +11,11 @@ import 'package:mechanix/helpers/toast.dart';
 
 import '../../../controllers/googlemap_controller.dart';
 
-class GoogleMapScreen extends StatelessWidget {
+class SelectLocationScreen extends StatelessWidget {
   final MapController mapController = Get.find();
+  final AddTaskController controller = Get.find();
 
-  GoogleMapScreen({super.key});
+  SelectLocationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class GoogleMapScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Expanded(child: _buildMap(context));
+                return Expanded(child: _buildMap(context, controller));
               }
             }),
           ],
@@ -55,7 +57,7 @@ class GoogleMapScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMap(BuildContext context) {
+  Widget _buildMap(BuildContext context, AddTaskController controller) {
     return Stack(
       children: [
         GoogleMap(
@@ -77,6 +79,8 @@ class GoogleMapScreen extends StatelessWidget {
                 buttonText: 'Confirm Location',
                 onTap: () {
                   Get.back();
+                  controller.selectedAddress.text =
+                      mapController.selectedAddress.value;
                   ToastMessage.showToastMessage(
                       message: 'Location selected Successfully',
                       backgroundColor: AppColors.blueTextColor);

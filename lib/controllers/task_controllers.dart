@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/models/single_part_model.dart';
 import 'package:mechanix/models/task_model.dart';
 
 class AddTaskController extends GetxController {
   List<SinglePartModel> partsList = <SinglePartModel>[].obs; //List of Parts
-  RxInt activePageIndex = 0.obs;
+  var activePageIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
 
   final UniversalController controller = Get.find();
@@ -16,7 +15,7 @@ class AddTaskController extends GetxController {
 
   @override
   void onInit() {
-    selectedAddress = mapController.selectedAddress;
+    selectedAddress.text = mapController.selectedAddress.value;
     taskSelectedDate = DateTime.now().obs;
     taskSelectedTime = TimeOfDay.now().obs;
     pyrometerTemperatureControllers.add(TextEditingController());
@@ -37,7 +36,8 @@ class AddTaskController extends GetxController {
   void addTask() {
     TaskModel newTask = TaskModel(
       //Page1
-      location: selectedAddress?.value,
+      selectedAddress: selectedAddress.text,
+      // location: selectedAddress.text.trim(),
       setUnits: double.tryParse(setUnits.text.trim()),
       unitHours: double.tryParse(unitHours.text.trim()),
       selectedDate: taskSelectedDate.value,
@@ -194,16 +194,18 @@ class AddTaskController extends GetxController {
 
   //Page1
 
-  RxString? selectedAddress = RxString('');
+  // RxString? selectedAddress = RxString('');
+  TextEditingController selectedAddress = TextEditingController();
   TextEditingController setUnits = TextEditingController();
   TextEditingController unitHours = TextEditingController();
   late Rx<DateTime> taskSelectedDate;
   late Rx<TimeOfDay> taskSelectedTime;
+  RxString engineBrand = ''.obs;
   TextEditingController nameOfJourneyMan = TextEditingController();
   RxString unitOnlineOnArrival = ''.obs;
   TextEditingController jobScope = TextEditingController();
   TextEditingController operationalProblems = TextEditingController();
-  RxString engineBrand = ''.obs;
+
   TextEditingController modelNumber = TextEditingController();
   TextEditingController serialNumber = TextEditingController();
   TextEditingController arrangementNumber = TextEditingController();
@@ -512,10 +514,10 @@ class AddTaskController extends GetxController {
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      barrierColor: AppColors.blueTextColor,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       confirmText: 'Select Date',
+      // keyboardType: TextInputType.numberWithOptions(),
       lastDate: DateTime(2101),
       helpText: 'Select the Date',
     );
@@ -527,8 +529,8 @@ class AddTaskController extends GetxController {
   Future<void> selectTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
+      orientation: Orientation.portrait,
       initialTime: TimeOfDay.now(),
-      barrierColor: AppColors.blueTextColor,
       confirmText: 'Select Time',
       helpText: 'Select the Time',
     );

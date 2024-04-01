@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
@@ -13,14 +14,19 @@ import 'package:mechanix/views/add_task/qrcode_scanner.dart';
 import 'package:mechanix/views/add_task/stepper_header.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({super.key});
+  final SideMenuController sideMenu;
+  AddTaskScreen({super.key, required this.sideMenu});
   final MapController mapController = Get.put(MapController());
   final AddTaskController controller = Get.put(AddTaskController());
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
+    return SafeArea(
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          sideMenu.changePage(0);
+        },
         child: Container(
           color: Colors.transparent,
           child: DefaultTabController(
@@ -126,14 +132,12 @@ class TopSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      // height: context.height * 0.25,
-      // decoration: reusableDecoration(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: context.width,
             child: Obx(
               () => ReUsableContainer(
                 color: AppColors.primaryColor,
@@ -201,10 +205,10 @@ class BottomPageViewSection extends StatelessWidget {
               sizing: StackFit.expand,
               index: controller.activePageIndex.value,
               children: [
-                CustomStepperBody1(key: PageStorageKey('Page1')),
-                CustomStepperBody2(key: PageStorageKey('Page2')),
-                CustomStepperBody3(key: PageStorageKey('Page3')),
-                CustomStepperBody4(key: PageStorageKey('Page4')),
+                CustomStepperBody1(key: const PageStorageKey('Page1')),
+                CustomStepperBody2(key: const PageStorageKey('Page2')),
+                CustomStepperBody3(key: const PageStorageKey('Page3')),
+                CustomStepperBody4(key: const PageStorageKey('Page4')),
               ],
             ),
           ),
