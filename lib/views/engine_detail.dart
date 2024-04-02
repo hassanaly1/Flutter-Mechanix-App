@@ -34,7 +34,8 @@ class EngineDetailScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(12.0),
                               child: Column(children: [
                                 ReUsableAppbar(
-                                    title: model.name ?? 'No Name Specified'),
+                                    title:
+                                        "${model.name ?? 'No Name Specified'} (${model.type ?? 'No type Specified'})"),
                               ]))
                         ]))
                   ];

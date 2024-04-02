@@ -12,6 +12,8 @@ class EnginesController extends GetxController {
   GlobalKey qrFormKey = GlobalKey<FormState>();
   RxString qrCodeData = ''.obs;
 
+  final PageController pageController = PageController();
+
   final UniversalController universalController = Get.find();
 
   void generateQrCode() {
@@ -23,12 +25,19 @@ class EnginesController extends GetxController {
       qrCode: qrCodeData.value,
     );
     universalController.engines.add(newEngineData);
-    debugPrint(universalController.engines.length.toString());
-    debugPrint(newEngineData.name);
     isQrCodeGenerated.value = true;
-    engineImage.value = '';
-    engineName.clear();
-    engineSubtitle.clear();
-    engineType.value = '';
+    // engineImage.value = '';
+    // engineName.clear();
+    // engineSubtitle.clear();
+    engineType.value = 'Generator';
+    // isQrCodeGenerated.value = false;
+  }
+
+  @override
+  void onClose() {
+    engineName.dispose();
+    engineSubtitle.dispose();
+    pageController.dispose();
+    super.onClose();
   }
 }

@@ -54,21 +54,19 @@ class EnginesScreen extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
-                        buttonText: '+ Add Engine',
-                        onTap: () => _openAddEngineDialog(
-                            context: context, controller: controller),
-                      ),
+                          buttonText: '+ Add Engine',
+                          onTap: () => _openAddEngineDialog(
+                              context: context, controller: controller)),
                       universalController.engines.isEmpty
                           ? Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: CustomTextWidget(
-                                  text: 'No Engines Added',
-                                  maxLines: 2,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                  textAlign: TextAlign.center,
-                                ),
+                                    text: 'No Engines Added',
+                                    maxLines: 2,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.center),
                               ),
                             )
                           : Expanded(
@@ -110,165 +108,227 @@ void _openAddEngineDialog(
     pageBuilder: (context, animation, secondaryAnimation) => Container(),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return ScaleTransition(
-        scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-        child: FadeTransition(
-          opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-          child: Obx(
-            () => AlertDialog(
-              scrollable: true,
-              backgroundColor: Colors.transparent,
-              // title: CustomTextWidget(text: 'Hello'),
-              content: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                    horizontal: 8.0, vertical: context.height * 0.02),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color.fromRGBO(255, 220, 105, 0.4),
-                      Color.fromRGBO(86, 127, 255, 0.4),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 5.0,
-                        spreadRadius: 5.0),
-                    BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 0.0,
-                        spreadRadius: 0.0)
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Container(
-                    //     height: context.height * 0.1,
-                    //     decoration: const BoxDecoration(
-                    //       shape: BoxShape.circle,
-                    //       image: DecorationImage(
-                    //           fit: BoxFit.contain,
-                    //           image: AssetImage("assets/images/engine.png")),
-                    //     ),
-                    //   ),
-                    // ),
-                    Form(
-                        key: controller.qrFormKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HeadingAndTextfield(
-                              title: 'Enter Engine Name & Model',
-                              fontSize: 12.0,
-                              controller: controller.engineName,
-                              validator: (val) =>
-                                  AppValidator.validateEmptyText(
-                                      fieldName: 'Engine Name & Model',
-                                      value: val),
+          scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+          child: FadeTransition(
+              opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+              child: PopScope(
+                  canPop: false,
+                  onPopInvoked: (didPop) {
+                    if (!didPop) {
+                      controller.isQrCodeGenerated.value = false;
+                      controller.engineImage.value = '';
+                      controller.engineName.clear();
+                      controller.engineSubtitle.clear();
+                      Get.back();
+                    }
+                  },
+                  child: AlertDialog(
+                      scrollable: true,
+                      backgroundColor: Colors.transparent,
+                      content: Container(
+                          width: context.width * 0.7,
+                          height: context.height * 0.7,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: context.height * 0.02),
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromRGBO(255, 220, 105, 0.4),
+                                Color.fromRGBO(86, 127, 255, 0.4),
+                              ],
                             ),
-                            HeadingAndTextfield(
-                              title: 'Enter Subtitle',
-                              fontSize: 12.0,
-                              controller: controller.engineSubtitle,
-                              validator: (val) =>
-                                  AppValidator.validateEmptyText(
-                                      fieldName: 'Engine Subtitle', value: val),
-                            ),
-                            CustomTextWidget(
-                              text: 'Select Engine Type',
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w600,
-                              maxLines: 2,
-                            ),
-                            Obx(
-                              () => Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children:
-                                    ['Generator', 'Compressor'].map((option) {
-                                  return Row(
-                                    children: [
-                                      Radio(
-                                        visualDensity: VisualDensity.compact,
-                                        activeColor: AppColors.blueTextColor,
-                                        value: option,
-                                        groupValue: controller.engineType.value,
-                                        onChanged: (value) {
-                                          controller.engineType.value =
-                                              value.toString();
-                                        },
-                                      ),
-                                      CustomTextWidget(
-                                          text: option, fontSize: 11.0),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        )),
-                    CustomButton(
-                      usePrimaryColor:
-                          controller.isQrCodeGenerated.value == true,
-                      buttonText: 'Save & Generate QR code ',
-                      fontSize: 12.0,
-                      onTap: () {
-                        FormState? formState =
-                            controller.qrFormKey.currentState as FormState?;
-                        if (formState != null && formState.validate()) {
-                          controller.generateQrCode();
-                          // Get.back();
-                          // controller.isQrCodeGenerated.value = false;
-                        }
-                      },
-                    ),
-                    const Divider(color: Colors.black54),
-                    controller.isQrCodeGenerated.value
-                        ? Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black54)),
-                            child: QrImageView(
-                              data: controller.engineName.text.trim(),
-                              version: QrVersions.auto,
-                              size: 200.0,
-                              errorStateBuilder: (cxt, err) {
-                                return Center(
-                                  child: CustomTextWidget(
-                                    text: 'Uh oh! Something went wrong...',
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    fontSize: 12.0,
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CustomTextWidget(
-                                text:
-                                    'Generate QR Code by filling the above fields.',
-                                maxLines: 2,
-                                fontSize: 12.0,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 5.0,
+                                  spreadRadius: 5.0),
+                              BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(0.0, 0.0),
+                                  blurRadius: 0.0,
+                                  spreadRadius: 0.0)
+                            ],
                           ),
-                  ],
-                ),
+                          child: PageView(
+                              controller: controller.pageController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                SingleChildScrollView(
+                                    child: DialogFirstView(
+                                        controller: controller)),
+                                SingleChildScrollView(
+                                    child: DialogSecondView(
+                                        controller: controller)),
+                              ]))))));
+    },
+  );
+}
+
+class DialogFirstView extends StatelessWidget {
+  final EnginesController controller;
+
+  const DialogFirstView({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      InkWell(
+        onTap: () {},
+        child: Container(
+          height: context.height * 0.1,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blueGrey,
+          ),
+        ),
+      ),
+      Form(
+          key: controller.qrFormKey,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            HeadingAndTextfield(
+                title: 'Enter Engine Name & Model',
+                fontSize: 12.0,
+                controller: controller.engineName,
+                validator: (val) => AppValidator.validateEmptyText(
+                    fieldName: 'Engine Name & Model', value: val)),
+            HeadingAndTextfield(
+                title: 'Enter Subtitle',
+                fontSize: 12.0,
+                controller: controller.engineSubtitle,
+                validator: (val) => AppValidator.validateEmptyText(
+                    fieldName: 'Engine Subtitle', value: val)),
+            CustomTextWidget(
+                text: 'Select Engine Type',
+                fontSize: 12.0,
+                fontWeight: FontWeight.w600,
+                maxLines: 2),
+            Obx(
+              () => Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: ['Generator', 'Compressor'].map((option) {
+                  return Row(children: [
+                    Radio(
+                        visualDensity: VisualDensity.compact,
+                        activeColor: AppColors.blueTextColor,
+                        value: option,
+                        groupValue: controller.engineType.value,
+                        onChanged: (value) {
+                          controller.engineType.value = value.toString();
+                        }),
+                    CustomTextWidget(text: option, fontSize: 11.0)
+                  ]);
+                }).toList(),
               ),
+            )
+          ])),
+      CustomButton(
+          usePrimaryColor: controller.isQrCodeGenerated.value == true,
+          buttonText: 'Save & Generate QR code',
+          fontSize: 12.0,
+          onTap: () {
+            FormState? formState =
+                controller.qrFormKey.currentState as FormState?;
+            if (formState != null && formState.validate()) {
+              controller.generateQrCode();
+              debugPrint(controller.isQrCodeGenerated.value.toString());
+              controller.pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
+            }
+          }),
+      const Divider(color: Colors.black54),
+      Center(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomTextWidget(
+                  text: 'Generate QR Code by filling the above fields.',
+                  maxLines: 2,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center)))
+    ]);
+  }
+}
+
+class DialogSecondView extends StatelessWidget {
+  final EnginesController controller;
+  const DialogSecondView({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomTextWidget(
+              text: controller.engineName.text,
+              maxLines: 2,
+              fontSize: 14.0,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
-      );
-    },
-  );
+        controller.isQrCodeGenerated.value
+            ? Container(
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black54)),
+                child: QrImageView(
+                  data: controller.engineName.text.trim(),
+                  version: QrVersions.auto,
+                  size: 200.0,
+                  errorStateBuilder: (cxt, err) {
+                    return Center(
+                      child: CustomTextWidget(
+                        text: 'Uh oh! Something went wrong...',
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        fontSize: 12.0,
+                      ),
+                    );
+                  },
+                ),
+              )
+            : Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextWidget(
+                    text:
+                        'Uh oh! Something went wrong in generating the QrCode, try again!',
+                    maxLines: 2,
+                    fontSize: 12.0,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+        const Divider(color: Colors.black54),
+        CustomButton(
+          usePrimaryColor: controller.isQrCodeGenerated.value == true,
+          buttonText: 'Close',
+          fontSize: 12.0,
+          onTap: () {
+            controller.isQrCodeGenerated.value = false;
+            controller.engineImage.value = '';
+            controller.engineName.clear();
+            controller.engineSubtitle.clear();
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
 }
 
 class CustomEngineCard extends StatelessWidget {
@@ -284,56 +344,46 @@ class CustomEngineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReUsableContainer(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        onTap: onTap,
-        // leading: ClipRRect(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //
-        //   // child: Image.asset(
-        //   //   model.image == '' ? 'assets/images/engine.png' : model.image,
-        //   //   width: 100,
-        //   //   fit: BoxFit.cover,
-        //   // ),
-        // ),
-        leading: const CircleAvatar(backgroundColor: Colors.red),
-        title: CustomTextWidget(
-          text: model.name ?? 'No Image Specified',
-          fontSize: 18.0,
-          fontWeight: FontWeight.w600,
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextWidget(
-              text: model.subtitle ?? 'No SubTitle Specified',
-              textColor: AppColors.textColor,
-              fontSize: 14.0,
-            ),
-            CustomTextWidget(
-              text: model.type ?? 'No Type Specified',
-              fontSize: 12.0,
-              textColor: AppColors.lightGreyColor,
-            ),
-          ],
-        ),
-        trailing: QrImageView(
-          data: model.name ?? '',
-          version: QrVersions.auto,
-          size: context.height * 0.1,
-          errorStateBuilder: (cxt, err) {
-            return Center(
-              child: CustomTextWidget(
-                text: 'Uh oh! Something went wrong...',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                fontSize: 12.0,
-              ),
-            );
-          },
-        ),
-      ),
-    );
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+        child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            onTap: onTap,
+            // leading: ClipRRect(
+            //   borderRadius: BorderRadius.circular(8.0),
+            //
+            //   // child: Image.asset(
+            //   //   model.image == '' ? 'assets/images/engine.png' : model.image,
+            //   //   width: 100,
+            //   //   fit: BoxFit.cover,
+            //   // ),
+            // ),
+            leading: const CircleAvatar(backgroundColor: Colors.red),
+            title: CustomTextWidget(
+                text: model.name ?? 'No Image Specified',
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600),
+            subtitle:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              CustomTextWidget(
+                  text: model.subtitle ?? 'No SubTitle Specified',
+                  textColor: AppColors.textColor,
+                  fontSize: 14.0),
+              CustomTextWidget(
+                  text: model.type ?? 'No Type Specified',
+                  fontSize: 12.0,
+                  textColor: AppColors.lightGreyColor)
+            ]),
+            trailing: QrImageView(
+                data: model.name ?? '',
+                version: QrVersions.auto,
+                size: context.height * 0.1,
+                errorStateBuilder: (cxt, err) {
+                  return Center(
+                      child: CustomTextWidget(
+                          text: 'Uh oh! Something went wrong...',
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          fontSize: 12.0));
+                })));
   }
 }
