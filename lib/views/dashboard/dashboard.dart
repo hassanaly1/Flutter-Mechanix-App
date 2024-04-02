@@ -8,7 +8,7 @@ import 'package:mechanix/views/dashboard/right_side.dart';
 import 'package:mechanix/views/dashboard/side_menu.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();

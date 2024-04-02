@@ -41,6 +41,7 @@ class HomeSection extends StatelessWidget {
                 children: [
                   SmallCard(
                     onTap: () => sideMenu.changePage(4),
+
                     // onTap: () => Get.to(
                     //   () => const ReportsScreen(),
                     //   transition: Transition.zoom,
@@ -58,7 +59,9 @@ class HomeSection extends StatelessWidget {
                     //   () => EnginesScreen(),
                     //   transition: Transition.zoom,
                     // ),
+
                     onTap: () => sideMenu.changePage(6),
+
                     title: 'Engines',
                     icon: Symbols.manufacturing,
                   ),
@@ -69,7 +72,9 @@ class HomeSection extends StatelessWidget {
                 //   () => ViewAllTasksScreen(),
                 //   transition: Transition.size,
                 // ),
+
                 onTap: () => sideMenu.changePage(3),
+
                 title: 'View Tasks',
                 subtitle:
                     'Click here to view all submitted repair forms and their details.',

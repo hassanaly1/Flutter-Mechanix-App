@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class DashboardController extends GetxController {
   final PageController pageController = PageController();
   late TabController tabController;
+
   final SideMenuController sideMenu = Get.put(SideMenuController());
 
   RxInt currentPage = 0.obs;

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mechanix/views/add_task/add_task.dart';
 import 'package:mechanix/views/dashboard/home.dart';
 import 'package:mechanix/views/dashboard/profile_section.dart';
+
 import 'package:mechanix/views/engines.dart';
 import 'package:mechanix/views/reports.dart';
+
 import 'package:mechanix/views/view_task.dart';
 
 class RightSideWidget extends StatelessWidget {
@@ -28,6 +30,7 @@ class RightSideWidget extends StatelessWidget {
         controller: tabController,
         children: [
           HomeSection(sideMenu: sideMenu),
+
           const SizedBox.shrink(), //Drawer
           AddTaskScreen(sideMenu: sideMenu),
           ViewAllTasksScreen(sideMenu: sideMenu),
