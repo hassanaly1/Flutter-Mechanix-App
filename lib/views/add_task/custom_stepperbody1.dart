@@ -40,9 +40,6 @@ class CustomStepperBody1 extends StatelessWidget {
               children: [
                 HeadingAndTextfield(
                     title: 'Select Location',
-                    // hintText: controller.selectedAddress?.value == ""
-                    //     ? 'Select Location'
-                    //     : controller.selectedAddress?.value,
                     controller: controller.selectedAddress,
                     suffixIcon: InkWell(
                       onTap: () => Get.to(() => SelectLocationScreen()),
@@ -75,9 +72,6 @@ class CustomStepperBody1 extends StatelessWidget {
                               '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')} : ${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')} : ${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
                           onTap: () => controller.selectDate(context),
                           readOnly: true,
-                          // onChanged: (value) {
-                          //   controller.selectDate(context);
-                          // },
                         ),
                       ),
                       Flexible(
@@ -95,27 +89,6 @@ class CustomStepperBody1 extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Obx(
-                //   () => HeadingAndTextfield(
-                //     title: 'Engine Brand',
-                //     hintText: controller.engineBrand.value == ''
-                //         ? 'Select Engine Brand'
-                //         : controller.engineBrand.value,
-                //     readOnly: true,
-                //     onTap: () {
-                //       universalController.engines.isEmpty
-                //           ? ToastMessage.showToastMessage(
-                //               message:
-                //                   'Please Add Engines first from the Engine section.',
-                //               backgroundColor: Colors.red)
-                //           : _openSelectEngineDialog(
-                //               context: context,
-                //               controller: universalController,
-                //               taskController: controller,
-                //             );
-                //     },
-                //   ),
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -189,6 +162,7 @@ class CustomStepperBody1 extends StatelessWidget {
               buttonText: 'Next',
               onTap: () {
                 controller.nextPage();
+                controller.scrollUp();
               })
         ],
       ),

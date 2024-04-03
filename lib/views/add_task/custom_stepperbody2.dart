@@ -6,7 +6,6 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/add_task/widgets/checkbox.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -150,41 +149,150 @@ class CustomStepperBody2 extends StatelessWidget {
               children: [
                 const ContainerHeading(
                     heading: 'Cylinder Exhaust Pyrometer Temperature Readings'),
-                Obx(
-                  () => GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount:
-                        controller.pyrometerTemperatureControllers.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0.0,
-                            mainAxisSpacing: 0.0,
-                            childAspectRatio: 1.7),
-                    itemBuilder: (BuildContext context, int index) {
-                      return NumberWithTextField(
-                          number: (index + 1).toString(),
-                          controller: controller
-                              .pyrometerTemperatureControllers[index]);
-                    },
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '1',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature1,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '2',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature2,
+                      ),
+                    ),
+                  ],
                 ),
-                CustomButton(
-                  buttonText: 'Add',
-                  onTap: () {
-                    if (controller.pyrometerTemperatureControllers.length <
-                        16) {
-                      controller.pyrometerTemperatureControllers
-                          .add(TextEditingController());
-                    } else {
-                      ToastMessage.showToastMessage(
-                          message:
-                              'You can add up to only 16 Pyrometer Temperatures.',
-                          backgroundColor: AppColors.blueTextColor);
-                    }
-                  },
-                )
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '3',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature3,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '4',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature4,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '5',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature5,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '6',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature6,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '7',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature7,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '8',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature8,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '9',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature9,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '10',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature10,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '11',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature11,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '12',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature12,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '13',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature13,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '14',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature14,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '15',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature15,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '16',
+                        controller:
+                            controller.cylinderExhaustPyrometerTemperature16,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -282,46 +390,141 @@ class CustomStepperBody2 extends StatelessWidget {
             showBackgroundShadow: false,
             color: Colors.grey.shade300,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ContainerHeading(heading: 'Burn Times'),
-                Obx(
-                  () => GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.burnTemperatureControllers.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0.0,
-                            mainAxisSpacing: 0.0,
-                            childAspectRatio: 1.7),
-                    itemBuilder: (BuildContext context, int index) {
-                      return NumberWithTextField(
-                          number: (index + 1).toString(),
-                          controller:
-                              controller.burnTemperatureControllers[index]);
-                    },
-                  ),
+                const ContainerHeading(heading: 'Hot Compression Test'),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '1',
+                        controller: controller.burnTemperature1,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '2',
+                        controller: controller.burnTemperature2,
+                      ),
+                    ),
+                  ],
                 ),
-                CustomButton(
-                  buttonText: 'Add',
-                  onTap: () {
-                    if (controller.burnTemperatureControllers.length < 16) {
-                      controller.burnTemperatureControllers
-                          .add(TextEditingController());
-                    } else {
-                      ToastMessage.showToastMessage(
-                          message:
-                              'You can add up to only 16 Burn Times Temperatures.',
-                          backgroundColor: AppColors.blueTextColor);
-                    }
-                  },
-                )
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '3',
+                        controller: controller.burnTemperature3,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '4',
+                        controller: controller.burnTemperature4,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '5',
+                        controller: controller.burnTemperature5,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '6',
+                        controller: controller.burnTemperature6,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '7',
+                        controller: controller.burnTemperature7,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '8',
+                        controller: controller.burnTemperature8,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '9',
+                        controller: controller.burnTemperature9,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '10',
+                        controller: controller.burnTemperature10,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '11',
+                        controller: controller.burnTemperature11,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '12',
+                        controller: controller.burnTemperature12,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '13',
+                        controller: controller.burnTemperature13,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '14',
+                        controller: controller.burnTemperature14,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '15',
+                        controller: controller.burnTemperature15,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '16',
+                        controller: controller.burnTemperature16,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           //Throttle  & Fuel Value Position
+
           ReUsableContainer(
             showBackgroundShadow: false,
             color: Colors.grey.shade300,
@@ -692,6 +895,7 @@ class CustomStepperBody2 extends StatelessWidget {
                     usePrimaryColor: true,
                     onTap: () {
                       controller.previousPage();
+                      controller.scrollUp();
                     }),
               ),
               Expanded(
@@ -699,6 +903,7 @@ class CustomStepperBody2 extends StatelessWidget {
                     buttonText: 'Next',
                     onTap: () {
                       controller.nextPage();
+                      controller.scrollUp();
                     }),
               ),
             ],

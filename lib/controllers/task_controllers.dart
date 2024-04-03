@@ -18,12 +18,12 @@ class AddTaskController extends GetxController {
     selectedAddress.text = mapController.selectedAddress.value;
     taskSelectedDate = DateTime.now().obs;
     taskSelectedTime = TimeOfDay.now().obs;
-    pyrometerTemperatureControllers.add(TextEditingController());
-    pyrometerTemperatureControllers.add(TextEditingController());
-    burnTemperatureControllers.add(TextEditingController());
-    burnTemperatureControllers.add(TextEditingController());
-    hotCompressionTemperatureControllers.add(TextEditingController());
-    hotCompressionTemperatureControllers.add(TextEditingController());
+    // pyrometerTemperatureControllers.add(TextEditingController());
+    // pyrometerTemperatureControllers.add(TextEditingController());
+    // burnTemperatureControllers.add(TextEditingController());
+    // burnTemperatureControllers.add(TextEditingController());
+    // hotCompressionTemperatureControllers.add(TextEditingController());
+    // hotCompressionTemperatureControllers.add(TextEditingController());
     super.onInit();
   }
 
@@ -232,32 +232,41 @@ class AddTaskController extends GetxController {
   RxString selectedBtuValue = ''.obs; //RadioButton
 
   //Cylinder Exhaust Pyrometer
-  List<TextEditingController> pyrometerTemperatureControllers =
-      <TextEditingController>[].obs;
-  // TextEditingController cylinderExhaustPyrometerTemperature1 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature2 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature3 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature4 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature5 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature6 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature7 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature8 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature9 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature10 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature11 =
-  //     TextEditingController();
-  // TextEditingController cylinderExhaustPyrometerTemperature12 =
-  //     TextEditingController();
+  // List<TextEditingController> pyrometerTemperatureControllers =
+  //     <TextEditingController>[].obs;
+
+  TextEditingController cylinderExhaustPyrometerTemperature1 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature2 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature3 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature4 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature5 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature6 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature7 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature8 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature9 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature10 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature11 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature12 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature13 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature14 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature15 =
+      TextEditingController();
+  TextEditingController cylinderExhaustPyrometerTemperature16 =
+      TextEditingController();
 
   //Turbo Temperatures
   RxString lbTurboIn = ''.obs; //RadioButton
@@ -273,20 +282,25 @@ class AddTaskController extends GetxController {
   RxString missFireDetected = ''.obs; //RadioButton
 
   //BurnTimes
-  List<TextEditingController> burnTemperatureControllers =
-      <TextEditingController>[].obs;
-  // TextEditingController burnTemperature1 = TextEditingController();
-  // TextEditingController burnTemperature2 = TextEditingController();
-  // TextEditingController burnTemperature3 = TextEditingController();
-  // TextEditingController burnTemperature4 = TextEditingController();
-  // TextEditingController burnTemperature5 = TextEditingController();
-  // TextEditingController burnTemperature6 = TextEditingController();
-  // TextEditingController burnTemperature7 = TextEditingController();
-  // TextEditingController burnTemperature8 = TextEditingController();
-  // TextEditingController burnTemperature9 = TextEditingController();
-  // TextEditingController burnTemperature10 = TextEditingController();
-  // TextEditingController burnTemperature11 = TextEditingController();
-  // TextEditingController burnTemperature12 = TextEditingController();
+  // List<TextEditingController> burnTemperatureControllers =
+  //     <TextEditingController>[].obs;
+
+  TextEditingController burnTemperature1 = TextEditingController();
+  TextEditingController burnTemperature2 = TextEditingController();
+  TextEditingController burnTemperature3 = TextEditingController();
+  TextEditingController burnTemperature4 = TextEditingController();
+  TextEditingController burnTemperature5 = TextEditingController();
+  TextEditingController burnTemperature6 = TextEditingController();
+  TextEditingController burnTemperature7 = TextEditingController();
+  TextEditingController burnTemperature8 = TextEditingController();
+  TextEditingController burnTemperature9 = TextEditingController();
+  TextEditingController burnTemperature10 = TextEditingController();
+  TextEditingController burnTemperature11 = TextEditingController();
+  TextEditingController burnTemperature12 = TextEditingController();
+  TextEditingController burnTemperature13 = TextEditingController();
+  TextEditingController burnTemperature14 = TextEditingController();
+  TextEditingController burnTemperature15 = TextEditingController();
+  TextEditingController burnTemperature16 = TextEditingController();
 
   //Throttle  & Fuel Value Position
   TextEditingController throttleActuatorPosition = TextEditingController();
@@ -356,20 +370,25 @@ class AddTaskController extends GetxController {
   //Page3
 
   // Hot Compression Test
-  List<TextEditingController> hotCompressionTemperatureControllers =
-      <TextEditingController>[].obs;
-  // TextEditingController hotCompressionTemperature1 = TextEditingController();
-  // TextEditingController hotCompressionTemperature2 = TextEditingController();
-  // TextEditingController hotCompressionTemperature3 = TextEditingController();
-  // TextEditingController hotCompressionTemperature4 = TextEditingController();
-  // TextEditingController hotCompressionTemperature5 = TextEditingController();
-  // TextEditingController hotCompressionTemperature6 = TextEditingController();
-  // TextEditingController hotCompressionTemperature7 = TextEditingController();
-  // TextEditingController hotCompressionTemperature8 = TextEditingController();
-  // TextEditingController hotCompressionTemperature9 = TextEditingController();
-  // TextEditingController hotCompressionTemperature10 = TextEditingController();
-  // TextEditingController hotCompressionTemperature11 = TextEditingController();
-  // TextEditingController hotCompressionTemperature12 = TextEditingController();
+  // List<TextEditingController> hotCompressionTemperatureControllers =
+  //     <TextEditingController>[].obs;
+
+  TextEditingController hotCompressionTemperature1 = TextEditingController();
+  TextEditingController hotCompressionTemperature2 = TextEditingController();
+  TextEditingController hotCompressionTemperature3 = TextEditingController();
+  TextEditingController hotCompressionTemperature4 = TextEditingController();
+  TextEditingController hotCompressionTemperature5 = TextEditingController();
+  TextEditingController hotCompressionTemperature6 = TextEditingController();
+  TextEditingController hotCompressionTemperature7 = TextEditingController();
+  TextEditingController hotCompressionTemperature8 = TextEditingController();
+  TextEditingController hotCompressionTemperature9 = TextEditingController();
+  TextEditingController hotCompressionTemperature10 = TextEditingController();
+  TextEditingController hotCompressionTemperature11 = TextEditingController();
+  TextEditingController hotCompressionTemperature12 = TextEditingController();
+  TextEditingController hotCompressionTemperature13 = TextEditingController();
+  TextEditingController hotCompressionTemperature14 = TextEditingController();
+  TextEditingController hotCompressionTemperature15 = TextEditingController();
+  TextEditingController hotCompressionTemperature16 = TextEditingController();
 
   //Value Set
   TextEditingController intakeValueSet = TextEditingController();
@@ -503,6 +522,22 @@ class AddTaskController extends GetxController {
       debugPrint(activePageIndex.value.toString());
     }
   }
+
+  // void nextPage() {
+  //   if (activePageIndex.value < 3) {
+  //     activePageIndex.value++;
+  //     pageController.jumpToPage(activePageIndex.value);
+  //     debugPrint(activePageIndex.value.toString());
+  //   }
+  // }
+  //
+  // void previousPage() {
+  //   if (activePageIndex.value > 0) {
+  //     activePageIndex.value--;
+  //     pageController.jumpToPage(activePageIndex.value);
+  //     debugPrint(activePageIndex.value.toString());
+  //   }
+  // }
 
   void scrollUp() {
     if (scrollController.hasClients) {

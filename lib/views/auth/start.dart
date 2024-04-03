@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:mechanix/controllers/auth_controllers.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/views/auth/login.dart';
+import 'package:mechanix/views/auth/login_web.dart';
+import 'package:mechanix/views/auth/signup_web.dart';
 import 'package:mechanix/views/auth/signup.dart';
 
 class StartScreen extends StatelessWidget {
@@ -12,46 +14,48 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Obx(
-          () => Expanded(
-            flex: 3,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: context.height * 0.05,
-                  horizontal: context.width * 0.15),
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color.fromRGBO(255, 220, 105, 0.4),
-                      Color.fromRGBO(86, 127, 255, 0.4),
-                    ],
+    return context.width < 900
+        ? RightSideView()
+        : Row(
+            children: [
+              Obx(
+                () => Expanded(
+                  flex: 3,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: context.height * 0.05,
+                        horizontal: context.width * 0.15),
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(255, 220, 105, 0.4),
+                            Color.fromRGBO(86, 127, 255, 0.4),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 5.0,
+                            spreadRadius: 5.0,
+                          ),
+                          BoxShadow(
+                            color: Colors.white,
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ),
+                        ]),
+                    child: controller.isLoginScreen.value
+                        ? LoginScreenWeb(controller: controller)
+                        : SignupScreenWeb(controller: controller),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 5.0,
-                      spreadRadius: 5.0,
-                    ),
-                    BoxShadow(
-                      color: Colors.white,
-                      offset: Offset(0.0, 0.0),
-                      blurRadius: 0.0,
-                      spreadRadius: 0.0,
-                    ),
-                  ]),
-              child: controller.isLoginScreen.value
-                  ? LoginScreen(controller: controller)
-                  : SignupScreen(controller: controller),
-            ),
-          ),
-        ),
-        Expanded(flex: 2, child: RightSideView()),
-      ],
-    );
+                ),
+              ),
+              Expanded(flex: 2, child: RightSideView()),
+            ],
+          );
   }
 }
 
@@ -101,11 +105,19 @@ class RightSideView extends StatelessWidget {
                     SizedBox(height: context.height * 0.2),
                     CustomButton(
                       buttonText: 'Login',
-                      onTap: () => controller.isLoginScreen.value = true,
+                      onTap: () {
+                        context.width > 900
+                            ? controller.isLoginScreen.value = true
+                            : Get.to(() => const LoginScreen());
+                      },
                     ),
                     CustomButton(
                         buttonText: 'Register',
-                        onTap: () => controller.isLoginScreen.value = false,
+                        onTap: () {
+                          context.width > 900
+                              ? controller.isLoginScreen.value = false
+                              : Get.to(const SignupScreen());
+                        },
                         usePrimaryColor: true),
                     SizedBox(height: context.height * 0.1),
                   ],

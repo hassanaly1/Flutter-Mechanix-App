@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/views/dashboard/dashboard.dart';
+import 'package:mechanix/views/auth/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DashboardScreen(),
+      home: const LoginScreen(),
       initialBinding: BindingsBuilder(() {
         Get.put(UniversalController());
       }),

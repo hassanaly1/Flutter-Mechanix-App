@@ -6,7 +6,6 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -48,44 +47,138 @@ class CustomStepperBody3 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const ContainerHeading(heading: 'Hot Compression Test'),
-                Obx(
-                  () => GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount:
-                        controller.hotCompressionTemperatureControllers.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0.0,
-                            mainAxisSpacing: 0.0,
-                            childAspectRatio: 1.7),
-                    itemBuilder: (BuildContext context, int index) {
-                      return NumberWithTextField(
-                          number: (index + 1).toString(),
-                          controller: controller
-                              .hotCompressionTemperatureControllers[index]);
-                    },
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '1',
+                        controller: controller.hotCompressionTemperature1,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '2',
+                        controller: controller.hotCompressionTemperature2,
+                      ),
+                    ),
+                  ],
                 ),
-                CustomButton(
-                  buttonText: 'Add',
-                  onTap: () {
-                    if (controller.hotCompressionTemperatureControllers.length <
-                        16) {
-                      controller.hotCompressionTemperatureControllers
-                          .add(TextEditingController());
-                    } else {
-                      ToastMessage.showToastMessage(
-                          message:
-                              'You can add up to only 16 Hot Compression Temperatures.',
-                          backgroundColor: AppColors.blueTextColor);
-                    }
-                  },
-                )
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '3',
+                        controller: controller.hotCompressionTemperature3,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '4',
+                        controller: controller.hotCompressionTemperature4,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '5',
+                        controller: controller.hotCompressionTemperature5,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '6',
+                        controller: controller.hotCompressionTemperature6,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '7',
+                        controller: controller.hotCompressionTemperature7,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '8',
+                        controller: controller.hotCompressionTemperature8,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '9',
+                        controller: controller.hotCompressionTemperature9,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '10',
+                        controller: controller.hotCompressionTemperature10,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '11',
+                        controller: controller.hotCompressionTemperature11,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '12',
+                        controller: controller.hotCompressionTemperature12,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '13',
+                        controller: controller.hotCompressionTemperature13,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '14',
+                        controller: controller.hotCompressionTemperature14,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '15',
+                        controller: controller.hotCompressionTemperature15,
+                      ),
+                    ),
+                    Flexible(
+                      child: NumberWithTextField(
+                        number: '16',
+                        controller: controller.hotCompressionTemperature16,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
+
           //Value Set
           ReUsableContainer(
             showBackgroundShadow: false,
@@ -500,6 +593,7 @@ class CustomStepperBody3 extends StatelessWidget {
                     usePrimaryColor: true,
                     onTap: () {
                       controller.previousPage();
+                      controller.scrollUp();
                     }),
               ),
               Expanded(
@@ -507,6 +601,7 @@ class CustomStepperBody3 extends StatelessWidget {
                     buttonText: 'Next',
                     onTap: () {
                       controller.nextPage();
+                      controller.scrollUp();
                     }),
               ),
             ],

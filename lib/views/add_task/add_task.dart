@@ -22,103 +22,54 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          sideMenu.changePage(0);
-        },
-        child: Container(
-          color: Colors.transparent,
-          child: DefaultTabController(
-            length: 4,
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                body: NestedScrollView(
-                    controller: controller.scrollController,
-                    // floatHeaderSlivers: true,
-                    headerSliverBuilder: (context, innerBoxIsScrolled) {
-                      return [
-                        SliverAppBar(
-                          expandedHeight: context.height * 0.25,
-                          pinned: true,
-                          floating: true,
-                          primary: false,
-                          backgroundColor: Colors.transparent,
-                          excludeHeaderSemantics: false,
-                          forceMaterialTransparency: false,
-                          flexibleSpace: ListView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              // AddTaskAppbar(controller: controller),
-
-                              TopSection(controller: controller),
-                            ],
-                          ),
-                        ),
-                      ];
-                    },
-                    body: BottomPageViewSection(controller: controller)),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => controller.scrollUp(),
-                  backgroundColor: AppColors.primaryColor,
-                  mini: true,
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons.arrow_upward_rounded),
-                ),
-              ),
+        child: PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        sideMenu.changePage(0);
+      },
+      child: Container(
+        color: Colors.transparent,
+        child: DefaultTabController(
+          length: 4,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: NestedScrollView(
+                controller: controller.scrollController,
+                // floatHeaderSlivers: true,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      expandedHeight: context.height * 0.28,
+                      pinned: false,
+                      floating: true,
+                      primary: false,
+                      backgroundColor: Colors.transparent,
+                      excludeHeaderSemantics: false,
+                      forceMaterialTransparency: false,
+                      flexibleSpace: ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          // AddTaskAppbar(controller: controller),
+                          TopSection(controller: controller),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+                body: BottomPageViewSection(controller: controller)),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => controller.scrollUp(),
+              backgroundColor: AppColors.primaryColor,
+              mini: true,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_upward_rounded),
             ),
           ),
         ),
       ),
-    );
+    ));
   }
 }
-
-// class AddTaskAppbar extends StatelessWidget {
-//   const AddTaskAppbar({
-//     super.key,
-//     required this.controller,
-//   });
-//
-//   final AddTaskController controller;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: context.height * 0.1,
-//       color: AppColors.blueTextColor,
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Visibility(
-//             visible: context.isPortrait,
-//             child: IconButton(
-//                 onPressed: () => Get.back(),
-//                 icon: const Icon(
-//                   Icons.arrow_back,
-//                   color: Colors.white70,
-//                 )),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 16.0),
-//             child: Obx(
-//               () => CustomTextWidget(
-//                 text: 'Steps ${controller.activePageIndex.value + 1} of 4',
-//                 fontSize: 18.0,
-//                 fontWeight: FontWeight.w600,
-//                 textColor: Colors.white70,
-//                 textAlign: TextAlign.center,
-//               ),
-//             ),
-//           ),
-//           Visibility(visible: context.isPortrait, child: const ProfileAvatar()),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class TopSection extends StatelessWidget {
   const TopSection({
@@ -161,7 +112,7 @@ class TopSection extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () {
-                          Get.to(() => QrCodeScanner(),
+                          Get.to(() => const QrCodeScanner(),
                               transition: Transition.rightToLeft);
                         },
                         icon: const Icon(Icons.qr_code_scanner_rounded))
@@ -201,8 +152,8 @@ class BottomPageViewSection extends StatelessWidget {
         children: [
           Expanded(
             child: IndexedStack(
-              key: UniqueKey(),
-              sizing: StackFit.expand,
+              // key: UniqueKey(),
+              sizing: StackFit.loose,
               index: controller.activePageIndex.value,
               children: [
                 CustomStepperBody1(key: const PageStorageKey('Page1')),

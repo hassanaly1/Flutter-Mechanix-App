@@ -40,9 +40,6 @@ class ReUsableTextField extends StatelessWidget {
       child: TextFormField(
         readOnly: readOnly ?? false,
         onTap: onTap,
-
-        // textAlignVertical: TextAlignVertical.bottom,
-        //  onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
         controller: controller,
         onChanged: onChanged,
         validator: validator,

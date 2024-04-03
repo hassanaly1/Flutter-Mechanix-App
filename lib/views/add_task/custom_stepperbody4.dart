@@ -314,7 +314,10 @@ class CustomStepperBody4 extends StatelessWidget {
                 child: CustomButton(
                     buttonText: 'BACK',
                     usePrimaryColor: true,
-                    onTap: () => controller.previousPage()),
+                    onTap: () {
+                      controller.previousPage();
+                      controller.scrollUp();
+                    }),
               ),
               Expanded(
                 child: CustomButton(

@@ -1,3 +1,7 @@
+# MyFiles
+lib/views/auth/login_web.dart
+lib/views/auth/signup_web.dart
+
 # Miscellaneous
 *.class
 *.log
