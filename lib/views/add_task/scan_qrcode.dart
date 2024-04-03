@@ -12,14 +12,14 @@ import 'package:mechanix/helpers/toast.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class QrCodeScanner extends StatefulWidget {
-  const QrCodeScanner({super.key});
+class ScanQrCodeScreen extends StatefulWidget {
+  const ScanQrCodeScreen({super.key});
 
   @override
-  State<QrCodeScanner> createState() => _QrCodeScannerState();
+  State<ScanQrCodeScreen> createState() => _QrCodeScannerState();
 }
 
-class _QrCodeScannerState extends State<QrCodeScanner> {
+class _QrCodeScannerState extends State<ScanQrCodeScreen> {
   final AddTaskController controller = Get.find();
   late MobileScannerController mobileScannerController;
 

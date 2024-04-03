@@ -10,7 +10,7 @@ import 'package:mechanix/views/add_task/custom_stepperbody1.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody3.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
-import 'package:mechanix/views/add_task/qrcode_scanner.dart';
+import 'package:mechanix/views/add_task/scan_qrcode.dart';
 import 'package:mechanix/views/add_task/stepper_header.dart';
 
 class AddTaskScreen extends StatelessWidget {
@@ -112,7 +112,7 @@ class TopSection extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () {
-                          Get.to(() => const QrCodeScanner(),
+                          Get.to(() => const ScanQrCodeScreen(),
                               transition: Transition.rightToLeft);
                         },
                         icon: const Icon(Icons.qr_code_scanner_rounded))
