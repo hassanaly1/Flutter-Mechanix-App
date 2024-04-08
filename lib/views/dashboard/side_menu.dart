@@ -58,11 +58,6 @@ class SideMenuCard extends StatelessWidget {
                   'assets/images/app-logo.png',
                 ),
               ),
-              CustomTextWidget(
-                text: 'Mechanix',
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-              ),
               const Divider(
                 indent: 8.0,
                 endIndent: 8.0,
@@ -143,6 +138,13 @@ class SideMenuCard extends StatelessWidget {
               builder: (context, displayMode) {
                 return const Divider(endIndent: 8, indent: 8);
               },
+            ),
+            SideMenuItem(
+              title: 'Subscription',
+              onTap: (index, _) {
+                sideMenu.changePage(index);
+              },
+              icon: const Icon(Symbols.event_repeat_rounded),
             ),
             SideMenuItem(
               title: 'Profile',

@@ -59,23 +59,31 @@ class ViewAllTasksScreen extends StatelessWidget {
                   ),
                 ),
                 controller.tasks.isEmpty
-                    ? Center(
-                        child: Column(
-                        children: [
-                          Image.asset('assets/images/view-task.png',
-                              height: context.height * 0.15),
-                          CustomTextWidget(
-                            text: 'No Tasks Added',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
+                    ? Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: context.height * 0.1),
+                              Image.asset('assets/images/view-task.png',
+                                  height: context.height * 0.15),
+                              CustomTextWidget(
+                                text: 'No Tasks found',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ],
                           ),
-                        ],
-                      ))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controller.tasks.length,
-                        itemBuilder: (context, index) => CustomTaskCard(
-                          model: controller.tasks[index],
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: controller.tasks.length,
+                          itemBuilder: (context, index) => CustomTaskCard(
+                            model: controller.tasks[index],
+                          ),
                         ),
                       )
               ],

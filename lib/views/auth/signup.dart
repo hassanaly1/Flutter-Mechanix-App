@@ -1,3 +1,4 @@
+import 'package:mechanix/controllers/auth_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -8,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:mechanix/views/auth/login.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
-
+  SignupScreen({super.key});
+  final AuthController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,9 +59,12 @@ class SignupScreen extends StatelessWidget {
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Image.asset(
-                          'assets/images/gear.png',
-                          fit: BoxFit.fitWidth,
+                        child: Opacity(
+                          opacity: 0.3,
+                          child: Image.asset(
+                            'assets/images/gear.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Padding(
@@ -68,104 +72,123 @@ class SignupScreen extends StatelessWidget {
                             horizontal: context.width > 700
                                 ? context.width * 0.2
                                 : context.width * 0.1),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomTextWidget(
-                              text: 'Register Account',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            CustomTextWidget(
-                              text: 'Fill the Details to register your account',
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
-                              textAlign: TextAlign.center,
-                              fontStyle: FontStyle.italic,
-                              maxLines: 4,
-                            ),
-                            Form(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  SizedBox(height: context.height * 0.03),
-                                  ReUsableTextField(
-                                      hintText: 'Email',
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: AppColors.primaryColor,
-                                      )
-
-                                      // validator: (val) =>
-                                      //     AppValidator.validateEmail(value: val),
-                                      ),
-                                  ReUsableTextField(
-                                      hintText: 'Password',
-                                      prefixIcon: Icon(
-                                        Icons.lock_open_rounded,
-                                        color: AppColors.primaryColor,
-                                      )
-                                      // validator: (val) =>
-                                      //     AppValidator.validatePassword(value: val),
-                                      ),
-                                  ReUsableTextField(
-                                      hintText: 'Confirm Password',
-                                      prefixIcon: Icon(
-                                        Icons.lock_open_rounded,
-                                        color: AppColors.primaryColor,
-                                      )
-                                      // validator: (val) =>
-                                      //     AppValidator.validatePassword(value: val),
-                                      ),
-                                ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomTextWidget(
+                                text: 'Register Account',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ),
-                            SizedBox(height: context.height * 0.03),
-                            CustomButton(
-                              buttonText: 'Register',
-                              onTap: () {
-                                Get.to(
-                                  () => const LoginScreen(),
-                                  transition: Transition.size,
-                                  duration: const Duration(seconds: 1),
-                                );
-                                ToastMessage.showToastMessage(
-                                    message: 'Account Created Successfully',
-                                    backgroundColor: AppColors.blueTextColor);
-                              },
-                            ),
-                            SizedBox(height: context.height * 0.02),
-                            Center(
-                              child: GestureDetector(
+                              CustomTextWidget(
+                                text:
+                                    'Fill the Details to register your account',
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w500,
+                                textAlign: TextAlign.center,
+                                fontStyle: FontStyle.italic,
+                                maxLines: 4,
+                              ),
+                              Form(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(height: context.height * 0.03),
+                                    ReUsableTextField(
+                                        controller: controller.nameController,
+                                        hintText: 'Name',
+                                        prefixIcon: Icon(
+                                          Icons.account_circle_outlined,
+                                          color: AppColors.primaryColor,
+                                        )
+
+                                        // validator: (val) =>
+                                        //     AppValidator.validateEmail(value: val),
+                                        ),
+                                    ReUsableTextField(
+                                        controller: controller.emailController,
+                                        hintText: 'Email',
+                                        prefixIcon: Icon(
+                                          Icons.email_outlined,
+                                          color: AppColors.primaryColor,
+                                        )
+
+                                        // validator: (val) =>
+                                        //     AppValidator.validateEmail(value: val),
+                                        ),
+                                    ReUsableTextField(
+                                        controller:
+                                            controller.passwordController,
+                                        hintText: 'Password',
+                                        prefixIcon: Icon(
+                                          Icons.lock_open_rounded,
+                                          color: AppColors.primaryColor,
+                                        )
+                                        // validator: (val) =>
+                                        //     AppValidator.validatePassword(value: val),
+                                        ),
+                                    ReUsableTextField(
+                                        controller: controller
+                                            .confirmPasswordController,
+                                        hintText: 'Confirm Password',
+                                        prefixIcon: Icon(
+                                          Icons.lock_open_rounded,
+                                          color: AppColors.primaryColor,
+                                        )
+                                        // validator: (val) =>
+                                        //     AppValidator.validatePassword(value: val),
+                                        ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: context.height * 0.01),
+                              CustomButton(
+                                buttonText: 'Register',
                                 onTap: () {
                                   Get.to(
-                                    () => const LoginScreen(),
+                                    () => LoginScreen(),
                                     transition: Transition.size,
                                     duration: const Duration(seconds: 1),
                                   );
+                                  ToastMessage.showToastMessage(
+                                      message: 'Account Created Successfully',
+                                      backgroundColor: AppColors.blueTextColor);
                                 },
-                                child: Text.rich(
-                                  TextSpan(
-                                    text: 'Already have a account? ',
-                                    style: const TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12.0),
-                                    children: [
-                                      TextSpan(
-                                        text: 'Login',
-                                        style: TextStyle(
-                                            color: AppColors.blueTextColor,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14.0),
-                                      ),
-                                    ],
+                              ),
+                              SizedBox(height: context.height * 0.02),
+                              Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      () => LoginScreen(),
+                                      transition: Transition.size,
+                                      duration: const Duration(seconds: 1),
+                                    );
+                                  },
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: 'Already have a account? ',
+                                      style: const TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.0),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Login',
+                                          style: TextStyle(
+                                              color: AppColors.blueTextColor,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14.0),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

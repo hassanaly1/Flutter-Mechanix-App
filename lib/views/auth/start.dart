@@ -108,7 +108,7 @@ class RightSideView extends StatelessWidget {
                       onTap: () {
                         context.width > 900
                             ? controller.isLoginScreen.value = true
-                            : Get.to(() => const LoginScreen());
+                            : Get.to(() => LoginScreen());
                       },
                     ),
                     CustomButton(
@@ -116,7 +116,7 @@ class RightSideView extends StatelessWidget {
                         onTap: () {
                           context.width > 900
                               ? controller.isLoginScreen.value = false
-                              : Get.to(const SignupScreen());
+                              : Get.to(() => SignupScreen());
                         },
                         usePrimaryColor: true),
                     SizedBox(height: context.height * 0.1),

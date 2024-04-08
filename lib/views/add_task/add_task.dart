@@ -56,7 +56,8 @@ class AddTaskScreen extends StatelessWidget {
                     ),
                   ];
                 },
-                body: BottomPageViewSection(controller: controller)),
+                body: BottomPageViewSection(
+                    controller: controller, sideMenu: sideMenu)),
             floatingActionButton: FloatingActionButton(
               onPressed: () => controller.scrollUp(),
               backgroundColor: AppColors.primaryColor,
@@ -138,9 +139,11 @@ class TopSection extends StatelessWidget {
 }
 
 class BottomPageViewSection extends StatelessWidget {
+  final SideMenuController sideMenu;
   const BottomPageViewSection({
     super.key,
     required this.controller,
+    required this.sideMenu,
   });
 
   final AddTaskController controller;
@@ -156,10 +159,10 @@ class BottomPageViewSection extends StatelessWidget {
               sizing: StackFit.loose,
               index: controller.activePageIndex.value,
               children: [
-                CustomStepperBody1(key: const PageStorageKey('Page1')),
-                CustomStepperBody2(key: const PageStorageKey('Page2')),
-                CustomStepperBody3(key: const PageStorageKey('Page3')),
-                CustomStepperBody4(key: const PageStorageKey('Page4')),
+                CustomStepperBody1(),
+                CustomStepperBody2(),
+                CustomStepperBody3(),
+                CustomStepperBody4(sideMenu: sideMenu),
               ],
             ),
           ),

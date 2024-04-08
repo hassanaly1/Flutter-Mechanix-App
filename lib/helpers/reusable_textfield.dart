@@ -36,7 +36,7 @@ class ReUsableTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReUsableContainer(
       showBackgroundShadow: showBackgroundShadow,
-      verticalPadding: context.height * 0.015,
+      verticalPadding: context.height * 0.012,
       child: TextFormField(
         readOnly: readOnly ?? false,
         onTap: onTap,
@@ -59,7 +59,6 @@ class ReUsableTextField extends StatelessWidget {
           border: const OutlineInputBorder(borderSide: BorderSide.none),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
-
           hintText: hintText,
           hintStyle: TextStyle(
             fontFamily: 'Poppins',

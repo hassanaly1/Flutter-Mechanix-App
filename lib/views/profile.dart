@@ -22,7 +22,6 @@ class ProfileSection extends StatelessWidget {
         child: SizedBox(
           height: context.height,
           width: context.width * 0.25,
-          // decoration: reusableContainerDecoration(),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,6 +34,7 @@ class ProfileSection extends StatelessWidget {
                       image: DecorationImage(
                           image: AssetImage("assets/images/user2.jpg"))),
                 ),
+                const SizedBox(height: 12.0),
                 CustomTextWidget(
                   text: 'James Anderson',
                   fontWeight: FontWeight.w500,

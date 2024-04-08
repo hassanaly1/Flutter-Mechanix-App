@@ -1,6 +1,9 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mechanix/controllers/dashboard_controller.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/profile_avatar.dart';
@@ -21,18 +24,20 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void initState() {
     super.initState();
+    debugPrint('DashboardScreenOnInitCalled');
     controller.tabController = TabController(
       initialIndex: 0,
-      length: 9,
+      length: 10,
       vsync: this,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('DashboardScreenBuildCalled');
     return SafeArea(
       child: DefaultTabController(
-        length: 9,
+        length: 10,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -182,30 +187,28 @@ class HomeAppbar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      context.isLandscape
-                          ? Image.asset(
-                              'assets/images/app-logo-white.png',
-                              height: context.height * 0.1,
-                              fit: BoxFit.cover,
-                            )
-                          : Obx(
-                              () => Visibility(
-                                visible: controller.currentPage.value == 0
-                                    ? false
-                                    : true,
-                                child: IconButton(
-                                  onPressed: () {
-                                    controller.currentPage.value == 0
-                                        ? null
-                                        : sideMenu.changePage(0);
-                                  },
-                                  icon: Icon(Icons.arrow_back_rounded,
-                                      color: controller.currentPage.value == 0
-                                          ? Colors.transparent
-                                          : Colors.white70),
-                                ),
-                              ),
-                            ),
+                      Image.asset(
+                        'assets/images/app-logo-white.png',
+                        height: context.height * 0.1,
+                        fit: BoxFit.cover,
+                      ),
+                      Obx(
+                        () => Visibility(
+                          visible:
+                              controller.currentPage.value == 0 ? false : true,
+                          child: IconButton(
+                            onPressed: () {
+                              controller.currentPage.value == 0
+                                  ? null
+                                  : sideMenu.changePage(0);
+                            },
+                            icon: Icon(Icons.arrow_back_rounded,
+                                color: controller.currentPage.value == 0
+                                    ? Colors.transparent
+                                    : Colors.white70),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: context.isLandscape
@@ -223,8 +226,20 @@ class HomeAppbar extends StatelessWidget {
                                 visible: controller.currentPage.value == 3
                                     ? false
                                     : true,
-                                child: ProfileAvatar(
-                                  onTap: () => sideMenu.changePage(8),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => sideMenu.changePage(8),
+                                      icon: const Icon(
+                                        Symbols.event_repeat_rounded,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    ProfileAvatar(
+                                      onTap: () => sideMenu.changePage(9),
+                                    ),
+                                  ],
                                 )),
                       ),
                     ],

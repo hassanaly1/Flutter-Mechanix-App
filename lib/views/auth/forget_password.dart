@@ -57,9 +57,12 @@ class ForgetPasswordScreen extends StatelessWidget {
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Image.asset(
-                          'assets/images/gear.png',
-                          fit: BoxFit.fitWidth,
+                        child: Opacity(
+                          opacity: 0.3,
+                          child: Image.asset(
+                            'assets/images/gear.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Padding(
@@ -73,7 +76,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                             CustomTextWidget(
                               text: 'Reset your password',
                               fontSize: 16.0,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                             ),
                             CustomTextWidget(
                               text:
@@ -107,7 +110,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                               buttonText: 'Reset Password',
                               onTap: () {
                                 Get.to(
-                                  () => const LoginScreen(),
+                                  () => LoginScreen(),
                                   transition: Transition.size,
                                   duration: const Duration(seconds: 1),
                                 );

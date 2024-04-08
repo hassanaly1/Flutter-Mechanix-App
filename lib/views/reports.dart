@@ -28,52 +28,55 @@ class ReportsScreen extends StatelessWidget {
                 vertical: context.height * 0.02,
                 horizontal: context.width * 0.05),
             decoration: const BoxDecoration(color: Colors.transparent),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal:
-                          context.isLandscape ? context.width * 0.08 : 0.0),
-                  child: ReUsableTextField(
-                    hintText: 'Search Task',
-                    suffixIcon: const Icon(Icons.search_sharp),
-                  ),
-                ),
-                ReUsableContainer(
-                  child: ListTile(
-                    visualDensity: VisualDensity.compact,
-                    onTap: () {},
-                    leading: Icon(Icons.calendar_month,
-                        color: AppColors.blueTextColor),
-                    title: CustomTextWidget(
-                      text: DateFormat('yyyy-MM-dd').format(now),
-                    ),
-                    trailing: CustomTextWidget(
-                      text: 'Change',
-                      fontSize: 12.0,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal:
+                            context.isLandscape ? context.width * 0.08 : 0.0),
+                    child: ReUsableTextField(
+                      hintText: 'Search Task',
+                      suffixIcon: const Icon(Icons.search_sharp),
                     ),
                   ),
-                ),
-                controller.reports.isEmpty
-                    ? Center(
-                        child: Column(
-                        children: [
-                          Image.asset('assets/images/view-task.png',
-                              height: context.height * 0.15),
-                          CustomTextWidget(
-                            text: 'No Reports Added',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        itemBuilder: (context, index) =>
-                            const CustomReportCard(),
-                      )
-              ],
+                  ReUsableContainer(
+                    child: ListTile(
+                      visualDensity: VisualDensity.compact,
+                      onTap: () {},
+                      leading: Icon(Icons.calendar_month,
+                          color: AppColors.blueTextColor),
+                      title: CustomTextWidget(
+                        text: DateFormat('yyyy-MM-dd').format(now),
+                      ),
+                      trailing: CustomTextWidget(
+                        text: 'Change',
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+                  controller.reports.isEmpty
+                      ? Center(
+                          child: Column(
+                          children: [
+                            SizedBox(height: context.height * 0.1),
+                            Image.asset('assets/images/view-task.png',
+                                height: context.height * 0.15),
+                            CustomTextWidget(
+                              text: 'No Reports Added',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ],
+                        ))
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 10,
+                          itemBuilder: (context, index) =>
+                              const CustomReportCard(),
+                        )
+                ],
+              ),
             ),
           ),
         ),

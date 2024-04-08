@@ -1,10 +1,10 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:mechanix/views/add_task/add_task.dart';
-import 'package:mechanix/views/dashboard/home.dart';
-import 'package:mechanix/views/dashboard/profile_section.dart';
-
+import 'package:mechanix/views/home.dart';
+import 'package:mechanix/views/profile.dart';
 import 'package:mechanix/views/engines.dart';
+import 'package:mechanix/views/renue_subscriptions.dart';
 import 'package:mechanix/views/reports.dart';
 
 import 'package:mechanix/views/view_task.dart';
@@ -23,6 +23,7 @@ class RightSideWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('RightSideBuildCalled');
     return Expanded(
       child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
@@ -38,6 +39,7 @@ class RightSideWidget extends StatelessWidget {
           const SizedBox.shrink(), //Customize Units
           EnginesScreen(sideMenu: sideMenu),
           const SizedBox.shrink(), //Drawer
+          RenewalSubscriptions(sideMenu: sideMenu),
           ProfileSection(sideMenu: sideMenu),
         ],
       ),

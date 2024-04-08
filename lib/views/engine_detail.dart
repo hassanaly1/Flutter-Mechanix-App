@@ -69,37 +69,39 @@ class EngineDetailScreen extends StatelessWidget {
                           spreadRadius: 0.0),
                     ],
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: context.height * 0.1),
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black54)),
-                        child: QrImageView(
-                          data: model.name ?? '',
-                          version: QrVersions.auto,
-                          size: context.height * 0.3,
-                          errorStateBuilder: (cxt, err) {
-                            return Center(
-                              child: CustomTextWidget(
-                                text: 'Uh oh! Something went wrong...',
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                fontSize: 12.0,
-                              ),
-                            );
-                          },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: context.height * 0.1),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black54)),
+                          child: QrImageView(
+                            data: model.name ?? '',
+                            version: QrVersions.auto,
+                            size: context.height * 0.3,
+                            errorStateBuilder: (cxt, err) {
+                              return Center(
+                                child: CustomTextWidget(
+                                  text: 'Uh oh! Something went wrong...',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: context.height * 0.02),
-                      CustomTextWidget(
-                        text: model.subtitle ?? '',
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        fontSize: 16.0,
-                      )
-                    ],
+                        SizedBox(height: context.height * 0.02),
+                        CustomTextWidget(
+                          text: model.subtitle ?? '',
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          fontSize: 16.0,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

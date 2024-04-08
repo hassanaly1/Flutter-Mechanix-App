@@ -58,15 +58,21 @@ class EnginesScreen extends StatelessWidget {
                           onTap: () => _openAddEngineDialog(
                               context: context, controller: controller)),
                       universalController.engines.isEmpty
-                          ? Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CustomTextWidget(
-                                    text: 'No Engines Added',
-                                    maxLines: 2,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    textAlign: TextAlign.center),
+                          ? Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: context.height * 0.1),
+                                    Image.asset('assets/images/view-task.png',
+                                        height: context.height * 0.15),
+                                    CustomTextWidget(
+                                      text: 'No Engines found',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
                               ),
                             )
                           : Expanded(
