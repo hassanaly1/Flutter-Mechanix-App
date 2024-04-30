@@ -1,9 +1,9 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mechanix/controllers/auth_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/helpers/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/views/auth/login.dart';
@@ -35,7 +35,7 @@ class SignupScreen extends StatelessWidget {
                     child: Container(
                   padding: EdgeInsets.symmetric(
                       vertical: context.height * 0.02,
-                      horizontal: context.width * 0.04),
+                      horizontal: context.width * 0.02),
                   decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: const BorderRadius.only(
@@ -109,6 +109,8 @@ class SignupScreen extends StatelessWidget {
                                     ReUsableTextField(
                                         controller: controller.emailController,
                                         hintText: 'Email',
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         prefixIcon: Icon(
                                           Icons.email_outlined,
                                           color: AppColors.primaryColor,
@@ -143,18 +145,13 @@ class SignupScreen extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: context.height * 0.01),
-                              CustomButton(
-                                buttonText: 'Register',
-                                onTap: () {
-                                  Get.to(
-                                    () => LoginScreen(),
-                                    transition: Transition.size,
-                                    duration: const Duration(seconds: 1),
-                                  );
-                                  ToastMessage.showToastMessage(
-                                      message: 'Account Created Successfully',
-                                      backgroundColor: AppColors.blueTextColor);
-                                },
+                              Obx(
+                                () => CustomButton(
+                                  isLoading: controller.isLoading.value,
+                                  buttonText: 'Register',
+                                  // isLoading: controller.isLoading.value,
+                                  onTap: () => controller.registerUser(),
+                                ),
                               ),
                               SizedBox(height: context.height * 0.02),
                               Center(

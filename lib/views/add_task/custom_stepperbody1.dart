@@ -159,6 +159,7 @@ class CustomStepperBody1 extends StatelessWidget {
             ),
           ),
           CustomButton(
+              isLoading: false,
               buttonText: 'Next',
               onTap: () {
                 controller.nextPage();

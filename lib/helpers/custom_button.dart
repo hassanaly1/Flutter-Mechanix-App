@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -13,6 +14,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? fontSize;
   final bool usePrimaryColor;
+  final bool isLoading;
 
   const CustomButton({
     super.key,
@@ -24,11 +26,12 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.usePrimaryColor = false,
     this.fontSize,
+    required this.isLoading,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
         onTap: onTap,
         child: ReUsableContainer(
           verticalPadding: context.height * 0.01,
@@ -37,13 +40,22 @@ class CustomButton extends StatelessWidget {
               ? AppColors.primaryColor
               : AppColors.secondaryColor,
           child: Center(
-              child: CustomTextWidget(
-            text: buttonText,
-            fontSize: fontSize ?? 16,
-            textColor: usePrimaryColor ? Colors.black87 : Colors.white,
-            fontWeight: FontWeight.w600,
-            textAlign: TextAlign.center,
-          )),
+              child: isLoading
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SpinKitRing(
+                        lineWidth: 2.0,
+                        color: Colors.white,
+                      ),
+                    )
+                  : CustomTextWidget(
+                      text: buttonText,
+                      fontSize: fontSize ?? 16,
+                      textColor:
+                          usePrimaryColor ? Colors.black87 : Colors.white,
+                      fontWeight: FontWeight.w600,
+                      textAlign: TextAlign.center,
+                    )),
         ));
   }
 }

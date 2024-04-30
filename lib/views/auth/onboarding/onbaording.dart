@@ -79,6 +79,7 @@ class _DoctorBoardingScreenState extends State<OnBoardingScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: CustomButton(
+                      isLoading: false,
                       buttonText: currentPageIndex < 2 ? 'Next' : 'Get Started',
                       onTap: () {
                         if (currentPageIndex < 2) {

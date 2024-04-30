@@ -11,7 +11,7 @@ class AddTaskController extends GetxController {
   final ScrollController scrollController = ScrollController();
 
   final UniversalController controller = Get.find();
-  final MapController mapController = Get.find();
+  final MapController mapController = Get.put(MapController());
 
   @override
   void onInit() {

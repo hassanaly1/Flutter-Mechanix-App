@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/auth_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/auth/forget_password.dart';
 import 'package:mechanix/views/auth/signup.dart';
-import 'package:mechanix/views/auth/subscription.dart';
-import 'package:mechanix/views/dashboard/dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -40,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                     child: Container(
                   padding: EdgeInsets.symmetric(
                       vertical: context.height * 0.02,
-                      horizontal: context.width * 0.04),
+                      horizontal: context.width * 0.02),
                   decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: const BorderRadius.only(
@@ -102,6 +100,8 @@ class LoginScreen extends StatelessWidget {
                                     ReUsableTextField(
                                         controller: controller.emailController,
                                         hintText: 'Email',
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         prefixIcon: Icon(
                                           Icons.email_outlined,
                                           color: AppColors.primaryColor,
@@ -138,18 +138,14 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: context.height * 0.01),
-                              CustomButton(
-                                buttonText: 'Login',
-                                onTap: () {
-                                  Get.offAll(
-                                    () => const DashboardScreen(),
-                                    transition: Transition.size,
-                                    duration: const Duration(milliseconds: 700),
-                                  );
-                                  ToastMessage.showToastMessage(
-                                      message: 'Login Successfully',
-                                      backgroundColor: AppColors.blueTextColor);
-                                },
+                              Obx(
+                                () => CustomButton(
+                                  buttonText: 'Login',
+                                  isLoading: controller.isLoading.value,
+                                  onTap: () {
+                                    controller.loginUser();
+                                  },
+                                ),
                               ),
                               SizedBox(height: context.height * 0.02),
                               Center(
@@ -166,8 +162,8 @@ class LoginScreen extends StatelessWidget {
                                       text: 'If you don’t have any account? ',
                                       style: const TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14.0),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 12.0),
                                       children: [
                                         TextSpan(
                                           text: 'Signup',
@@ -175,29 +171,29 @@ class LoginScreen extends StatelessWidget {
                                               color: AppColors.blueTextColor,
                                               fontFamily: 'Poppins',
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 14.0),
+                                              fontSize: 12.0),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: context.height * 0.05),
-                              InkWell(
-                                onTap: () {
-                                  //   Get.to(
-                                  //   () => SubscriptionScreen(),
-                                  //   transition: Transition.size,
-                                  //   duration: const Duration(seconds: 1),
-                                  // );
-                                },
-                                child: CustomTextWidget(
-                                  text: 'Want to Buy Subscription?',
-                                  fontSize: 16.0,
-                                  textAlign: TextAlign.center,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                              SizedBox(height: context.height * 0.02),
+                              // InkWell(
+                              //   onTap: () {
+                              //     //   Get.to(
+                              //     //   () => SubscriptionScreen(),
+                              //     //   transition: Transition.size,
+                              //     //   duration: const Duration(seconds: 1),
+                              //     // );
+                              //   },
+                              //   child: CustomTextWidget(
+                              //     text: 'Want to Buy Subscription?',
+                              //     fontSize: 16.0,
+                              //     textAlign: TextAlign.center,
+                              //     fontWeight: FontWeight.w500,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

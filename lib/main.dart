@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/views/auth/login.dart';
-import 'package:mechanix/views/auth/onboarding/onbaording.dart';
+import 'package:mechanix/views/dashboard/dashboard.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -19,10 +21,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnBoardingScreen(),
-      initialBinding: BindingsBuilder(() {
-        Get.put(UniversalController());
-      }),
+      home: LoginScreen(),
+      // initialBinding: BindingsBuilder(() {
+      //   Get.put(UniversalController());
+      // }),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

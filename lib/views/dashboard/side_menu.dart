@@ -1,6 +1,5 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:mechanix/helpers/appcolors.dart';
-import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -139,13 +138,13 @@ class SideMenuCard extends StatelessWidget {
                 return const Divider(endIndent: 8, indent: 8);
               },
             ),
-            SideMenuItem(
-              title: 'Subscription',
-              onTap: (index, _) {
-                sideMenu.changePage(index);
-              },
-              icon: const Icon(Symbols.event_repeat_rounded),
-            ),
+            // SideMenuItem(
+            //   title: 'Subscription',
+            //   onTap: (index, _) {
+            //     sideMenu.changePage(index);
+            //   },
+            //   icon: const Icon(Symbols.event_repeat_rounded),
+            // ),
             SideMenuItem(
               title: 'Profile',
               onTap: (index, _) {

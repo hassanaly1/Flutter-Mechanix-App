@@ -59,6 +59,7 @@ class ProfileSection extends StatelessWidget {
                       ReUsableTextField(hintText: '0123456789'),
                       ReUsableTextField(hintText: '*********'),
                       CustomButton(
+                        isLoading: false,
                         buttonText: 'Update',
                         onTap: () {},
                         usePrimaryColor: true,

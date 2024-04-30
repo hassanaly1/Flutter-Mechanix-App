@@ -14,22 +14,40 @@ import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/engine_detail.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class EnginesScreen extends StatelessWidget {
+class EnginesScreen extends StatefulWidget {
   final SideMenuController sideMenu;
-  EnginesScreen({super.key, required this.sideMenu});
+  const EnginesScreen({super.key, required this.sideMenu});
 
-  final EnginesController controller = Get.put(EnginesController());
-  final UniversalController universalController = Get.find();
+  @override
+  State<EnginesScreen> createState() => _EnginesScreenState();
+}
+
+class _EnginesScreenState extends State<EnginesScreen> {
+  late EnginesController controller;
+  @override
+  void initState() {
+    controller = Get.put(EnginesController());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final EnginesController controller = Get.find();
+    final UniversalController universalController = Get.find();
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: PopScope(
           canPop: false,
           onPopInvoked: (didPop) {
-            sideMenu.changePage(0);
+            widget.sideMenu.changePage(0);
+            Get.delete<EnginesController>();
           },
           child: Scaffold(
             backgroundColor: Colors.transparent,
@@ -54,6 +72,7 @@ class EnginesScreen extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
+                          isLoading: false,
                           buttonText: '+ Add Engine',
                           onTap: () => _openAddEngineDialog(
                               context: context, controller: controller)),
@@ -236,6 +255,7 @@ class DialogFirstView extends StatelessWidget {
             )
           ])),
       CustomButton(
+          isLoading: false,
           usePrimaryColor: controller.isQrCodeGenerated.value == true,
           buttonText: 'Save & Generate QR code',
           fontSize: 12.0,
@@ -321,6 +341,7 @@ class DialogSecondView extends StatelessWidget {
               ),
         const Divider(color: Colors.black54),
         CustomButton(
+          isLoading: false,
           usePrimaryColor: controller.isQrCodeGenerated.value == true,
           buttonText: 'Close',
           fontSize: 12.0,

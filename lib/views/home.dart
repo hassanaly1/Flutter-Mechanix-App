@@ -6,9 +6,9 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:flutter/material.dart';
 
-class HomeSection extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final SideMenuController sideMenu;
-  const HomeSection({
+  const HomeScreen({
     super.key,
     required this.sideMenu,
   });

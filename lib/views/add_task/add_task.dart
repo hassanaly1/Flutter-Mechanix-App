@@ -1,7 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -13,19 +12,37 @@ import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
 import 'package:mechanix/views/add_task/scan_qrcode.dart';
 import 'package:mechanix/views/add_task/stepper_header.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
   final SideMenuController sideMenu;
-  AddTaskScreen({super.key, required this.sideMenu});
-  final MapController mapController = Get.put(MapController());
-  final AddTaskController controller = Get.put(AddTaskController());
+  const AddTaskScreen({super.key, required this.sideMenu});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  late AddTaskController controller;
+  @override
+  void initState() {
+    controller = Get.put(AddTaskController());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final AddTaskController controller = Get.find();
     return SafeArea(
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        sideMenu.changePage(0);
+        widget.sideMenu.changePage(0);
+        Get.delete<AddTaskController>();
       },
       child: Container(
         color: Colors.transparent,
@@ -57,7 +74,7 @@ class AddTaskScreen extends StatelessWidget {
                   ];
                 },
                 body: BottomPageViewSection(
-                    controller: controller, sideMenu: sideMenu)),
+                    controller: controller, sideMenu: widget.sideMenu)),
             floatingActionButton: FloatingActionButton(
               onPressed: () => controller.scrollUp(),
               backgroundColor: AppColors.primaryColor,

@@ -107,6 +107,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                             ),
                             SizedBox(height: context.height * 0.03),
                             CustomButton(
+                              isLoading: false,
                               buttonText: 'Reset Password',
                               onTap: () {
                                 Get.to(

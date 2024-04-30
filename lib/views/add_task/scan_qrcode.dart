@@ -146,6 +146,7 @@ void _showDialog(
                   // ),
                   QrImageView(data: barCodeValue ?? ''),
                   CustomButton(
+                    isLoading: false,
                     usePrimaryColor: true,
                     buttonText: 'Save QR Code Value',
                     fontSize: 12.0,

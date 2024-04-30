@@ -2,7 +2,6 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -15,7 +14,6 @@ import 'package:mechanix/models/single_part_model.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
-import 'package:mechanix/views/dashboard/dashboard.dart';
 
 class CustomStepperBody4 extends StatelessWidget {
   final SideMenuController sideMenu;
@@ -266,6 +264,7 @@ class CustomStepperBody4 extends StatelessWidget {
                         fieldName: 'Vendor', value: value),
                   ),
                   CustomButton(
+                    isLoading: false,
                     buttonText: 'Add',
                     onTap: () {
                       if (_partsFormkey.currentState!.validate()) {
@@ -317,6 +316,7 @@ class CustomStepperBody4 extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
+                    isLoading: false,
                     buttonText: 'BACK',
                     usePrimaryColor: true,
                     onTap: () {
@@ -326,6 +326,7 @@ class CustomStepperBody4 extends StatelessWidget {
               ),
               Expanded(
                 child: CustomButton(
+                    isLoading: false,
                     buttonText: 'SUBMIT',
                     onTap: () {
                       controller.addTask();

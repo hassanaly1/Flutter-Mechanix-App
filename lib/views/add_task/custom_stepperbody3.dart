@@ -589,6 +589,7 @@ class CustomStepperBody3 extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
+                    isLoading: false,
                     buttonText: 'BACK',
                     usePrimaryColor: true,
                     onTap: () {
@@ -598,6 +599,7 @@ class CustomStepperBody3 extends StatelessWidget {
               ),
               Expanded(
                 child: CustomButton(
+                    isLoading: false,
                     buttonText: 'Next',
                     onTap: () {
                       controller.nextPage();

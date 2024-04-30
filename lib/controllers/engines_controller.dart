@@ -13,7 +13,6 @@ class EnginesController extends GetxController {
   RxString qrCodeData = ''.obs;
 
   final PageController pageController = PageController();
-
   final UniversalController universalController = Get.find();
 
   void generateQrCode() {

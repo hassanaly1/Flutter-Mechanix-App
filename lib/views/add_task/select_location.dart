@@ -76,6 +76,7 @@ class SelectLocationScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: context.width * 0.2),
               child: CustomButton(
+                isLoading: false,
                 buttonText: 'Confirm Location',
                 onTap: () {
                   Get.back();

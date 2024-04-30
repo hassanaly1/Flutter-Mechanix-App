@@ -4,7 +4,6 @@ import 'package:mechanix/views/add_task/add_task.dart';
 import 'package:mechanix/views/home.dart';
 import 'package:mechanix/views/profile.dart';
 import 'package:mechanix/views/engines.dart';
-import 'package:mechanix/views/renue_subscriptions.dart';
 import 'package:mechanix/views/reports.dart';
 
 import 'package:mechanix/views/view_task.dart';
@@ -30,8 +29,7 @@ class RightSideWidget extends StatelessWidget {
         // controller: pageController,
         controller: tabController,
         children: [
-          HomeSection(sideMenu: sideMenu),
-
+          HomeScreen(sideMenu: sideMenu),
           const SizedBox.shrink(), //Drawer
           AddTaskScreen(sideMenu: sideMenu),
           ViewAllTasksScreen(sideMenu: sideMenu),
@@ -39,7 +37,7 @@ class RightSideWidget extends StatelessWidget {
           const SizedBox.shrink(), //Customize Units
           EnginesScreen(sideMenu: sideMenu),
           const SizedBox.shrink(), //Drawer
-          RenewalSubscriptions(sideMenu: sideMenu),
+          // RenewalSubscriptions(sideMenu: sideMenu),
           ProfileSection(sideMenu: sideMenu),
         ],
       ),
