@@ -6,11 +6,10 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
+class VerifyEmailScreen extends StatelessWidget {
+  VerifyEmailScreen({super.key});
 
   final AuthController controller = Get.find();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,55 +71,54 @@ class ForgetPasswordScreen extends StatelessWidget {
                             horizontal: context.width > 700
                                 ? context.width * 0.2
                                 : context.width * 0.1),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomTextWidget(
-                                text: 'Reset your password',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomTextWidget(
+                              text: 'Verify Your Email',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            CustomTextWidget(
+                              text:
+                                  'Enter email address to verify your Account',
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500,
+                              textAlign: TextAlign.center,
+                              fontStyle: FontStyle.italic,
+                              maxLines: 4,
+                            ),
+                            Form(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  SizedBox(height: context.height * 0.03),
+                                  ReUsableTextField(
+                                      controller: controller.emailController,
+                                      hintText: 'Email',
+                                      prefixIcon: Icon(
+                                        Icons.email_outlined,
+                                        color: AppColors.primaryColor,
+                                      )
+
+                                      // validator: (val) =>
+                                      //     AppValidator.validateEmail(value: val),
+                                      ),
+                                ],
                               ),
-                              CustomTextWidget(
-                                text:
-                                    'Enter email address to reset your password',
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w500,
-                                textAlign: TextAlign.center,
-                                fontStyle: FontStyle.italic,
-                                maxLines: 4,
+                            ),
+                            SizedBox(height: context.height * 0.03),
+                            Obx(
+                              () => CustomButton(
+                                isLoading: controller.isLoading.value,
+                                buttonText: 'Verify Email',
+                                onTap: () {
+                                  controller.sendOtp(
+                                      verifyOtpForForgetPassword: false);
+                                },
                               ),
-                              Form(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    SizedBox(height: context.height * 0.03),
-                                    ReUsableTextField(
-                                        controller: controller.emailController,
-                                        hintText: 'Email',
-                                        prefixIcon: Icon(
-                                          Icons.email_outlined,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validateEmail(value: val),
-                                        ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: context.height * 0.03),
-                              Obx(
-                                () => CustomButton(
-                                  isLoading: controller.isLoading.value,
-                                  buttonText: 'Reset Password',
-                                  onTap: () {
-                                    controller.sendOtp(
-                                        verifyOtpForForgetPassword: true);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

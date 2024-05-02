@@ -181,17 +181,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  onCompleted: (pin) {
-                                    // if (pin == '2222') {
-                                    //   // Utils().toastMessage('Login Successfully');
-                                    //   // Get.offAll(const DashboardScreen(),
-                                    //   //     transition: Transition.rightToLeft);
-                                    // }
-                                    // setState(() {
-                                    //   _pinController.clear();
-                                    //   _timerInProgress = false;
-                                    // });
-                                  },
+                                  onCompleted: (pin) {},
                                 ),
                               ),
                               SizedBox(height: context.height * 0.02),
@@ -209,6 +199,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                           ),
                                           TextButton(
                                             onPressed: () {
+                                              debugPrint('Resend OTP Clicked');
+                                              controller.sendOtp(
+                                                  verifyOtpForForgetPassword:
+                                                      false);
                                               setState(() {
                                                 _timerInProgress = true;
                                                 _start = 60;
@@ -235,7 +229,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                     debugPrint(widget.verifyOtpForForgetPassword
                                         .toString());
                                     widget.verifyOtpForForgetPassword
-                                        ? controller.verifyOtp()
+                                        ? controller.verifyOtp(
+                                            verifyOtpForForgetPassword: widget
+                                                .verifyOtpForForgetPassword)
                                         : controller.verifyEmail();
                                   },
                                 ),

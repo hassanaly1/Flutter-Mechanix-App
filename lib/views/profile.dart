@@ -1,10 +1,12 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/views/auth/login.dart';
 
 class ProfileSection extends StatelessWidget {
   final SideMenuController sideMenu;
@@ -12,6 +14,7 @@ class ProfileSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storage = GetStorage();
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -64,6 +67,15 @@ class ProfileSection extends StatelessWidget {
                         onTap: () {},
                         usePrimaryColor: true,
                         textColor: Colors.black87,
+                      ),
+                      CustomButton(
+                        isLoading: false,
+                        buttonText: 'Logout',
+                        onTap: () {
+                          storage.remove('token');
+                          Get.offAll(() => LoginScreen());
+                        },
+                        textColor: Colors.white60,
                       )
                     ],
                   ),

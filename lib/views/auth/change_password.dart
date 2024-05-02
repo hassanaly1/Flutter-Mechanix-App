@@ -6,8 +6,8 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
+class ChangePasswordScreen extends StatelessWidget {
+  ChangePasswordScreen({super.key});
 
   final AuthController controller = Get.find();
 
@@ -77,13 +77,13 @@ class ForgetPasswordScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CustomTextWidget(
-                                text: 'Reset your password',
+                                text: 'Change your password',
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                               ),
                               CustomTextWidget(
                                 text:
-                                    'Enter email address to reset your password',
+                                    'Enter password and confirm password to change your password',
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w500,
                                 textAlign: TextAlign.center,
@@ -96,14 +96,26 @@ class ForgetPasswordScreen extends StatelessWidget {
                                   children: [
                                     SizedBox(height: context.height * 0.03),
                                     ReUsableTextField(
-                                        controller: controller.emailController,
-                                        hintText: 'Email',
+                                        controller:
+                                            controller.passwordController,
+                                        hintText: 'Password',
                                         prefixIcon: Icon(
-                                          Icons.email_outlined,
+                                          Icons.lock_open_rounded,
                                           color: AppColors.primaryColor,
                                         )
                                         // validator: (val) =>
-                                        //     AppValidator.validateEmail(value: val),
+                                        //     AppValidator.validatePassword(value: val),
+                                        ),
+                                    ReUsableTextField(
+                                        controller: controller
+                                            .confirmPasswordController,
+                                        hintText: 'Confirm Password',
+                                        prefixIcon: Icon(
+                                          Icons.lock_open_rounded,
+                                          color: AppColors.primaryColor,
+                                        )
+                                        // validator: (val) =>
+                                        //     AppValidator.validatePassword(value: val),
                                         ),
                                   ],
                                 ),
@@ -112,10 +124,9 @@ class ForgetPasswordScreen extends StatelessWidget {
                               Obx(
                                 () => CustomButton(
                                   isLoading: controller.isLoading.value,
-                                  buttonText: 'Reset Password',
+                                  buttonText: 'Change Password',
                                   onTap: () {
-                                    controller.sendOtp(
-                                        verifyOtpForForgetPassword: true);
+                                    controller.changePassword();
                                   },
                                 ),
                               ),

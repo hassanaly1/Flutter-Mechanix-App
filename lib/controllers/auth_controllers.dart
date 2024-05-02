@@ -5,8 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/user_model.dart';
+import 'package:mechanix/views/auth/change_password.dart';
 import 'package:mechanix/views/auth/login.dart';
 import 'package:mechanix/views/auth/otp.dart';
+import 'package:mechanix/views/auth/verify_email.dart';
 import 'package:mechanix/views/dashboard/dashboard.dart';
 
 class AuthController extends GetxController {
@@ -63,6 +65,7 @@ class AuthController extends GetxController {
               verifyOtpForForgetPassword: false,
               email: emailController.text.trim(),
             ));
+        // clearAllControllers();
         // if response['status'] == 'error'
       } else {
         debugPrint('Registration failed');
@@ -94,6 +97,7 @@ class AuthController extends GetxController {
         if (response['status'] == 'success') {
           Fluttertoast.showToast(msg: response['message']);
           Get.offAll(() => LoginScreen());
+          // clearAllControllers();
         } else {
           Fluttertoast.showToast(msg: response['message']);
         }
@@ -129,13 +133,18 @@ class AuthController extends GetxController {
           debugPrint('UserInfo: ${_storage.read('user_info')}');
           Get.offAll(() => const DashboardScreen(),
               transition: Transition.zoom);
+          // clearAllControllers();
         } else {
-          // response['message'] == 'Please Verify Your Email First'
-          //     ? Get.to(() => const VerifyEmailScreen(),
-          //         transition: Transition.rightToLeft)
-          //     : null;
-          Fluttertoast.showToast(msg: response['message']);
-          // Get.offAll(() => OtpScreen(email: emailController.text.trim()));
+          response['message'] == 'Please Verify Your Email First'
+              ? Get.to(() => VerifyEmailScreen(),
+                  transition: Transition.rightToLeft)
+              : null;
+          Fluttertoast.showToast(
+              msg: response['message'], backgroundColor: Colors.red);
+          // Get.offAll(() => OtpScreen(
+          //       email: emailController.text.trim(),
+          //       verifyOtpForForgetPassword: false,
+          //     ));
         }
       } catch (e) {
         Fluttertoast.showToast(msg: 'Something went wrong, please try again.');
@@ -146,7 +155,7 @@ class AuthController extends GetxController {
   }
 
   //sendOtp
-  Future<void> sendOtp() async {
+  Future<void> sendOtp({required bool verifyOtpForForgetPassword}) async {
     if (emailController.text.isNotEmpty) {
       isLoading.value = true;
       debugPrint('Email: ${emailController.text.trim()}');
@@ -159,10 +168,11 @@ class AuthController extends GetxController {
         if (response['status'] == 'success') {
           Fluttertoast.showToast(msg: response['message']);
 
-          Get.to(() => OtpScreen(
-                verifyOtpForForgetPassword: true,
+          Get.off(() => OtpScreen(
+                verifyOtpForForgetPassword: verifyOtpForForgetPassword,
                 email: emailController.text.trim(),
               ));
+          // clearAllControllers();
         } else {
           Fluttertoast.showToast(msg: response['message']);
         }
@@ -174,8 +184,7 @@ class AuthController extends GetxController {
     }
   }
 
-  //verifyOtp
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp({required bool verifyOtpForForgetPassword}) async {
     if (emailController.text.isNotEmpty && otpController.text.isNotEmpty) {
       isLoading.value = true;
       debugPrint('Email: ${emailController.text.trim()}');
@@ -188,16 +197,29 @@ class AuthController extends GetxController {
         );
 
         if (response['status'] == 'success') {
+          debugPrint('verifyOtpForForgetPassword: $verifyOtpForForgetPassword');
           debugPrint('VERIFY OTP API CALLED SUCCESSFULLY');
-          Fluttertoast.showToast(msg: response['message']);
-          debugPrint('TokenReceived: ${response['data']['token']}');
-          _storage.write('token', response['data']['token']);
+          ToastMessage.showToastMessage(
+              message: 'OTP Verified Successfully',
+              backgroundColor: Colors.green);
+
+          // Accessing the token correctly
+          // _storage.write('token', response['data']['token']); //giving type errors
+          String token = response['data'][0]['token'];
+
+          debugPrint('TokenReceived: $token');
+          _storage.write('token', token);
           debugPrint('TokenAtStorage: ${_storage.read('token')}');
-          // Get.offAll(() => const ChangePasswordScreen());
+          verifyOtpForForgetPassword
+              ? Get.offAll(() => ChangePasswordScreen())
+              : Get.offAll(() => const DashboardScreen());
+          // clearAllControllers();
         } else {
+          debugPrint('RESPONSE: ${response['message']}');
           Fluttertoast.showToast(msg: response['message']);
         }
       } catch (e) {
+        debugPrint('SOMETHING WENT WRONG: ${e.toString()}');
         Fluttertoast.showToast(msg: e.toString());
       } finally {
         isLoading.value = false;
@@ -221,7 +243,7 @@ class AuthController extends GetxController {
 
         if (response['status'] == 'success') {
           Fluttertoast.showToast(msg: response['message']);
-          // Get.offAll(() => const HomeScreen());
+          Get.offAll(() => const DashboardScreen());
         } else {
           Fluttertoast.showToast(msg: response['message']);
         }
@@ -244,6 +266,14 @@ class AuthController extends GetxController {
       lastName.value = '';
     }
   }
+
+  // void clearAllControllers() {
+  //   nameController.clear();
+  //   emailController.clear();
+  //   passwordController.clear();
+  //   confirmPasswordController.clear();
+  //   otpController.clear();
+  // }
 
   @override
   onClose() {

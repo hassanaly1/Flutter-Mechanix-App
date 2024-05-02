@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/views/auth/login.dart';
 import 'package:mechanix/views/dashboard/dashboard.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    final storage = GetStorage();
     return GetMaterialApp(
       title: 'Mechanix',
       debugShowCheckedModeBanner: false,
@@ -21,7 +25,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: storage.read('token') != null
+          ? const DashboardScreen()
+          : LoginScreen(),
       // initialBinding: BindingsBuilder(() {
       //   Get.put(UniversalController());
       // }),

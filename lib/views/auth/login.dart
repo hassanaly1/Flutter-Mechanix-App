@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/auth_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
@@ -123,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                                         ),
                                     InkWell(
                                       onTap: () => Get.to(
-                                        () => const ForgetPasswordScreen(),
+                                        () => ForgetPasswordScreen(),
                                         transition: Transition.size,
                                         duration: const Duration(seconds: 1),
                                       ),

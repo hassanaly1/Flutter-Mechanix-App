@@ -187,7 +187,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         debugPrint('StatusCode: ${response.statusCode}');
-        debugPrint('ResponseBody: ${response.body}');
+        // debugPrint('ResponseBody: ${response.body}');
 
         return jsonDecode(response.body);
       } else {
