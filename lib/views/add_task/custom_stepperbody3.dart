@@ -190,32 +190,32 @@ class CustomStepperBody3 extends StatelessWidget {
                 TextfieldWithRadioButtons(
                   heading: 'Intake',
                   keyboardType: TextInputType.number,
-                  val1: 'Hydraulic',
-                  val2: 'Solid',
+                  val1: 'HYDRAULIC',
+                  val2: 'SOLID',
                   textController: controller.intakeValueSet,
                   radioController: controller.intakeValueSetRadioValue,
                 ),
                 TextfieldWithRadioButtons(
                   heading: 'Exhaust',
                   keyboardType: TextInputType.number,
-                  val1: 'Hydraulic',
-                  val2: 'Solid',
+                  val1: 'HYDRAULIC',
+                  val2: 'SOLID',
                   textController: controller.exhaustValueSet,
                   radioController: controller.exhaustValueSetRadioValue,
                 ),
                 CustomRadioButton(
                   heading: 'Major Value Recession Detected?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.majorValueRecessionDetected,
                 ),
                 CustomRadioButton(
                   heading: 'Boroscope Recommended?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.boroscopeRecommended,
                 ),
                 CustomRadioButton(
                   heading: 'Boroscope Inspection Completed?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.boroscopeInspectionCompleted,
                 ),
               ],
@@ -231,8 +231,8 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Sparkplugs'),
                 CustomRadioButton(
                   heading: 'Install New Sparkplugs?',
-                  options: const ['yes', 'no', 'clean', 'REGAP'],
-                  selectedOption: controller.installNewWires,
+                  options: const ['YES', 'NO', 'CLEAN', 'REGAP'],
+                  selectedOption: controller.installNewSparkplugs,
                 ),
                 HeadingAndTextfield(
                   title: 'Sparkplug Gap',
@@ -242,10 +242,10 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Sparkplug Extension(s) Installed?',
                   options: const [
-                    'yes',
-                    'no',
-                    'replaced boots',
-                    'replaced O rings',
+                    'YES',
+                    'NO',
+                    'REPLACED BOOTS',
+                    'REPLACED O RINGS',
                     'NA'
                   ],
                   selectedOption: controller.sparkplugExtensionInstalled,
@@ -253,8 +253,8 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Any New Extensions Installed?',
                   options: const [
-                    'yes',
-                    'no',
+                    'YES',
+                    'NO',
                     'NA',
                   ],
                   selectedOption: controller.newExtensionInstalled,
@@ -266,9 +266,9 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Sparkplug Wire Condition?',
                   options: const [
-                    'poor',
-                    'fair',
-                    'good',
+                    'POOR',
+                    'FAIR',
+                    'GOOD',
                   ],
                   selectedOption: controller.sparkplugWireCondition,
                 ),
@@ -289,10 +289,7 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Connections'),
                 CustomRadioButton(
                   heading: 'Cannon Plug Connectors Tight?',
-                  options: const [
-                    'yes',
-                    'no',
-                  ],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.cannonPlugConnectorsTight,
                 ),
                 HeadingAndTextfield(
@@ -312,12 +309,12 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Crankcase'),
                 CustomRadioButton(
                   heading: 'Crankcase Breather Inspection',
-                  options: const ['yes', 'no', 'NA'],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.crankcaseBreatherInspection,
                 ),
                 CustomRadioButton(
                   heading: 'New Breather Element Installed?',
-                  options: const ['yes', 'no', 'NA'],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.newBreatherElementInstalled,
                 ),
               ],
@@ -334,16 +331,12 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading:
                       'Check All Cooler Fan Jackshaft Drive Belts and Tensioner Condition',
-                  options: const [
-                    'yes',
-                    'no',
-                    'NA',
-                  ],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.checkAllCanonFan,
                 ),
                 ReUsableTextField(
                   hintText: 'List of Replaced items',
-                  controller: controller.listOfCheckAllCanonFan,
+                  controller: controller.listOfCheckAllCoolerFan,
                 )
               ],
             ),
@@ -359,11 +352,7 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading:
                       'Check all water pump weep holes for any signs of coolant leakage?',
-                  options: const [
-                    'yes',
-                    'no',
-                    'NA',
-                  ],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.coolantSystemCheck,
                 ),
               ],
@@ -380,11 +369,7 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading:
                       'Grease all points and check all auto greasers for function?',
-                  options: const [
-                    'yes',
-                    'no',
-                    'replaced',
-                  ],
+                  options: const ['YES', 'NO', 'REPLACED'],
                   selectedOption: controller.lubricationSystemCheck,
                 ),
               ],
@@ -401,11 +386,7 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading:
                       'Grease all points and check all auto greasers for function?',
-                  options: const [
-                    'yes',
-                    'no',
-                    'replaced',
-                  ],
+                  options: const ['YES', 'NO', 'REPLACED'],
                   selectedOption: controller.coolingSystemCheck,
                 ),
               ],
@@ -422,21 +403,20 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Check fuel gas filter(s)?',
                   options: const [
-                    'yes',
-                    'no',
-                    'replaced',
-                    'return to service',
-                    'Replace New'
+                    'YES',
+                    'NO',
+                    'REPLACED, RETURN TO SERVICE',
+                    'REPLACE NEW'
                   ],
                   selectedOption: controller.checkFuelGasFilter,
                 ),
                 CustomRadioButton(
                   heading: 'Fuel gas filters found?',
                   options: const [
-                    'dry',
-                    'wet',
-                    'dirty',
-                    'waxy',
+                    'DRY',
+                    'WET',
+                    'DIRTY',
+                    'WAXY',
                   ],
                   selectedOption: controller.fuelGasFilterFound,
                 ),
@@ -454,11 +434,10 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Air filter(s) inspection?',
                   options: const [
-                    'yes',
-                    'no',
-                    'replaced',
-                    'return to service',
-                    'Replace New'
+                    'YES',
+                    'NO',
+                    'REPLACED, RETURN TO SERVICE',
+                    'REPLACE NEW'
                   ],
                   selectedOption: controller.airFilterInspection,
                 ),
@@ -476,7 +455,7 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading:
                       'Check turbo air side for excessive endplay, axial play, and carbon scraping?',
-                  options: const ['yes', 'no', 'NA'],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.turboChargerInspection,
                 ),
               ],
@@ -494,10 +473,10 @@ class CustomStepperBody3 extends StatelessWidget {
                 CustomRadioButton(
                   heading: 'Carburetor internal cleaning & inspection?',
                   options: const [
-                    'yes',
-                    'no',
-                    'return to service',
-                    'replace internals new'
+                    'YES',
+                    'NO',
+                    'RETURN TO SERVICE',
+                    'REPLACE INTERNALS NEW'
                   ],
                   selectedOption:
                       controller.carburetorInternalCleaningInspection,
@@ -515,17 +494,17 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Engine Oil Maintenance'),
                 CustomRadioButton(
                   heading: 'Engine oil filter change?',
-                  options: const ['yes', 'no', 'Stainless', 'Sock', 'Canister'],
+                  options: const ['YES', 'NO', 'STAINLESS', 'SOCK', 'CANISTER'],
                   selectedOption: controller.engineOilFilterChange,
                 ),
                 CustomRadioButton(
                   heading: 'Engine oil filter change?',
-                  options: const ['Clean', 'Metal Flake', 'Coolant', 'NA'],
+                  options: const ['CLEAN', 'METAL FLAKE', 'COOLANT', 'NA'],
                   selectedOption: controller.engineOilFilterChange2,
                 ),
                 CustomRadioButton(
                   heading: 'Oil cooler drained?',
-                  options: const ['yes', 'no', 'NA'],
+                  options: const ['YES', 'NO', 'NA'],
                   selectedOption: controller.oilCoolerDrained,
                 ),
               ],
@@ -541,18 +520,12 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Hydraulic System Check'),
                 CustomRadioButton(
                   heading: 'Hydraulic oil filter change?',
-                  options: const [
-                    'yes',
-                    'no',
-                  ],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.hydraulicOilFilterChange,
                 ),
                 CustomRadioButton(
                   heading: 'Hydraulic oil new?',
-                  options: const [
-                    'yes',
-                    'no',
-                  ],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.hydraulicOilNew,
                 ),
               ],
@@ -568,19 +541,19 @@ class CustomStepperBody3 extends StatelessWidget {
                 const ContainerHeading(heading: 'Miscellaneous Checks'),
                 CustomRadioButton(
                     heading: 'Engine oil system primed & oil level correct?',
-                    options: const ['yes', 'no'],
+                    options: const ['YES', 'NO'],
                     selectedOption: controller.engineOilSystemPrimed),
                 CustomRadioButton(
                     heading: 'Oil drain isolation valves shut in?',
-                    options: const ['yes', 'no'],
+                    options: const ['YES', 'NO'],
                     selectedOption: controller.oilDrainIsolationValvesShutIn),
                 CustomRadioButton(
                     heading: 'Day tank filters installed new?',
-                    options: const ['yes', 'no', 'NA'],
+                    options: const ['YES', 'NO', 'NA'],
                     selectedOption: controller.dayTankFiltersInstalledNew),
                 CustomRadioButton(
                     heading: 'Day tank values open?',
-                    options: const ['yes', 'no'],
+                    options: const ['YES', 'NO'],
                     selectedOption: controller.dayTankValvesOpen),
               ],
             ),

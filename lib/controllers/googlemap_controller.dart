@@ -8,6 +8,8 @@ class MapController extends GetxController {
   Rx<LatLng?> userCurrentLocation = Rx<LatLng?>(null);
   Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
   RxString selectedAddress = RxString('');
+  RxString selectedAddressLatitude = RxString('');
+  RxString selectedAddressLongitude = RxString('');
 
   late GoogleMapController mapController;
 
@@ -61,10 +63,17 @@ class MapController extends GetxController {
         await getAddressFromCoordinates(position.latitude, position.longitude);
     if (newAddress != null) {
       debugPrint('New address found: $newAddress');
+      debugPrint('New address Latitude: ${position.latitude}');
+      debugPrint('New address Longitude: ${position.longitude}');
+
       selectedAddress.value = newAddress;
+      selectedAddressLatitude.value = position.latitude.toString();
+      selectedAddressLongitude.value = position.longitude.toString();
     } else {
       debugPrint('Address not found for position: $position');
       selectedAddress.value = 'Address not found';
+      selectedAddressLatitude.value = '';
+      selectedAddressLongitude.value = '';
     }
   }
 

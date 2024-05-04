@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/models/single_part_model.dart';
+import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
 
 class AddTaskController extends GetxController {
-  List<SinglePartModel> partsList = <SinglePartModel>[].obs; //List of Parts
+  List<Part> partsList = <Part>[].obs; //List of Parts
   var activePageIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
 
@@ -16,186 +16,300 @@ class AddTaskController extends GetxController {
   @override
   void onInit() {
     selectedAddress.text = mapController.selectedAddress.value;
+    selectedAddressLatitude = mapController.selectedAddressLatitude;
+    selectedAddressLongitude = mapController.selectedAddressLongitude;
     taskSelectedDate = DateTime.now().obs;
     taskSelectedTime = TimeOfDay.now().obs;
-    // pyrometerTemperatureControllers.add(TextEditingController());
-    // pyrometerTemperatureControllers.add(TextEditingController());
-    // burnTemperatureControllers.add(TextEditingController());
-    // burnTemperatureControllers.add(TextEditingController());
-    // hotCompressionTemperatureControllers.add(TextEditingController());
-    // hotCompressionTemperatureControllers.add(TextEditingController());
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    scrollController.dispose();
-    super.onClose();
-  }
-
   void addTask() {
+    //Geolocation
+    Geolocation geolocation = Geolocation(
+      address: selectedAddress.text,
+      geolat: selectedAddressLatitude.toString(),
+      geolong: selectedAddressLongitude.toString(),
+    );
+    //Task
     TaskModel newTask = TaskModel(
       //Page1
-      selectedAddress: selectedAddress.text,
-      // location: selectedAddress.text.trim(),
-      setUnits: double.tryParse(setUnits.text.trim()),
+      //: todo: Add Name , Email textfields
+      unit: double.tryParse(setUnits.text.trim()),
       unitHours: double.tryParse(unitHours.text.trim()),
-      selectedDate: taskSelectedDate.value,
-      selectedTime: taskSelectedTime.value,
-      nameOfJourneyMan: nameOfJourneyMan.text.trim(),
-      unitOnlineOnArrival: unitOnlineOnArrival.value,
+      date: taskSelectedDate.value,
+      time: taskSelectedTime.value,
+      nameJourneyMan: nameOfJourneyMan.text.trim(),
+      unitOnlineArrival: unitOnlineOnArrival.value,
       jobScope: jobScope.text.trim(),
-      operationalProblems: operationalProblems.text.trim(),
+      problems: operationalProblems.text.trim(),
       engineBrand: engineBrand.value,
       modelNumber: double.tryParse(modelNumber.text.trim()),
       serialNumber: double.tryParse(serialNumber.text.trim()),
       arrangementNumber: double.tryParse(arrangementNumber.text.trim()),
-      oilSamplesTaken: oilSamplesTaken.value,
+      isOilSampleTaken: oilSamplesTaken.value,
 
       //Page2
       engineLoad: double.tryParse(engineLoad.text.trim()),
-      engineRPM: double.tryParse(engineRPM.text.trim()),
-      ignitionTiming: double.tryParse(ignitionTiming.text.trim()),
-      exhaustGasSampleFound: exhaustGasSampleFound,
-      leftBankFound: double.tryParse(leftBankFound.text.trim()),
-      rightBankFound: double.tryParse(rightBankFound.text.trim()),
-      exhaustGasSampleAdjusted: exhaustGasSampleAdjusted,
-      leftBankAdjusted: double.tryParse(leftBankAdjusted.text.trim()),
-      rightBankAdjusted: double.tryParse(rightBankAdjusted.text.trim()),
-      btuValue: double.tryParse(btuValue.text.trim()),
-      selectedBtuValue: selectedBtuValue.value,
-      // cylinderExhaustPyrometerTemperatures: pyrometerTemperatureControllers,
-      lbTurboIn: lbTurboIn.value,
-      lbTurboInTemp: double.tryParse(lbTurboInTemp.text.trim()),
-      rbTurboIn: rbTurboIn.value,
-      rbTurboInTemp: double.tryParse(rbTurboInTemp.text.trim()),
-      lbTurboOut: lbTurboOut.value,
-      lbTurboOutTemp: double.tryParse(lbTurboOutTemp.text.trim()),
-      rbTurboOut: rbTurboOut.value,
-      rbTurboOutTemp: double.tryParse(rbTurboOutTemp.text.trim()),
-      missFireDetected: missFireDetected.value,
-      // burnTemperatures:double.tryParse(btuValue.text.trim()),
+      engineRpm: double.tryParse(engineRPM.text.trim()),
+      btdc: double.tryParse(ignitionTiming.text.trim()),
+      // gasSampleAsFound: exhaustGasSampleFound,
+      lbBankAsGasFound: double.tryParse(leftBankFound.text.trim()),
+      rbBankAsGasFound: double.tryParse(rightBankFound.text.trim()),
+      // gasSampleAsAdjusted: exhaustGasSampleAdjusted,
+      lbBankAsGasAdjusted: double.tryParse(leftBankAdjusted.text.trim()),
+      rbBankAsGasAdjusted: double.tryParse(rightBankAdjusted.text.trim()),
+      btdcValue: double.tryParse(btuValue.text.trim()),
+      btuType: selectedBtuValue.value,
+      isMisfiresDetected: missFireDetected.value,
       throttleActuatorPosition:
           double.tryParse(throttleActuatorPosition.text.trim()),
-      fuelValue: double.tryParse(fuelValue.text.trim()),
-      engineOilPressure: double.tryParse(engineOilPressure.text.trim()),
-      oilPressureDifferential: double.tryParse(oilPressureDifferential.value),
-      oilPressureDifferentialTextField:
+      throttleActuatorFuelValue: double.tryParse(fuelValue.text.trim()),
+      engineOilPressurePsi: double.tryParse(engineOilPressure.text.trim()),
+      oilPressureDifferentialFilter:
+          double.tryParse(oilPressureDifferential.value),
+      engineOilPressureDifferentialFilterNa:
           oilPressureDifferentialTextField.text.trim(),
       oilTemperatureIn: double.tryParse(oilTemperatureIn.text.trim()),
       oilTemperatureOut: double.tryParse(oilTemperatureOut.text.trim()),
-      oilLevelEngine: oilLevelEngine.value,
-      engineCoolantPressure: double.tryParse(engineCoolantPressure.text.trim()),
-      engineCoolantPressureRadioValue: engineCoolantPressureRadioValue.value,
+      oilEngineLevel: oilLevelEngine.value,
+      engineCoolantValue: double.tryParse(engineCoolantPressure.text.trim()),
+      engineCoolantType: engineCoolantPressureRadioValue.value,
       jacketWaterLevel: jacketWaterLevel.value,
-      auxiliaryCoolantLevel1: auxiliaryCoolantlevel1.value,
-      jacketWaterTemperaturesIn:
+      auxiliaryCoolant: auxiliaryCoolantlevel1.value,
+      jacketWaterTemperatureIn:
           double.tryParse(jacketWaterTemperaturesIn.text.trim()),
-      jacketWaterTemperaturesOut:
+      jacketWaterTemperatureOut:
           double.tryParse(jacketWaterTemperaturesOut.text.trim()),
-      auxCoolantTemperaturesIn:
+      coolantTemperatureIn:
           double.tryParse(auxCoolantTemperaturesIn.text.trim()),
-      auxCoolantTemperaturesOut:
+      coolantTemperatureOut:
           double.tryParse(auxCoolantTemperaturesOut.text.trim()),
-      inletAirTemp: double.tryParse(inletAirTemp.text.trim()),
-      inletAirTempRadio: inletAirTempRadio.value,
-      inletAirPressure: double.tryParse(inletAirPressure.text.trim()),
-      inletAirPressureRadio: inletAirPressureRadio.value,
-      primaryFuelPressure: double.tryParse(primaryFuelPressure.text.trim()),
-      actualAirToFuelRatio: double.tryParse(actualAirToFuelRatio.text.trim()),
-      crankcasePressure: double.tryParse(crankcasePressure.text.trim()),
-      airFilterRestriction: double.tryParse(airFilterRestriction.text.trim()),
-      airFilterRestrictionRadio: airFilterRestrictionRadio.value,
-      hydraulicOil: hydraulicOil.value,
-      leaksFound: leaksFound.value,
-      isOilSelected: isOilSelected.value,
-      oilDescription: oilDescription.text.trim(),
-      isCoolantSelected: isCoolantSelected.value,
-      coolantDescription: coolantDescription.text.trim(),
-      isGasSelected: isGasSelected.value,
-      gasDescription: gasDescription.text.trim(),
-      isExhaustSelected: isExhaustSelected.value,
-      exhaustDescription: exhaustDescription.text.trim(),
-      isAirSelected: isAirSelected.value,
-      airDescription: airDescription.text.trim(),
-      excessiveVibrationAndOddNoises: excessiveVibrationAndOddNoises.value,
-      excessiveVibrationAndOddNoisesDescription:
+      inletAirTemperatureValue: double.tryParse(inletAirTemp.text.trim()),
+      inletAirTemperatureType: inletAirTempRadio.value,
+      inletAirPressureValue: double.tryParse(inletAirPressure.text.trim()),
+      inletAirPressureType: inletAirPressureRadio.value,
+      primaryFuelPressurePsi: double.tryParse(primaryFuelPressure.text.trim()),
+      cranKCaseFuelRatio: double.tryParse(actualAirToFuelRatio.text.trim()),
+      vaccumCrankCasePressure: double.tryParse(crankcasePressure.text.trim()),
+      airfilterRestrictionValue:
+          double.tryParse(airFilterRestriction.text.trim()),
+      airfilterRestrictionType: airFilterRestrictionRadio.value,
+      cranKCaseHydraulicOilCondition: hydraulicOil.value,
+      isLeakageFound: leaksFound.value,
+      isExcessiveVibration: excessiveVibrationAndOddNoises.value,
+      excessiveVibrationDescription:
           excessiveVibrationAndOddNoisesDescription.text.trim(),
-      problemsWithDriver: problemsWithDriver.value,
-      problemsWithDriverDescription: problemsWithDriverDescription.text.trim(),
+      isInDrivingProblem: problemsWithDriver.value,
+      drivingProblemDescription: problemsWithDriverDescription.text.trim(),
 
       //Page3
-      //   List<double>? hotCompressionTemperatures:
-      intakeValueSet: double.tryParse(intakeValueSet.text.trim()),
-      intakeValueSetRadioValue: intakeValueSetRadioValue.value,
-      exhaustValueSet: double.tryParse(exhaustValueSet.text.trim()),
-      exhaustValueSetRadioValue: exhaustValueSetRadioValue.value,
-      majorValueRecessionDetected: majorValueRecessionDetected.value,
+      intakeValue: double.tryParse(intakeValueSet.text.trim()),
+      intakeType: intakeValueSetRadioValue.value,
+      exhaustValue: double.tryParse(exhaustValueSet.text.trim()),
+      exhaustType: exhaustValueSetRadioValue.value,
+      majorValueDetected: majorValueRecessionDetected.value,
       boroscopeRecommended: boroscopeRecommended.value,
       boroscopeInspectionCompleted: boroscopeInspectionCompleted.value,
-      installNewWires: installNewWires.value,
+      installNewSparkPlug: installNewSparkplugs.value,
       sparkplugGap: double.tryParse(sparkplugGap.text.trim()),
-      sparkplugExtensionInstalled: sparkplugExtensionInstalled.value,
-      newExtensionInstalled: newExtensionInstalled.value,
-      listOfNewExtensionInstalled: listOfNewExtensionInstalled.text.trim(),
-      sparkplugWireCondition: sparkplugWireCondition.value,
-      listOfSparkplugWireCondition: listOfSparkplugWireCondition.text.trim(),
-      cannonPlugConnectorsTight: cannonPlugConnectorsTight.value,
-      listOfTransformerCoilsReplaced:
-          listOfTransformerCoilsReplaced.text.trim(),
-      crankcaseBreatherInspection: crankcaseBreatherInspection.value,
+      extensionInstalled: sparkplugExtensionInstalled.value,
+      anyNewExtension: newExtensionInstalled.value,
+      replaceExtensionList: listOfNewExtensionInstalled.text.trim(),
+      sparkWireCondition: sparkplugWireCondition.value,
+      sparkWireConditionValue: listOfSparkplugWireCondition.text.trim(),
+      canNOnPlugTight: cannonPlugConnectorsTight.value,
+      replacedListTransformerCoils: listOfTransformerCoilsReplaced.text.trim(),
+      crankcaseInspection: crankcaseBreatherInspection.value,
       newBreatherElementInstalled: newBreatherElementInstalled.value,
-      checkAllCanonFan: checkAllCanonFan.value,
-      listOfCheckAllCanonFan: listOfCheckAllCanonFan.text.trim(),
-      coolantSystemCheck: coolantSystemCheck.value,
-      lubricationSystemCheck: lubricationSystemCheck.value,
-      coolingSystemCheck: coolingSystemCheck.value,
-      checkFuelGasFilter: checkFuelGasFilter.value,
+      beltsCoolers: checkAllCanonFan.value,
+      listOfBeltCoolers: listOfCheckAllCoolerFan.text.trim(),
+      coolantSystemLeakageChecks: coolantSystemCheck.value,
+      lubricantSystemCheck: lubricationSystemCheck.value,
+      coolantSystemLeakageGreasers: coolingSystemCheck.value,
+      fuelGasFilter: checkFuelGasFilter.value,
       fuelGasFilterFound: fuelGasFilterFound.value,
       airFilterInspection: airFilterInspection.value,
-      turboChargerInspection: turboChargerInspection.value,
-      carburetorInternalCleaningInspection:
-          carburetorInternalCleaningInspection.value,
-      engineOilFilterChange: engineOilFilterChange.value,
-      engineOilFilterChange2: engineOilFilterChange2.value,
+      turboChargesInspection: turboChargerInspection.value,
+      carburetorInspection: carburetorInternalCleaningInspection.value,
+      engineOilFilterAsk: engineOilFilterChange.value,
+      engineOilFilterValue: engineOilFilterChange2.value,
       oilCoolerDrained: oilCoolerDrained.value,
-      hydraulicOilFilterChange: hydraulicOilFilterChange.value,
-      hydraulicOilNew: hydraulicOilNew.value,
-      engineOilSystemPrimed: engineOilSystemPrimed.value,
-      oilDrainIsolationValvesShutIn: oilDrainIsolationValvesShutIn.value,
-      dayTankFiltersInstalledNew: dayTankFiltersInstalledNew.value,
-      dayTankValvesOpen: dayTankValvesOpen.value,
+      hyraulicOilFilter: hydraulicOilFilterChange.value,
+      hyraulicOilNew: hydraulicOilNew.value,
+      oilLevelCorrect: engineOilSystemPrimed.value,
+      oilDrainedIsolation: oilDrainIsolationValvesShutIn.value,
+      tankFilter: dayTankFiltersInstalledNew.value,
+      tankValuesOpen: dayTankValvesOpen.value,
 
       //Page4
-      oilPressureEngineAndGood: oilPressureEngineAndGood.value,
+      oilPressureEngineGood: oilPressureEngineAndGood.value,
       engineOilLevel: engineOilLevel.value,
       jacketWaterCoolantLevel: jacketWaterCoolantLevel.value,
-      auxiliaryCoolantLevel2: auxiliaryCoolantLevel2.value,
-      allTempsAndPressuresStableAndNormalRanges:
+      auxiliaryCoolantLevel: auxiliaryCoolantLevel2.value,
+      temperaturePressureChecks:
           allTempsAndPressuresStableAndNormalRanges.value,
-      noisesOrVibrationsDetected: noisesOrVibrationsDetected.value,
-      engineExhaustGasCheckedAndAdjustedAtMaxLoad:
+      nOiseVibrationDetected: noisesOrVibrationsDetected.value,
+      engineExhaustGasAdjusted:
           engineExhaustGasCheckedAndAdjustedAtMaxLoad.value,
-      documentFinalSetPointExhaustGasOxygenOrCOLevels:
+      documentFinalSetPoints:
           documentFinalSetPointExhaustGasOxygenOrCOLevels.text.trim(),
-      documentFinalManifoldPressureAndRPM:
+      documentFinalManifoldPressure:
           documentFinalManifoldPressureAndRPM.text.trim(),
-      engineDeficienciesRadio: engineDeficienciesRadio.value,
-      engineDeficienciesTextfield: engineDeficienciesTextfield.text.trim(),
-      partsOrderingStatus: partsOrderingStatus.value,
-      partsList: partsList,
+      engineDeficienciesRepairedFuture: engineDeficienciesRadio.value,
+      engineDeficienciesDescribed: engineDeficienciesTextfield.text.trim(),
+      partRepairedOrder: partsOrderingStatus.value,
+      // partsList: partsList,
     );
-    controller.tasks.add(newTask);
-    debugPrint(controller.tasks.first.setUnits.toString());
-    debugPrint(controller.tasks.first.unitHours.toString());
+    //turboTemperatures
+    List<TurboTemperature> turboTemperature = [
+      TurboTemperature(
+        lbInType: lbTurboIn.value,
+        lbInValue: double.tryParse(lbTurboInTemp.text.trim()),
+        isTurboIn: true,
+        isTurboOut: false,
+        rbInType: rbTurboIn.value,
+        rbInValue: double.tryParse(rbTurboInTemp.text.trim()),
+      ),
+      TurboTemperature(
+        lbInType: lbTurboOut.value,
+        lbInValue: double.tryParse(lbTurboOutTemp.text.trim()),
+        isTurboIn: false,
+        isTurboOut: true,
+        rbInType: rbTurboOut.value,
+        rbInValue: double.tryParse(rbTurboOutTemp.text.trim()),
+      ),
+    ];
+    //LeakageFound
+    LeakageFound leakageFound = LeakageFound(
+      hasOilLeakage: hasOilLeakage.value,
+      oilDescription: oilDescription.text.trim(),
+      hasCoolantLeakage: hasCoolantLeakage.value,
+      coolantDescription: coolantDescription.text.trim(),
+      hasGasLeakage: hasGasLeakage.value,
+      gasDescription: gasDescription.text.trim(),
+      hasExhaustGasLeakage: hasExhaustGasLeakage.value,
+      exhaustGasDescription: exhaustDescription.text.trim(),
+      hasAirLeakage: hasAirLeakage.value,
+      airDescription: airDescription.text.trim(),
+    );
+    //Parts
+    List<Part> parts = [
+      Part(
+        name: partName.text.trim(),
+        description: partDescription.text.trim(),
+        quantity: double.tryParse(partQuantity.text.trim()),
+        vendor: partVendor.text.trim(),
+      )
+    ];
+    //HotCompression
+    List<TextEditingController> hotCompressionTemperatures = [
+      hotCompressionTemperature1,
+      hotCompressionTemperature2,
+      hotCompressionTemperature3,
+      hotCompressionTemperature4,
+      hotCompressionTemperature5,
+      hotCompressionTemperature6,
+      hotCompressionTemperature7,
+      hotCompressionTemperature8,
+      hotCompressionTemperature9,
+      hotCompressionTemperature10,
+      hotCompressionTemperature11,
+      hotCompressionTemperature12,
+      hotCompressionTemperature13,
+      hotCompressionTemperature14,
+      hotCompressionTemperature15,
+      hotCompressionTemperature16,
+    ];
+    //CylinderExhaustPyrometer
+    List<TextEditingController> cylinderExhaustPyrometerTemperatures = [
+      cylinderExhaustPyrometerTemperature1,
+      cylinderExhaustPyrometerTemperature2,
+      cylinderExhaustPyrometerTemperature3,
+      cylinderExhaustPyrometerTemperature4,
+      cylinderExhaustPyrometerTemperature5,
+      cylinderExhaustPyrometerTemperature6,
+      cylinderExhaustPyrometerTemperature7,
+      cylinderExhaustPyrometerTemperature8,
+      cylinderExhaustPyrometerTemperature9,
+      cylinderExhaustPyrometerTemperature10,
+      cylinderExhaustPyrometerTemperature11,
+      cylinderExhaustPyrometerTemperature12,
+      cylinderExhaustPyrometerTemperature13,
+      cylinderExhaustPyrometerTemperature14,
+      cylinderExhaustPyrometerTemperature15,
+      cylinderExhaustPyrometerTemperature16,
+    ];
+    //BurnCompression
+    List<TextEditingController> burnTemperatures = [
+      burnTemperature1,
+      burnTemperature2,
+      burnTemperature3,
+      burnTemperature4,
+      burnTemperature5,
+      burnTemperature6,
+      burnTemperature7,
+      burnTemperature8,
+      burnTemperature9,
+      burnTemperature10,
+      burnTemperature11,
+      burnTemperature12,
+      burnTemperature13,
+      burnTemperature14,
+      burnTemperature15,
+      burnTemperature16,
+    ];
+    List<Temperatures> cylinderExhaustPyrometer = [];
+    List<Temperatures> burnTemperature = [];
+    List<Temperatures> hotCompression = [];
+    for (int i = 0; i < cylinderExhaustPyrometerTemperatures.length; i++) {
+      cylinderExhaustPyrometer.add(
+        Temperatures(
+            temperatureNumber: i + 1,
+            forCylinder: true,
+            forBurnTemperature: false,
+            forHotCompression: false,
+            temperature: double.tryParse(
+                cylinderExhaustPyrometerTemperatures[i].text.trim())),
+      );
+    }
+    for (int i = 0; i < burnTemperatures.length; i++) {
+      burnTemperature.add(Temperatures(
+          temperatureNumber: i + 1,
+          forCylinder: false,
+          forBurnTemperature: true,
+          forHotCompression: false,
+          temperature: double.tryParse(burnTemperatures[i].text.trim())));
+    }
+    for (int i = 0; i < hotCompressionTemperatures.length; i++) {
+      hotCompression.add(
+        Temperatures(
+            temperatureNumber: i + 1,
+            forCylinder: false,
+            forBurnTemperature: false,
+            forHotCompression: true,
+            temperature:
+                double.tryParse(hotCompressionTemperatures[i].text.trim())),
+      );
+    }
+
+    Payload payload = Payload(
+      geolocation: geolocation,
+      task: newTask,
+      leakageFound: leakageFound,
+      parts: parts,
+      turboTemperature: turboTemperature,
+      cylinderExhaustPyrometer: cylinderExhaustPyrometer,
+      burnCompression: burnTemperature,
+      hotCompression: hotCompression,
+    );
   }
 
   //-----------------------------------------------------------------------//
 
   //Page1
-
-  // RxString? selectedAddress = RxString('');
   TextEditingController selectedAddress = TextEditingController();
+  RxString selectedAddressLatitude = ''.obs;
+  RxString selectedAddressLongitude = ''.obs;
   TextEditingController setUnits = TextEditingController();
   TextEditingController unitHours = TextEditingController();
   late Rx<DateTime> taskSelectedDate;
@@ -205,7 +319,6 @@ class AddTaskController extends GetxController {
   RxString unitOnlineOnArrival = ''.obs;
   TextEditingController jobScope = TextEditingController();
   TextEditingController operationalProblems = TextEditingController();
-
   TextEditingController modelNumber = TextEditingController();
   TextEditingController serialNumber = TextEditingController();
   TextEditingController arrangementNumber = TextEditingController();
@@ -213,12 +326,10 @@ class AddTaskController extends GetxController {
   //-----------------------------------------------------------------------//
 
   //Page2
-
   //Engine Load Factor
   TextEditingController engineLoad = TextEditingController();
   TextEditingController engineRPM = TextEditingController();
   TextEditingController ignitionTiming = TextEditingController();
-
   //Exhaust Gas Sample
   var exhaustGasSampleFound = <String>[].obs; //Checkbox
   TextEditingController leftBankFound = TextEditingController();
@@ -226,15 +337,10 @@ class AddTaskController extends GetxController {
   var exhaustGasSampleAdjusted = <String>[].obs; //Checkbox
   TextEditingController leftBankAdjusted = TextEditingController();
   TextEditingController rightBankAdjusted = TextEditingController();
-
   //Fuel Quality
   TextEditingController btuValue = TextEditingController();
   RxString selectedBtuValue = ''.obs; //RadioButton
-
   //Cylinder Exhaust Pyrometer
-  // List<TextEditingController> pyrometerTemperatureControllers =
-  //     <TextEditingController>[].obs;
-
   TextEditingController cylinderExhaustPyrometerTemperature1 =
       TextEditingController();
   TextEditingController cylinderExhaustPyrometerTemperature2 =
@@ -273,6 +379,7 @@ class AddTaskController extends GetxController {
   TextEditingController lbTurboInTemp = TextEditingController();
   RxString rbTurboIn = ''.obs; //RadioButton
   TextEditingController rbTurboInTemp = TextEditingController();
+  //
   RxString lbTurboOut = ''.obs; //RadioButton
   TextEditingController lbTurboOutTemp = TextEditingController();
   RxString rbTurboOut = ''.obs; //RadioButton
@@ -282,9 +389,6 @@ class AddTaskController extends GetxController {
   RxString missFireDetected = ''.obs; //RadioButton
 
   //BurnTimes
-  // List<TextEditingController> burnTemperatureControllers =
-  //     <TextEditingController>[].obs;
-
   TextEditingController burnTemperature1 = TextEditingController();
   TextEditingController burnTemperature2 = TextEditingController();
   TextEditingController burnTemperature3 = TextEditingController();
@@ -345,15 +449,15 @@ class AddTaskController extends GetxController {
 
   //Leaks Found
   RxString leaksFound = ''.obs; //RadioButton
-  RxBool isOilSelected = false.obs;
+  RxBool hasOilLeakage = false.obs;
   TextEditingController oilDescription = TextEditingController();
-  RxBool isCoolantSelected = false.obs;
+  RxBool hasCoolantLeakage = false.obs;
   TextEditingController coolantDescription = TextEditingController();
-  RxBool isGasSelected = false.obs;
+  RxBool hasGasLeakage = false.obs;
   TextEditingController gasDescription = TextEditingController();
-  RxBool isExhaustSelected = false.obs;
+  RxBool hasExhaustGasLeakage = false.obs;
   TextEditingController exhaustDescription = TextEditingController();
-  RxBool isAirSelected = false.obs;
+  RxBool hasAirLeakage = false.obs;
   TextEditingController airDescription = TextEditingController();
 
   //Excessive vibration & odd noises
@@ -370,9 +474,6 @@ class AddTaskController extends GetxController {
   //Page3
 
   // Hot Compression Test
-  // List<TextEditingController> hotCompressionTemperatureControllers =
-  //     <TextEditingController>[].obs;
-
   TextEditingController hotCompressionTemperature1 = TextEditingController();
   TextEditingController hotCompressionTemperature2 = TextEditingController();
   TextEditingController hotCompressionTemperature3 = TextEditingController();
@@ -400,7 +501,7 @@ class AddTaskController extends GetxController {
   RxString boroscopeInspectionCompleted = ''.obs; //RadioButton
 
   //Sparkplugs
-  RxString installNewWires = ''.obs; //RadioButton
+  RxString installNewSparkplugs = ''.obs; //RadioButton
   TextEditingController sparkplugGap = TextEditingController();
   RxString sparkplugExtensionInstalled = ''.obs; //RadioButton
   RxString newExtensionInstalled = ''.obs; //RadioButton
@@ -419,7 +520,7 @@ class AddTaskController extends GetxController {
 
   // Belts and Coolers
   RxString checkAllCanonFan = ''.obs; //RadioButton
-  TextEditingController listOfCheckAllCanonFan = TextEditingController();
+  TextEditingController listOfCheckAllCoolerFan = TextEditingController();
 
   // Coolant System Check
   RxString coolantSystemCheck = ''.obs; //RadioButton
@@ -579,6 +680,192 @@ class AddTaskController extends GetxController {
       scrollController.animateTo(0x7fffffff,
           duration: const Duration(seconds: 1), curve: Curves.easeInOut);
     }
+  }
+
+  @override
+  void onClose() {
+    debugPrint('AddTaskControllerDisposeCalled');
+    scrollController.dispose();
+    mapController.dispose();
+    //Page1
+    selectedAddress.dispose();
+    setUnits.dispose();
+    unitHours.dispose();
+    nameOfJourneyMan.dispose();
+    unitOnlineOnArrival.value = '';
+    jobScope.dispose();
+    operationalProblems.dispose();
+    modelNumber.dispose();
+    serialNumber.dispose();
+    arrangementNumber.dispose();
+    oilSamplesTaken.value = '';
+    //Page2
+    engineLoad.dispose();
+    engineRPM.dispose();
+    ignitionTiming.dispose();
+    exhaustGasSampleFound.value = [];
+    leftBankFound.dispose();
+    rightBankFound.dispose();
+    exhaustGasSampleAdjusted.value = [];
+    leftBankAdjusted.dispose();
+    rightBankAdjusted.dispose();
+    btuValue.dispose();
+    selectedBtuValue.value = '';
+    cylinderExhaustPyrometerTemperature1.dispose();
+    cylinderExhaustPyrometerTemperature2.dispose();
+    cylinderExhaustPyrometerTemperature3.dispose();
+    cylinderExhaustPyrometerTemperature4.dispose();
+    cylinderExhaustPyrometerTemperature5.dispose();
+    cylinderExhaustPyrometerTemperature6.dispose();
+    cylinderExhaustPyrometerTemperature7.dispose();
+    cylinderExhaustPyrometerTemperature8.dispose();
+    cylinderExhaustPyrometerTemperature9.dispose();
+    cylinderExhaustPyrometerTemperature10.dispose();
+    cylinderExhaustPyrometerTemperature11.dispose();
+    cylinderExhaustPyrometerTemperature12.dispose();
+    cylinderExhaustPyrometerTemperature13.dispose();
+    cylinderExhaustPyrometerTemperature14.dispose();
+    cylinderExhaustPyrometerTemperature15.dispose();
+    cylinderExhaustPyrometerTemperature16.dispose();
+    lbTurboIn.value = '';
+    rbTurboIn.value = '';
+    lbTurboOut.value = '';
+    rbTurboOut.value = '';
+    lbTurboInTemp.dispose();
+    rbTurboInTemp.dispose();
+    lbTurboOutTemp.dispose();
+    rbTurboOutTemp.dispose();
+    missFireDetected.value = '';
+    burnTemperature1.dispose();
+    burnTemperature2.dispose();
+    burnTemperature3.dispose();
+    burnTemperature4.dispose();
+    burnTemperature5.dispose();
+    burnTemperature6.dispose();
+    burnTemperature7.dispose();
+    burnTemperature8.dispose();
+    burnTemperature9.dispose();
+    burnTemperature10.dispose();
+    burnTemperature11.dispose();
+    burnTemperature12.dispose();
+    burnTemperature13.dispose();
+    burnTemperature14.dispose();
+    burnTemperature15.dispose();
+    burnTemperature16.dispose();
+    throttleActuatorPosition.dispose();
+    fuelValue.dispose();
+    engineOilPressure.dispose();
+    oilPressureDifferential.value = '';
+    oilPressureDifferentialTextField.dispose();
+    oilTemperatureIn.dispose();
+    oilTemperatureOut.dispose();
+    oilLevelEngine.value = '';
+    engineCoolantPressure.dispose();
+    engineCoolantPressureRadioValue.value = '';
+    jacketWaterLevel.value = '';
+    auxiliaryCoolantlevel1.value = '';
+    jacketWaterTemperaturesIn.dispose();
+    jacketWaterTemperaturesOut.dispose();
+    auxCoolantTemperaturesIn.dispose();
+    auxCoolantTemperaturesOut.dispose();
+    inletAirTemp.dispose();
+    inletAirTempRadio.value = '';
+    inletAirPressure.dispose();
+    inletAirPressureRadio.value = '';
+    primaryFuelPressure.dispose();
+    actualAirToFuelRatio.dispose();
+    crankcasePressure.dispose();
+    airFilterRestriction.dispose();
+    airFilterRestrictionRadio.value = '';
+    hydraulicOil.value = '';
+    leaksFound.value = '';
+    hasOilLeakage.value = false;
+    oilDescription.dispose();
+    hasCoolantLeakage.value = false;
+    coolantDescription.dispose();
+    hasGasLeakage.value = false;
+    gasDescription.dispose();
+    hasExhaustGasLeakage.value = false;
+    exhaustDescription.dispose();
+    hasAirLeakage.value = false;
+    airDescription.dispose();
+    excessiveVibrationAndOddNoises.value = 'no';
+    excessiveVibrationAndOddNoisesDescription.dispose();
+    problemsWithDriver.value = 'no';
+    problemsWithDriverDescription.dispose();
+    //Page3
+    hotCompressionTemperature1.dispose();
+    hotCompressionTemperature2.dispose();
+    hotCompressionTemperature3.dispose();
+    hotCompressionTemperature4.dispose();
+    hotCompressionTemperature5.dispose();
+    hotCompressionTemperature6.dispose();
+    hotCompressionTemperature7.dispose();
+    hotCompressionTemperature8.dispose();
+    hotCompressionTemperature9.dispose();
+    hotCompressionTemperature10.dispose();
+    hotCompressionTemperature11.dispose();
+    hotCompressionTemperature12.dispose();
+    hotCompressionTemperature13.dispose();
+    hotCompressionTemperature14.dispose();
+    hotCompressionTemperature15.dispose();
+    hotCompressionTemperature16.dispose();
+    intakeValueSet.dispose();
+    intakeValueSetRadioValue.value = '';
+    exhaustValueSet.dispose();
+    exhaustValueSetRadioValue.value = '';
+    majorValueRecessionDetected.value = '';
+    boroscopeRecommended.value = '';
+    boroscopeInspectionCompleted.value = '';
+    installNewSparkplugs.value = '';
+    sparkplugGap.dispose();
+    sparkplugExtensionInstalled.value = '';
+    newExtensionInstalled.value = '';
+    listOfNewExtensionInstalled.dispose();
+    sparkplugWireCondition.value = '';
+    listOfSparkplugWireCondition.dispose();
+    cannonPlugConnectorsTight.value = '';
+    listOfTransformerCoilsReplaced.dispose();
+    //------------------------
+    crankcaseBreatherInspection.value = '';
+    newBreatherElementInstalled.value = '';
+    checkAllCanonFan.value = '';
+    listOfCheckAllCoolerFan.dispose();
+    coolantSystemCheck.value = '';
+    lubricationSystemCheck.value = '';
+    coolingSystemCheck.value = '';
+    checkFuelGasFilter.value = '';
+    fuelGasFilterFound.value = '';
+    airFilterInspection.value = '';
+    turboChargerInspection.value = '';
+    carburetorInternalCleaningInspection.value = '';
+    engineOilFilterChange.value = '';
+    engineOilFilterChange2.value = '';
+    oilCoolerDrained.value = '';
+    hydraulicOilFilterChange.value = '';
+    hydraulicOilNew.value = '';
+    engineOilSystemPrimed.value = '';
+    oilDrainIsolationValvesShutIn.value = '';
+    dayTankFiltersInstalledNew.value = '';
+    dayTankValvesOpen.value = '';
+    //Page4
+    oilPressureEngineAndGood.value = '';
+    engineOilLevel.value = '';
+    jacketWaterCoolantLevel.value = '';
+    auxiliaryCoolantLevel2.value = '';
+    allTempsAndPressuresStableAndNormalRanges.value = '';
+    noisesOrVibrationsDetected.value = '';
+    engineExhaustGasCheckedAndAdjustedAtMaxLoad.value = '';
+    documentFinalSetPointExhaustGasOxygenOrCOLevels.dispose();
+    documentFinalManifoldPressureAndRPM.dispose();
+    engineDeficienciesRadio.value = 'no';
+    engineDeficienciesTextfield.dispose();
+    partsOrderingStatus.value = '';
+    partName.dispose();
+    partDescription.dispose();
+    partQuantity.dispose();
+    partVendor.dispose();
+    super.onClose();
   }
 }
 

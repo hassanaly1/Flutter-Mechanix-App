@@ -115,28 +115,28 @@ class CustomTaskCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  child: CustomTextWidget(
-                    text: model.selectedAddress! == ""
-                        ? 'Not Assigned'
-                        : model.selectedAddress!,
-                    fontSize: 12.0,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+                // Flexible(
+                //   child: CustomTextWidget(
+                //     text: model.geolocation?.address! == ""
+                //         ? 'Not Assigned'
+                //         : model.geolocation?.address ?? '',
+                //     fontSize: 12.0,
+                //     decoration: TextDecoration.underline,
+                //   ),
+                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CustomTextWidget(
-                      text: model.selectedDate == null
+                      text: model.date == null
                           ? 'Not Assigned'
-                          : '${model.selectedDate?.day.toString().padLeft(2, '0')} : ${model.selectedDate?.month.toString().padLeft(2, '0')} : ${model.selectedDate?.year.toString().padLeft(2, '0')}',
+                          : '${model.date?.day.toString().padLeft(2, '0')} : ${model.date?.month.toString().padLeft(2, '0')} : ${model.date?.year.toString().padLeft(2, '0')}',
                       fontSize: 10.0,
                     ),
                     CustomTextWidget(
-                      text: model.selectedTime == null
+                      text: model.time == null
                           ? 'Not Assigned'
-                          : '${model.selectedTime?.format(context).padLeft(2, '0')}',
+                          : '${model.time?.format(context).padLeft(2, '0')}',
                       fontSize: 10.0,
                     ),
                   ],
@@ -153,9 +153,9 @@ class CustomTaskCard extends StatelessWidget {
                 const SizedBox(width: 4.0),
                 Flexible(
                   child: CustomTextWidget(
-                    text: model.nameOfJourneyMan!.isEmpty
+                    text: model.nameJourneyMan!.isEmpty
                         ? 'Not Assigned'
-                        : model.nameOfJourneyMan!,
+                        : model.nameJourneyMan!,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
                   ),

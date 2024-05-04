@@ -1,0 +1,225 @@
+{
+  "geolocation": {
+    "geolat": "51.5074",
+    "geolong": "0.1278",
+    "geohash": "u10hb",
+    "address": "London, UK"
+  },
+  "task": {
+  //Page1
+    "user":"663087c46360369453a47bd3",
+    "name":"DISING UP",
+    "customer_email":"fullstackwebsitedeveloper3@gmail.com",
+    "unit": 123,
+    "unit_hours": 2000,
+    "date": "2024-04-24",
+    "time": "12:00 PM",
+    "engine_brand": "662b75407e30817cfaa2c74c",
+    "name_journey_man": "John Doe",
+    "unit_online_arrival": "YES",
+    "job_scope": "Routine maintenance",
+    "problems": "NO significant issues",
+    "model_number": 12345,
+    "serial_number": 67890,
+    "arrangement_number": 54321,
+    "is_oil_sample_taken": true,
+  //Page2
+    "engine_load": 80,
+    "engine_rpm": 3000,
+    "btdc":5300,
+    "gas_sample_as_found": [
+        {
+            "gas_name":"Oxygen"
+        },
+        {
+            "gas_name":"CO2"
+        }
+    ],
+    "lb_bank_as_gas_found":124124,
+    "rb_bank_as_gas_found":25125,
+    "gas_sample_as_adjusted": [
+        {
+            "gas_name":"Oxygen"
+        },
+        {
+            "gas_name":"CO2"
+        }
+        ],
+    "lb_bank_as_gas_adjusted":1244,
+    "rb_bank_as_gas_adjusted":5515,
+    "btdc_value": 15,
+    "btu_type": "c", |||||
+    "is_misfires_detected": "YES",
+    "throttle_actuator_position": 75,
+    "throttle_actuator_fuel_value": 80,
+    "engine_oil_pressure_psi": 40,
+    "oil_pressure_differential_filter": 20,
+    "engine_oil_pressure_differential_filter_na": "NA",
+    "oil_temperature_in": 90,
+    "oil_temperature_out": 95,
+    "oil_engine_level": "GOOD",
+    "engine_coolant_value":414,
+    "engine_coolant_type":"PSI",
+    "jacket_water_level":"GOOD",
+    "auxiliary_coolant": "GOOD",
+    "jacket_water_temperature_in": 80,
+    "jacket_water_temperature_out": 85,
+    "coolant_temperature_in": 70,
+    "coolant_temperature_out": 75,
+
+    "inlet_air_temperature_type":"F",
+    "inlet_air_temperature_value":6612,
+    "inlet_air_pressure_type":"KPA",
+    "inlet_air_pressure_value":124124,
+    "primary_fuel_pressure_psi":5512,
+    "cranK_case_fuel_ratio":5512,
+    "vaccum_crank_case_pressure":5,
+    "airfilter_restriction_value":234,
+    "airfilter_restriction_type":"LB",
+    "cranK_case_HYDRAULIC_oil_condition":"GOOD",
+    "is_leakage_found": false, //ConvertedToString
+    "is_excessive_vibration": false, //ConvertedToString
+    "excessive_vibration_description": "NO excessive vibration observed",
+    "is_in_driving_problem": false, //ConvertedToString
+    "driving_problem_description": "NO driving problems reported",
+    //Page3
+    "intake_value": 80,
+    "intake_type": "HYDRAULIC",
+    "exhaust_value": 75,
+    "exhaust_type": "SOLID",
+    "major_value_detected": "NO",
+    "boroscope_recommended": "YES",
+    "boroscope_inspection_completed": "NO",
+    "install_new_spark_plug": "YES",
+    "sparkplug_gap": "0.6mm",
+    "extension_installed": "YES",
+    "any_new_extension": "YES",
+    "replace_extension_list": "O rings",
+    "spark_wire_condition": "GOOD",
+    "spark_wire_condition_value": "NOne", //OptionMistake
+    "canNOn_plug_tight": "YES",
+    "replaced_list_transformer_coils": "NOne",
+    "crankcase_inspection": "YES",
+    "new_breather_element_installed": "YES",
+    //
+
+    "belts_coolers": "YES", //Missing ListOfReplacedItemsInBeltsAndCoolers
+    "coolant_system_leakage_checks": "NOne", ??not exist
+    "lubricant_system_check": "OK",
+
+    // CoolentSystemCheck se okay hai.
+    "coolant_system_leakage_greasers": "YES",
+    "fuel_gas_filter": "REPLACED",
+    "fuel_gas_filter_found": "DRY",
+    "air_filter_inspection": "REPLACED",
+    "turbo_charges_inspection": "YES",
+    "carburetor_inspection": "YES",
+    "engine_oil_filter_ask": "YES",
+    "engine_oil_filter_value": "CLEAN",
+    "oil_cooler_drained": "YES",
+    "hyraulic_oil_filter": "YES",
+    "hyraulic_oil_new": "YES",
+    "oil_level_correct": "YES",
+    "oil_drained_isolation": "NO",
+    "tank_filter": "YES",
+    "tank_values_open": "NO",
+    //Page4
+    "oil_pressure_engine_good": "YES",
+    "engine_oil_level": "GOOD",
+    "jacket_water_coolant_level": "GOOD",
+    "auxiliary_coolant_level": "GOOD",
+    "temperature_pressure_checks": "YES",
+    "NOise_vibration_detected": "NO",
+    "engine_exhaust_gas_adjusted": "YES",
+    "document_final_set_points": "NOne",
+    "document_final_manifold_pressure": "NOne",
+    "engine_deficiencies_repaired_future": "YES",
+    //Missing 1 textfield
+    "part_repaired_order": "YES"
+  },
+  "cylinder_exhaust_pyrometer": [
+    {
+      "temperature_number": 1,
+      "for_cylinder":true,
+      "for_hot_compression":false,
+      "for_engine_tune_up_hot_compression_test":false,
+      "temperature": 8010
+    },
+    {
+      "temperature_number": 2,
+       "for_cylinder":true,
+      "for_hot_compression":false,
+      "for_engine_tune_up_hot_compression_test":false,
+      "temperature": 8110
+    }
+  ],
+  "turbo_temperature": [
+    {
+      "type": "left",
+      "value": 75,
+      "is_turbo_in": true,
+      "is_turbo_out": false,
+      "temperature": 700,
+      "lb_in_type": "Type A",
+      "lb_in_value": 50,
+      "rb_in_type": "Type B",
+      "rb_in_value": 60
+    },
+    {
+      "type": "right",
+      "value": 80,
+      "is_turbo_in": false,
+      "is_turbo_out": true,
+      "temperature": 750,
+      "lb_in_type": "Type A",
+      "lb_in_value": 55,
+      "rb_in_type": "Type B",
+      "rb_in_value": 65
+    }
+  ],
+  "hot_compression": [
+    {
+      "temperature_number": 1,
+      "for_cylinder":false,
+      "for_hot_compression":true,
+      "for_engine_tune_up_hot_compression_test":false,
+      "temperature": 200
+    },
+    {
+      "temperature_number": 2,
+       "for_cylinder":false,
+      "for_hot_compression":true,
+      "for_engine_tune_up_hot_compression_test":false,
+      "temperature": 210
+    }
+  ],
+  "leakage_found": {
+    "has_oil_leakage": false,
+    "has_coolant_leakage": false,
+    "has_gas_leakage": false,
+    "has_exhaust_gas_leakage": false,
+    "has_air_leakage": false,
+    "oil_description": "Oil Descscription FOund",
+    "coolant_description": "there is Coolant Descscription",
+    "gas_description": "Gas Descscription",
+    "exhaust_gas_description": "Gas Descscription",
+    "air_description": "air Descscription"
+  },
+  "engine_tune_up_hot_compression_test": [
+    {
+      "temperature_number": 1,
+       "for_cylinder":false,
+      "for_hot_compression":false,
+      "for_engine_tune_up_hot_compression_test":true,
+      "temperature": 21210
+    }
+  ],
+  "parts":[
+    {
+        "name":"Spannells",
+        "description":"THis is Desc",
+        "quantity":124124,
+        "vendor":"Faizan Khan"
+    }
+  ]
+}

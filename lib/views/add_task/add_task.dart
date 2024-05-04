@@ -1,6 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -43,6 +44,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
         Get.delete<AddTaskController>();
+        Get.delete<MapController>();
       },
       child: Container(
         color: Colors.transparent,

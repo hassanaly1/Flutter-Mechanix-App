@@ -10,7 +10,7 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/helpers/validator.dart';
-import 'package:mechanix/models/single_part_model.dart';
+import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -56,15 +56,12 @@ class CustomStepperBody4 extends StatelessWidget {
                 const ContainerHeading(heading: 'Oil Pressure and Level Check'),
                 CustomRadioButton(
                   heading: 'Oil pressure engine & good?',
-                  options: const [
-                    'yes',
-                    'no',
-                  ],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.oilPressureEngineAndGood,
                 ),
                 CustomRadioButton(
                   heading: 'Engine oil level:',
-                  options: const ['low', 'good', 'high'],
+                  options: const ['LOW', 'GOOD', 'HIGH'],
                   selectedOption: controller.engineOilLevel,
                 ),
               ],
@@ -80,12 +77,12 @@ class CustomStepperBody4 extends StatelessWidget {
                 const ContainerHeading(heading: 'Coolant System Check'),
                 CustomRadioButton(
                   heading: 'Jacket water coolant level:',
-                  options: const ['low', 'good', 'high'],
+                  options: const ['LOW', 'GOOD', 'HIGH'],
                   selectedOption: controller.jacketWaterCoolantLevel,
                 ),
                 CustomRadioButton(
                   heading: 'Auxiliary coolant level:',
-                  options: const ['low', 'good', 'high'],
+                  options: const ['LOW', 'GOOD', 'HIGH'],
                   selectedOption: controller.auxiliaryCoolantLevel2,
                 ),
               ],
@@ -102,7 +99,7 @@ class CustomStepperBody4 extends StatelessWidget {
                     heading: 'Temperature and Pressure Check'),
                 CustomRadioButton(
                   heading: 'All temps and pressures stable & normal ranges?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption:
                       controller.allTempsAndPressuresStableAndNormalRanges,
                 ),
@@ -119,7 +116,7 @@ class CustomStepperBody4 extends StatelessWidget {
                 const ContainerHeading(heading: 'Noise and Vibration Check'),
                 CustomRadioButton(
                   heading: 'Noises or vibrations detected?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.noisesOrVibrationsDetected,
                 ),
               ],
@@ -136,7 +133,7 @@ class CustomStepperBody4 extends StatelessWidget {
                     heading: 'Exhaust Gas and Manifold Pressure'),
                 CustomRadioButton(
                   heading: 'Engine exhaust gas checked & adjusted at max load?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption:
                       controller.engineExhaustGasCheckedAndAdjustedAtMaxLoad,
                 ),
@@ -172,13 +169,13 @@ class CustomStepperBody4 extends StatelessWidget {
                 const ContainerHeading(
                     heading: 'Engine Deficiencies for Future Repairs'),
                 CustomRadioButton(
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.engineDeficienciesRadio,
                   heading: 'Engine deficiencies to be repaired in the future?',
                 ),
                 Obx(
                   () => Visibility(
-                    visible: controller.engineDeficienciesRadio.value == 'yes',
+                    visible: controller.engineDeficienciesRadio.value == 'YES',
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -188,9 +185,9 @@ class CustomStepperBody4 extends StatelessWidget {
                           hintText:
                               'Describe Engine deficiencies to be repaired in the future?',
                           showBackgroundShadow:
-                              controller.engineDeficienciesRadio.value == 'yes',
+                              controller.engineDeficienciesRadio.value == 'YES',
                           readOnly:
-                              controller.engineDeficienciesRadio.value == 'no',
+                              controller.engineDeficienciesRadio.value == 'NO',
                           controller: controller.engineDeficienciesTextfield,
                         ),
                       ],
@@ -211,7 +208,7 @@ class CustomStepperBody4 extends StatelessWidget {
                 const ContainerHeading(heading: 'Parts Ordering Status'),
                 CustomRadioButton(
                   heading: 'Parts for above repairs ordered?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.partsOrderingStatus,
                 ),
               ],
@@ -269,11 +266,12 @@ class CustomStepperBody4 extends StatelessWidget {
                     onTap: () {
                       if (_partsFormkey.currentState!.validate()) {
                         controller.partsList.add(
-                          SinglePartModel(
-                            controller.partName.text.trim(),
-                            controller.partDescription.text.trim(),
-                            controller.partQuantity.text.trim(),
-                            controller.partVendor.text.trim(),
+                          Part(
+                            name: controller.partName.text.trim(),
+                            description: controller.partDescription.text.trim(),
+                            quantity: double.tryParse(
+                                controller.partQuantity.text.trim()),
+                            vendor: controller.partVendor.text.trim(),
                           ),
                         );
                         controller.partName.clear();
@@ -350,7 +348,7 @@ class CustomStepperBody4 extends StatelessWidget {
 }
 
 class SinglePartDetail extends StatelessWidget {
-  final SinglePartModel model;
+  final Part model;
   final int index;
   SinglePartDetail({super.key, required this.model, required this.index});
 
@@ -393,28 +391,28 @@ class SinglePartDetail extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontSize: 12.0,
           ),
-          CustomTextWidget(text: model.partName),
+          CustomTextWidget(text: model.name ?? ''),
           const SizedBox(height: 8.0),
           CustomTextWidget(
             text: 'Part Description:  ',
             fontWeight: FontWeight.w600,
             fontSize: 12.0,
           ),
-          CustomTextWidget(text: model.partDescription),
+          CustomTextWidget(text: model.description ?? ''),
           const SizedBox(height: 8.0),
           CustomTextWidget(
             text: 'Part Quantity:  ',
             fontWeight: FontWeight.w600,
             fontSize: 12.0,
           ),
-          CustomTextWidget(text: model.partQuantity.toString()),
+          CustomTextWidget(text: model.quantity.toString()),
           const SizedBox(height: 8.0),
           CustomTextWidget(
             text: 'Part Vendor:  ',
             fontWeight: FontWeight.w600,
             fontSize: 12.0,
           ),
-          CustomTextWidget(text: model.partVendor),
+          CustomTextWidget(text: model.vendor ?? ''),
           const SizedBox(height: 8.0),
         ],
       ),

@@ -78,7 +78,7 @@ class CustomStepperBody2 extends StatelessWidget {
                 const ContainerHeading(heading: 'Exhaust Gas Sample'),
                 CustomCheckboxWidget(
                   question: 'Exhaust Gas Sample (As Found)',
-                  options: const ['Oxygen', 'CO', 'NOx'],
+                  options: const ['OXYGEN', 'CO', 'NOX'],
                   selectedValues: controller.exhaustGasSampleFound,
                 ),
                 Row(
@@ -99,7 +99,7 @@ class CustomStepperBody2 extends StatelessWidget {
                 ),
                 CustomCheckboxWidget(
                   question: 'Exhaust Gas Sample (As ADJUSTED )',
-                  options: const ['Oxygen', 'CO', 'NOx'],
+                  options: const ['OXYGEN', 'CO', 'NOX'],
                   selectedValues: controller.exhaustGasSampleAdjusted,
                 ),
                 Row(
@@ -379,7 +379,7 @@ class CustomStepperBody2 extends StatelessWidget {
               children: [
                 const ContainerHeading(heading: 'Misfires Detected'),
                 CustomRadioButton(
-                    options: const ['yes', 'no'],
+                    options: const ['YES', 'NO'],
                     selectedOption: controller.missFireDetected,
                     heading: 'Misfires Detected?')
               ],
@@ -391,7 +391,7 @@ class CustomStepperBody2 extends StatelessWidget {
             color: Colors.grey.shade300,
             child: Column(
               children: [
-                const ContainerHeading(heading: 'Hot Compression Test'),
+                const ContainerHeading(heading: 'Burn Temperature Test'),
                 Row(
                   children: [
                     Flexible(
@@ -598,7 +598,7 @@ class CustomStepperBody2 extends StatelessWidget {
                                           value!;
                                       controller
                                           .oilPressureDifferentialTextField
-                                          .clear();
+                                          .text = '0';
                                     }
                                   },
                                 ),
@@ -769,39 +769,39 @@ class CustomStepperBody2 extends StatelessWidget {
               children: [
                 const ContainerHeading(heading: 'Leaks Found'),
                 CustomRadioButton(
-                    options: const ['yes', 'no'],
+                    options: const ['YES', 'NO'],
                     selectedOption: controller.leaksFound,
                     heading: 'Any Leaks Found?'),
                 Obx(
                   () => Visibility(
-                      visible: controller.leaksFound.value == "yes",
+                      visible: controller.leaksFound.value == "YES",
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTextWidget(text: 'If yes then describe'),
                           CheckboxWithTextfield(
                             heading: 'Oil',
-                            isSelected: controller.isOilSelected,
+                            isSelected: controller.hasOilLeakage,
                             controller: controller.oilDescription,
                           ),
                           CheckboxWithTextfield(
                             heading: 'Coolant',
-                            isSelected: controller.isCoolantSelected,
+                            isSelected: controller.hasCoolantLeakage,
                             controller: controller.coolantDescription,
                           ),
                           CheckboxWithTextfield(
                             heading: 'Gass',
-                            isSelected: controller.isGasSelected,
+                            isSelected: controller.hasGasLeakage,
                             controller: controller.gasDescription,
                           ),
                           CheckboxWithTextfield(
                             heading: 'Exhaust',
-                            isSelected: controller.isExhaustSelected,
+                            isSelected: controller.hasExhaustGasLeakage,
                             controller: controller.exhaustDescription,
                           ),
                           CheckboxWithTextfield(
                             heading: 'Air',
-                            isSelected: controller.isAirSelected,
+                            isSelected: controller.hasAirLeakage,
                             controller: controller.airDescription,
                           ),
                         ],
@@ -820,14 +820,14 @@ class CustomStepperBody2 extends StatelessWidget {
                 const ContainerHeading(
                     heading: 'Excessive vibration & odd noises'),
                 CustomRadioButton(
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.excessiveVibrationAndOddNoises,
                   heading: 'Excessive vibration & odd noises?',
                 ),
                 Obx(
                   () => Visibility(
                     visible: controller.excessiveVibrationAndOddNoises.value ==
-                        "yes",
+                        "YES",
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -837,10 +837,10 @@ class CustomStepperBody2 extends StatelessWidget {
                           hintText: 'Describe Excessive Vibration & Odd Noises',
                           showBackgroundShadow:
                               controller.excessiveVibrationAndOddNoises.value ==
-                                  'yes',
+                                  'YES',
                           readOnly:
                               controller.excessiveVibrationAndOddNoises.value ==
-                                  'no',
+                                  'NO',
                           controller: controller
                               .excessiveVibrationAndOddNoisesDescription,
                         ),
@@ -860,13 +860,13 @@ class CustomStepperBody2 extends StatelessWidget {
               children: [
                 const ContainerHeading(heading: 'Problems with Driver'),
                 CustomRadioButton(
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.problemsWithDriver,
                   heading: 'Problem found with Driver during running checks?',
                 ),
                 Obx(
                   () => Visibility(
-                    visible: controller.problemsWithDriver.value == 'yes',
+                    visible: controller.problemsWithDriver.value == 'YES',
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -876,8 +876,8 @@ class CustomStepperBody2 extends StatelessWidget {
                           hintText:
                               'Describe Problem found with Driver during running checks',
                           showBackgroundShadow:
-                              controller.problemsWithDriver.value == 'yes',
-                          readOnly: controller.problemsWithDriver.value == 'no',
+                              controller.problemsWithDriver.value == 'YES',
+                          readOnly: controller.problemsWithDriver.value == 'NO',
                           controller: controller.problemsWithDriverDescription,
                         ),
                       ],

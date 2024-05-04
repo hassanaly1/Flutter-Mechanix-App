@@ -121,7 +121,7 @@ class CustomStepperBody1 extends StatelessWidget {
                 ),
                 CustomRadioButton(
                   heading: 'Unit Online on Arrival?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.unitOnlineOnArrival,
                 ),
                 HeadingAndTextfield(
@@ -152,7 +152,7 @@ class CustomStepperBody1 extends StatelessWidget {
                     keyboardType: TextInputType.number),
                 CustomRadioButton(
                   heading: 'Oil Sample (s) Taken?',
-                  options: const ['yes', 'no'],
+                  options: const ['YES', 'NO'],
                   selectedOption: controller.oilSamplesTaken,
                 ),
               ],
