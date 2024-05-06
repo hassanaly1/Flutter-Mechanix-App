@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:mechanix/models/payload.dart';
 
 class TaskModel {
   String? name;
-  String? user;
+  String? userId;
   String? customerEmail;
   double? unit;
   double? unitHours;
-  DateTime? date;
-  TimeOfDay? time;
+  String? date;
+  String? time;
   String? engineBrand;
   String? nameJourneyMan;
   String? unitOnlineArrival;
@@ -21,7 +20,7 @@ class TaskModel {
   double? engineLoad;
   double? engineRpm;
   double? btdc;
-  List<GasSampleAs>? gasSampleAsFound; // MissingInControllers
+  List<GasSampleAs>? gasSampleAsFound;
   double? lbBankAsGasFound;
   double? rbBankAsGasFound;
   List<GasSampleAs>? gasSampleAsAdjusted;
@@ -113,7 +112,7 @@ class TaskModel {
 
   TaskModel({
     this.name,
-    this.user,
+    this.userId,
     this.customerEmail,
     this.unit,
     this.unitHours,
@@ -225,7 +224,7 @@ class TaskModel {
 
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         name: json["name"],
-        user: json["user"],
+        userId: json["user"],
         customerEmail: json["customer_email"],
         unit: json["unit"],
         unitHours: json["unit_hours"],
@@ -345,7 +344,7 @@ class TaskModel {
 
   Map<String, dynamic> toJson() => {
         "name": name ?? "",
-        "user": user ?? "",
+        "user": userId ?? "",
         "customer_email": customerEmail ?? "",
         "unit": unit ?? 0,
         "unit_hours": unitHours ?? 0,
@@ -381,7 +380,7 @@ class TaskModel {
         "engine_oil_pressure_psi": engineOilPressurePsi ?? 0,
         "oil_pressure_differential_filter": oilPressureDifferentialFilter ?? 0,
         "engine_oil_pressure_differential_filter_na":
-            engineOilPressureDifferentialFilterNa ?? "",
+            engineOilPressureDifferentialFilterNa ?? "NA",
         "oil_temperature_in": oilTemperatureIn ?? 0,
         "oil_temperature_out": oilTemperatureOut ?? 0,
         "oil_engine_level": oilEngineLevel ?? "",

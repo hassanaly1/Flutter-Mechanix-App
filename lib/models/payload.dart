@@ -123,10 +123,10 @@ class Temperatures {
 }
 
 class Geolocation {
-  String? geolat;
-  String? geolong;
-  String? geohash;
-  String? address;
+  double? geolat;
+  double? geolong;
+  double? geohash;
+  double? address;
 
   Geolocation({
     this.geolat,
@@ -143,10 +143,10 @@ class Geolocation {
       );
 
   Map<String, dynamic> toJson() => {
-        "geolat": geolat ?? "",
-        "geolong": geolong ?? "",
-        "geohash": geohash ?? "",
-        "address": address ?? "",
+        "geolat": geolat ?? 0.0,
+        "geolong": geolong ?? 0.0,
+        "geohash": geohash ?? 0.0,
+        "address": address ?? 0.0,
       };
 }
 

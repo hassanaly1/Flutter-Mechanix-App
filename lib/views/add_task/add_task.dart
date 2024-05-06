@@ -42,9 +42,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        widget.sideMenu.changePage(0);
-        Get.delete<AddTaskController>();
-        Get.delete<MapController>();
+        // widget.sideMenu.changePage(0);
+        // Get.delete<AddTaskController>();
+        // Get.delete<MapController>();
       },
       child: Container(
         color: Colors.transparent,
@@ -174,7 +174,6 @@ class BottomPageViewSection extends StatelessWidget {
         children: [
           Expanded(
             child: IndexedStack(
-              // key: UniqueKey(),
               sizing: StackFit.loose,
               index: controller.activePageIndex.value,
               children: [

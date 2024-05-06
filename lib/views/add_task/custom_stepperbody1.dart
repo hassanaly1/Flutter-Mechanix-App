@@ -39,6 +39,14 @@ class CustomStepperBody1 extends StatelessWidget {
             child: Column(
               children: [
                 HeadingAndTextfield(
+                  title: 'Client\'s Name',
+                  controller: controller.clientName,
+                ),
+                HeadingAndTextfield(
+                  title: 'Client\'s Email',
+                  controller: controller.clientEmail,
+                ),
+                HeadingAndTextfield(
                     title: 'Select Location',
                     controller: controller.selectedAddress,
                     suffixIcon: InkWell(
@@ -69,7 +77,9 @@ class CustomStepperBody1 extends StatelessWidget {
                         child: HeadingAndTextfield(
                           title: 'Select Date',
                           hintText:
-                              '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')} : ${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')} : ${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
+                              controller.taskSelectedDate.value.toString(),
+                          // hintText:
+                          //     '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
                           onTap: () => controller.selectDate(context),
                           readOnly: true,
                         ),
@@ -78,7 +88,9 @@ class CustomStepperBody1 extends StatelessWidget {
                         child: HeadingAndTextfield(
                           title: 'Select Time',
                           hintText:
-                              '${controller.taskSelectedTime.value.format(context)..padLeft(2, '0')} ',
+                              controller.taskSelectedTime.value.toString(),
+                          // hintText:
+                          //     '${controller.taskSelectedTime.value.format(context)..padLeft(2, '0')} ',
                           onTap: () => controller.selectTime(context),
                           readOnly: true,
                           // onChanged: (value) {

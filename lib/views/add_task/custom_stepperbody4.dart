@@ -2,6 +2,7 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -22,7 +23,7 @@ class CustomStepperBody4 extends StatelessWidget {
     required this.sideMenu,
   });
   final AddTaskController controller = Get.find();
-  final _partsFormkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _partsFormkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -238,27 +239,27 @@ class CustomStepperBody4 extends StatelessWidget {
                   HeadingAndTextfield(
                     title: 'Name:',
                     controller: controller.partName,
-                    validator: (value) => AppValidator.validateEmptyText(
-                        fieldName: 'Name', value: value),
+                    // validator: (value) => AppValidator.validateEmptyText(
+                    //     fieldName: 'Name', value: value),
                   ),
                   HeadingAndTextfield(
                     title: 'Description:',
                     controller: controller.partDescription,
-                    validator: (value) => AppValidator.validateEmptyText(
-                        fieldName: 'Description', value: value),
+                    // validator: (value) => AppValidator.validateEmptyText(
+                    //     fieldName: 'Description', value: value),
                   ),
                   HeadingAndTextfield(
                     title: 'Quantity:',
                     controller: controller.partQuantity,
                     keyboardType: TextInputType.number,
-                    validator: (value) => AppValidator.validateEmptyText(
-                        fieldName: 'Quantity', value: value),
+                    // validator: (value) => AppValidator.validateEmptyText(
+                    //     fieldName: 'Quantity', value: value),
                   ),
                   HeadingAndTextfield(
                     title: 'Vendor:',
                     controller: controller.partVendor,
-                    validator: (value) => AppValidator.validateEmptyText(
-                        fieldName: 'Vendor', value: value),
+                    // validator: (value) => AppValidator.validateEmptyText(
+                    //     fieldName: 'Vendor', value: value),
                   ),
                   CustomButton(
                     isLoading: false,
@@ -326,18 +327,11 @@ class CustomStepperBody4 extends StatelessWidget {
                 child: CustomButton(
                     isLoading: false,
                     buttonText: 'SUBMIT',
-                    onTap: () {
-                      controller.addTask();
-                      // Get.delete<AddTaskController>();
-                      // Get.delete<MapController>();
-                      sideMenu.changePage(0);
-                      ToastMessage.showToastMessage(
-                          message: 'Task Created Successfully',
-                          backgroundColor: AppColors.blueTextColor);
-
-                      // Get.toNamed('/home');
-                      // Get.offAllNamed('/home');
-                    }),
+                    onTap: () async => await controller.addTask().then((value) {
+                          sideMenu.changePage(1);
+                          Get.delete<AddTaskController>();
+                          Get.delete<MapController>();
+                        })),
               ),
             ],
           )

@@ -8,14 +8,14 @@ class HeadingAndTextfield extends StatelessWidget {
   final String? hintText;
   final bool? readOnly;
   final VoidCallback? onTap;
-  void Function(String)? onChanged;
-  int? maxLines;
-  Widget? prefixIcon;
-  Widget? suffixIcon;
-  TextInputType? keyboardType;
-  TextEditingController? controller;
+  final void Function(String)? onChanged;
+  final int? maxLines;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
-  HeadingAndTextfield(
+  const HeadingAndTextfield(
       {super.key,
       required this.title,
       this.hintText,
@@ -65,13 +65,13 @@ class HeadingAndTextfieldInRow extends StatelessWidget {
   final String title;
   final String hintText;
   final bool? readOnly;
-  int? maxLines;
-  Widget? prefixIcon;
-  Widget? suffixIcon;
-  TextInputType? keyboardType;
-  TextEditingController? controller;
+  final int? maxLines;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
-  HeadingAndTextfieldInRow(
+  const HeadingAndTextfieldInRow(
       {super.key,
       required this.title,
       required this.hintText,

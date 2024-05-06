@@ -598,7 +598,7 @@ class CustomStepperBody2 extends StatelessWidget {
                                           value!;
                                       controller
                                           .oilPressureDifferentialTextField
-                                          .text = '0';
+                                          .text = '';
                                     }
                                   },
                                 ),

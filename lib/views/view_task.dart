@@ -111,7 +111,7 @@ class CustomTaskCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -127,18 +127,18 @@ class CustomTaskCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    CustomTextWidget(
-                      text: model.date == null
-                          ? 'Not Assigned'
-                          : '${model.date?.day.toString().padLeft(2, '0')} : ${model.date?.month.toString().padLeft(2, '0')} : ${model.date?.year.toString().padLeft(2, '0')}',
-                      fontSize: 10.0,
-                    ),
-                    CustomTextWidget(
-                      text: model.time == null
-                          ? 'Not Assigned'
-                          : '${model.time?.format(context).padLeft(2, '0')}',
-                      fontSize: 10.0,
-                    ),
+                    // CustomTextWidget(
+                    //   text: model.date == null
+                    //       ? 'Not Assigned'
+                    //       : '${model.date?.day.toString().padLeft(2, '0')} : ${model.date?.month.toString().padLeft(2, '0')} : ${model.date?.year.toString().padLeft(2, '0')}',
+                    //   fontSize: 10.0,
+                    // ),
+                    // CustomTextWidget(
+                    //   text: model.time == null
+                    //       ? 'Not Assigned'
+                    //       : '${model.time?.format(context).padLeft(2, '0')}',
+                    //   fontSize: 10.0,
+                    // ),
                   ],
                 )
               ],

@@ -10,4 +10,7 @@ class ApiEndPoints {
   static String verifyOtpUrl = '/api/auth/verify-reset-otp'; //VerifyOtp
   static String changePasswordUrl =
       '/api/auth/changepassword'; //Change Password
+
+  //Task
+  static String createTaskUrl = '/api/task/createtask';
 }
