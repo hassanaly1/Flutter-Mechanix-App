@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,10 +74,11 @@ class _EnginesScreenState extends State<EnginesScreen> {
                         ),
                       ),
                       CustomButton(
-                          isLoading: false,
-                          buttonText: '+ Add Engine',
-                          onTap: () => _openAddEngineDialog(
-                              context: context, controller: controller)),
+                        isLoading: false,
+                        buttonText: '+ Add Engine',
+                        onTap: () => _openAddEngineDialog(
+                            context: context, controller: controller),
+                      ),
                       universalController.engines.isEmpty
                           ? Expanded(
                               child: SingleChildScrollView(
@@ -141,7 +144,7 @@ void _openAddEngineDialog(
                   onPopInvoked: (didPop) {
                     if (!didPop) {
                       controller.isQrCodeGenerated.value = false;
-                      controller.engineImage.value = '';
+                      controller.engineImageUrl.value = '';
                       controller.engineName.clear();
                       controller.engineSubtitle.clear();
                       Get.back();
@@ -205,15 +208,25 @@ class DialogFirstView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       InkWell(
-        onTap: () {},
-        child: Container(
-          height: context.height * 0.1,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blueGrey,
+        onTap: () => controller.pickImage(),
+        child: Obx(
+          () => CircleAvatar(
+            radius: 45,
+            backgroundColor: Colors.white,
+            // child: controller.engineImage.value == ''
+            //     ? Image.asset('assets/images/placeholder.png')
+            //     : Image.file(
+            //         File(controller.engineImage.value),
+            //         fit: BoxFit.contain,
+            //       ),
+            backgroundImage: controller.engineImageUrl.value == ''
+                ? const AssetImage('assets/images/placeholder.png')
+                    as ImageProvider
+                : FileImage(File(controller.engineImageUrl.value)),
           ),
         ),
       ),
+      const SizedBox(height: 12.0),
       Form(
           key: controller.qrFormKey,
           child:
@@ -263,11 +276,7 @@ class DialogFirstView extends StatelessWidget {
             FormState? formState =
                 controller.qrFormKey.currentState as FormState?;
             if (formState != null && formState.validate()) {
-              controller.generateQrCode();
-              debugPrint(controller.isQrCodeGenerated.value.toString());
-              controller.pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease);
+              controller.addEngine();
             }
           }),
       const Divider(color: Colors.black54),
@@ -332,9 +341,9 @@ class DialogSecondView extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextWidget(
                     text:
-                        'Uh oh! Something went wrong in generating the QrCode, try again!',
+                        'Something went wrong in generating the QrCode, try again!',
                     maxLines: 2,
-                    fontSize: 12.0,
+                    fontSize: 10.0,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -347,7 +356,7 @@ class DialogSecondView extends StatelessWidget {
           fontSize: 12.0,
           onTap: () {
             controller.isQrCodeGenerated.value = false;
-            controller.engineImage.value = '';
+            controller.engineImageUrl.value = '';
             controller.engineName.clear();
             controller.engineSubtitle.clear();
             Get.back();
@@ -371,46 +380,45 @@ class CustomEngineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReUsableContainer(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-        child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            onTap: onTap,
-            // leading: ClipRRect(
-            //   borderRadius: BorderRadius.circular(8.0),
-            //
-            //   // child: Image.asset(
-            //   //   model.image == '' ? 'assets/images/engine.png' : model.image,
-            //   //   width: 100,
-            //   //   fit: BoxFit.cover,
-            //   // ),
-            // ),
-            leading: const CircleAvatar(backgroundColor: Colors.red),
-            title: CustomTextWidget(
-                text: model.name ?? 'No Image Specified',
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600),
-            subtitle:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CustomTextWidget(
-                  text: model.subtitle ?? 'No SubTitle Specified',
-                  textColor: AppColors.textColor,
-                  fontSize: 14.0),
-              CustomTextWidget(
-                  text: model.type ?? 'No Type Specified',
-                  fontSize: 12.0,
-                  textColor: AppColors.lightGreyColor)
-            ]),
-            trailing: QrImageView(
-                data: model.name ?? '',
-                version: QrVersions.auto,
-                size: context.height * 0.1,
-                errorStateBuilder: (cxt, err) {
-                  return Center(
-                      child: CustomTextWidget(
-                          text: 'Uh oh! Something went wrong...',
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          fontSize: 12.0));
-                })));
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      child: SizedBox(),
+      // child: ListTile(
+      //     contentPadding: EdgeInsets.zero,
+      //     onTap: onTap,
+      //     leading: CircleAvatar(
+      //       backgroundColor: Colors.white,
+      //       backgroundImage: model.imageUrl == ''
+      //           ? const AssetImage('assets/images/placeholder.png')
+      //               as ImageProvider
+      //           : FileImage(File(model.imageUrl ?? '')),
+      //     ),
+      //     title: CustomTextWidget(
+      //         text: model.name ?? 'No Image Specified',
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600),
+      //     subtitle:
+      //         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      //       CustomTextWidget(
+      //           text: model.subtitle ?? 'No SubTitle Specified',
+      //           textColor: AppColors.textColor,
+      //           fontSize: 14.0),
+      //       CustomTextWidget(
+      //           text: model.type ?? 'No Type Specified',
+      //           fontSize: 12.0,
+      //           textColor: AppColors.lightGreyColor)
+      //     ]),
+      //     trailing: QrImageView(
+      //         data: model.name ?? '',
+      //         version: QrVersions.auto,
+      //         size: context.height * 0.1,
+      //         errorStateBuilder: (cxt, err) {
+      //           return Center(
+      //               child: CustomTextWidget(
+      //                   text: 'Uh oh! Something went wrong...',
+      //                   textAlign: TextAlign.center,
+      //                   maxLines: 2,
+      //                   fontSize: 12.0));
+      //         })),
+    );
   }
 }

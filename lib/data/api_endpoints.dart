@@ -13,4 +13,7 @@ class ApiEndPoints {
 
   //Task
   static String createTaskUrl = '/api/task/createtask';
+
+  //Engine
+  static String addEngineUrl = '/api/engine/createenginebrand';
 }

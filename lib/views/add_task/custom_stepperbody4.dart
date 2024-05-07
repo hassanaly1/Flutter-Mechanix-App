@@ -15,6 +15,7 @@ import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
+import 'package:mechanix/views/dashboard/dashboard.dart';
 
 class CustomStepperBody4 extends StatelessWidget {
   final SideMenuController sideMenu;
@@ -328,7 +329,8 @@ class CustomStepperBody4 extends StatelessWidget {
                     isLoading: false,
                     buttonText: 'SUBMIT',
                     onTap: () async => await controller.addTask().then((value) {
-                          sideMenu.changePage(1);
+                          sideMenu.changePage(0);
+                          // Get.off(() => const DashboardScreen());
                           Get.delete<AddTaskController>();
                           Get.delete<MapController>();
                         })),

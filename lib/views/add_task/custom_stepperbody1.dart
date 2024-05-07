@@ -109,22 +109,22 @@ class CustomStepperBody1 extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       maxLines: 2,
                     ),
-                    CustomDropdown(
-                      items: universalController.engines,
-                      hintText: 'Select Engine Brand',
-                      onTap: () {
-                        debugPrint('Dropdown tapped');
-                        universalController.engines.isEmpty
-                            ? ToastMessage.showToastMessage(
-                                message:
-                                    'Please Add Engines first from the Engine section.',
-                                backgroundColor: Colors.red)
-                            : null;
-                      },
-                      onChanged: (value) {
-                        controller.engineBrand.value = value!.name!;
-                      },
-                    ),
+                    // CustomDropdown(
+                    //   items: universalController.engines,
+                    //   hintText: 'Select Engine Brand',
+                    //   onTap: () {
+                    //     debugPrint('Dropdown tapped');
+                    //     universalController.engines.isEmpty
+                    //         ? ToastMessage.showToastMessage(
+                    //             message:
+                    //                 'Please Add Engines first from the Engine section.',
+                    //             backgroundColor: Colors.red)
+                    //         : null;
+                    //   },
+                    //   onChanged: (value) {
+                    //     controller.engineBrand.value = value!.name!;
+                    //   },
+                    // ),
                   ],
                 ),
                 HeadingAndTextfield(

@@ -42,9 +42,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        // widget.sideMenu.changePage(0);
-        // Get.delete<AddTaskController>();
-        // Get.delete<MapController>();
+        widget.sideMenu.changePage(0);
+        Get.delete<AddTaskController>();
+        Get.delete<MapController>();
       },
       child: Container(
         color: Colors.transparent,
