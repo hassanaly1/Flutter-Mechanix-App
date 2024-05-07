@@ -16,4 +16,8 @@ class ApiEndPoints {
 
   //Engine
   static String addEngineUrl = '/api/engine/createenginebrand';
+  static String getEngineUrl = '/api/engine/getenginebrandpagination';
+  static String getEngineBrandById = '/api/engine/getenginebrandbyid';
+  static String updateEngineUrl = '/api/engine/updateenginebrand';
+  static String deleteEngineUrl = '/api/engine/deleteenginebrand';
 }

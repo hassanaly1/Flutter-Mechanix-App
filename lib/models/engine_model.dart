@@ -8,6 +8,7 @@ EngineModel engineModelFromJson(String str) =>
 String engineModelToJson(EngineModel data) => json.encode(data.toJson());
 
 class EngineModel {
+  String? id;
   String? userId;
   String? name;
   String? imageUrl;
@@ -16,6 +17,7 @@ class EngineModel {
   bool? isCompressor;
 
   EngineModel({
+    this.id,
     this.userId,
     this.name,
     this.imageUrl,
@@ -25,18 +27,18 @@ class EngineModel {
   });
 
   factory EngineModel.fromJson(Map<String, dynamic> json) => EngineModel(
+        id: json[" _id"],
         userId: json[" user"],
         name: json["name"],
-        imageUrl: json["image_url"],
+        imageUrl: json["url"],
         subname: json["subname"],
         isGenerator: json["is_generator"],
         isCompressor: json["is_compressor"],
       );
 
   Map<String, dynamic> toJson() => {
-        " user": userId,
+        "user": userId,
         "name": name,
-        "image_url": imageUrl,
         "subname": subname,
         "is_generator": isGenerator,
         "is_compressor": isCompressor,

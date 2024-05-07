@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/engine_service.dart';
@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 
 class EnginesController extends GetxController {
   final _storage = GetStorage();
+  RxBool isLoading = false.obs;
   RxBool isQrCodeGenerated = false.obs;
   XFile? engineImage;
   Uint8List? engineImageInBytes;
@@ -26,6 +27,14 @@ class EnginesController extends GetxController {
 
   final PageController pageController = PageController();
   final UniversalController universalController = Get.find();
+  EngineService engineService = EngineService();
+
+  @override
+  onInit() {
+    debugPrint('EnginesController Initialized');
+    getAllEngines();
+    super.onInit();
+  }
 
   // Function to pick an image
   Future<void> pickImage() async {
@@ -56,7 +65,7 @@ class EnginesController extends GetxController {
         isCompressor: engineType.value == 'Compressor',
       );
 
-      EngineService()
+      engineService
           .addEngine(
               engineModel: newEngine, engineImageInBytes: engineImageInBytes!)
           .then((value) {
@@ -68,6 +77,23 @@ class EnginesController extends GetxController {
         isQrCodeGenerated.value = true;
         engineType.value = 'Generator';
       });
+    }
+  }
+
+  Future<void> getAllEngines() async {
+    debugPrint('GetAllEnginesFunctionCalled');
+    try {
+      isLoading.value = true;
+      // Call the service method to fetch the engines
+      List<EngineModel> fetchedEngines = await engineService.getAllEngines();
+      // Assign the fetched engines to the engines list
+      universalController.engines = fetchedEngines;
+      debugPrint('EnginesCount: ${universalController.engines.length}');
+      isLoading.value = false;
+    } catch (e) {
+      debugPrint('Error fetching engines: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 

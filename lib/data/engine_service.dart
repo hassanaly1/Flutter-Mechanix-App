@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mechanix/data/api_endpoints.dart';
+import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
 
 class EngineService {
@@ -13,14 +16,6 @@ class EngineService {
     required EngineModel engineModel,
     required Uint8List engineImageInBytes,
   }) async {
-    if (engineImageInBytes.isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Please Select an Engine Image',
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-
     var headers = {
       'Authorization': 'Bearer ${_storage.read('token')}',
       'Content-Type': 'application/json'
@@ -28,8 +23,7 @@ class EngineService {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse(
-          'https://mechanix-api-production.up.railway.app/api/engine/createenginebrand'),
+      Uri.parse('${ApiEndPoints.baseUrl}${ApiEndPoints.addEngineUrl}'),
     );
 
     // Add form fields
@@ -46,7 +40,7 @@ class EngineService {
       http.MultipartFile.fromBytes(
         'engines',
         engineImageInBytes,
-        filename: 'placeholder.png',
+        filename: 'engine.png',
       ),
     );
 
@@ -57,18 +51,50 @@ class EngineService {
       if (response.statusCode == 201) {
         debugPrint(await response.stream.bytesToString());
       } else {
-        Fluttertoast.showToast(
-          msg: 'Failed to add engine: ${response.reasonPhrase}',
-          backgroundColor: Colors.red,
-        );
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again',
+            backgroundColor: Colors.red);
         debugPrint(response.reasonPhrase);
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Error adding engine: $e',
-        backgroundColor: Colors.red,
-      );
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+
       debugPrint('Error adding engine: $e');
+    }
+  }
+
+  Future<List<EngineModel>> getAllEngines() async {
+    String apiUrl =
+        'https://mechanix-api-production.up.railway.app/api/engine/getenginebrandpagination';
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer ${_storage.read('token')}',
+          'Content-Type': 'application/json'
+        },
+      );
+      if (response.statusCode == 200) {
+        // Parse the JSON response
+        Map<String, dynamic> responseData = json.decode(response.body);
+        // You can now access specific fields within this data using their keys.
+        List<dynamic> engineData = responseData['data'][0]['engines'];
+
+        // Map the JSON data to a list of EngineModel objects
+        List<EngineModel> engines =
+            engineData.map((data) => EngineModel.fromJson(data)).toList();
+
+        return engines;
+      } else {
+        debugPrint('Failed to get engines: ${response.reasonPhrase}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error getting engines: $e');
+      return [];
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/engines_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
@@ -60,62 +61,81 @@ class _EnginesScreenState extends State<EnginesScreen> {
                     vertical: context.height * 0.02,
                     horizontal: context.width * 0.05),
                 decoration: const BoxDecoration(color: Colors.transparent),
-                child: Obx(
-                  () => Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: context.isLandscape
-                                ? context.width * 0.08
-                                : 0.0),
-                        child: ReUsableTextField(
-                          hintText: 'Search Reports',
-                          suffixIcon: const Icon(Icons.search_sharp),
-                        ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              context.isLandscape ? context.width * 0.08 : 0.0),
+                      child: ReUsableTextField(
+                        hintText: 'Search Reports',
+                        suffixIcon: const Icon(Icons.search_sharp),
                       ),
-                      CustomButton(
-                        isLoading: false,
-                        buttonText: '+ Add Engine',
-                        onTap: () => _openAddEngineDialog(
-                            context: context, controller: controller),
-                      ),
-                      universalController.engines.isEmpty
-                          ? Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height: context.height * 0.1),
-                                    Image.asset('assets/images/view-task.png',
-                                        height: context.height * 0.15),
-                                    CustomTextWidget(
-                                      text: 'No Engines found',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w600,
+                    ),
+                    CustomButton(
+                      isLoading: false,
+                      buttonText: '+ Add Engine',
+                      onTap: () => _openAddEngineDialog(
+                          context: context, controller: controller),
+                    ),
+                    Obx(
+                      () => controller.isLoading.value
+                          ? const Center(
+                              heightFactor: 4,
+                              child: SpinKitCircle(
+                                color: Colors.black87,
+                                size: 50.0,
+                              ))
+                          : universalController.engines.isEmpty
+                              ? Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: context.height * 0.1),
+                                        Image.asset(
+                                            'assets/images/view-task.png',
+                                            height: context.height * 0.15),
+                                        CustomTextWidget(
+                                          text: 'No Engines found',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    itemCount:
+                                        universalController.engines.length,
+                                    itemBuilder: (context, index) {
+                                      final engine =
+                                          universalController.engines[index];
+                                      return Dismissible(
+                                        key: Key(engine.id.toString()),
+                                        onDismissed: (direction) {
+                                          // todo: delete api call
+                                          universalController.engines
+                                              .removeAt(index);
+                                        },
+                                        child: CustomEngineCard(
+                                          model: engine,
+                                          onTap: () => Get.to(
+                                              () => EngineDetailScreen(
+                                                  model: engine),
+                                              transition: Transition.size),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: universalController.engines.length,
-                                itemBuilder: (context, index) {
-                                  final engine =
-                                      universalController.engines[index];
-                                  return CustomEngineCard(
-                                    model: engine,
-                                    onTap: () => Get.to(
-                                        () => EngineDetailScreen(model: engine),
-                                        transition: Transition.size),
-                                  );
-                                },
-                              ),
-                            )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
             ),
@@ -381,44 +401,45 @@ class CustomEngineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReUsableContainer(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-      child: SizedBox(),
-      // child: ListTile(
-      //     contentPadding: EdgeInsets.zero,
-      //     onTap: onTap,
-      //     leading: CircleAvatar(
-      //       backgroundColor: Colors.white,
-      //       backgroundImage: model.imageUrl == ''
-      //           ? const AssetImage('assets/images/placeholder.png')
-      //               as ImageProvider
-      //           : FileImage(File(model.imageUrl ?? '')),
-      //     ),
-      //     title: CustomTextWidget(
-      //         text: model.name ?? 'No Image Specified',
-      //         fontSize: 18.0,
-      //         fontWeight: FontWeight.w600),
-      //     subtitle:
-      //         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      //       CustomTextWidget(
-      //           text: model.subtitle ?? 'No SubTitle Specified',
-      //           textColor: AppColors.textColor,
-      //           fontSize: 14.0),
-      //       CustomTextWidget(
-      //           text: model.type ?? 'No Type Specified',
-      //           fontSize: 12.0,
-      //           textColor: AppColors.lightGreyColor)
-      //     ]),
-      //     trailing: QrImageView(
-      //         data: model.name ?? '',
-      //         version: QrVersions.auto,
-      //         size: context.height * 0.1,
-      //         errorStateBuilder: (cxt, err) {
-      //           return Center(
-      //               child: CustomTextWidget(
-      //                   text: 'Uh oh! Something went wrong...',
-      //                   textAlign: TextAlign.center,
-      //                   maxLines: 2,
-      //                   fontSize: 12.0));
-      //         })),
+      child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          onTap: onTap,
+          leading: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                shape: BoxShape.circle),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(model.imageUrl ?? ''),
+            ),
+          ),
+          title: CustomTextWidget(
+              text: model.name ?? 'No Image Specified',
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500),
+          subtitle:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            CustomTextWidget(
+                text: model.subname ?? 'No SubTitle Specified',
+                textColor: AppColors.lightTextColor,
+                fontSize: 12.0),
+            // CustomTextWidget(
+            //     text: model. ?? 'No Type Specified',
+            //     fontSize: 12.0,
+            //     textColor: AppColors.lightGreyColor)
+          ]),
+          trailing: QrImageView(
+              data: model.name ?? '',
+              version: QrVersions.auto,
+              size: context.height * 0.1,
+              errorStateBuilder: (cxt, err) {
+                return Center(
+                    child: CustomTextWidget(
+                        text: 'Uh oh! Something went wrong...',
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        fontSize: 12.0));
+              })),
     );
   }
 }
