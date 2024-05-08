@@ -9,13 +9,10 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/helpers/toast.dart';
-import 'package:mechanix/helpers/validator.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
-import 'package:mechanix/views/dashboard/dashboard.dart';
 
 class CustomStepperBody4 extends StatelessWidget {
   final SideMenuController sideMenu;

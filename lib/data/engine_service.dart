@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mechanix/data/api_endpoints.dart';
@@ -95,6 +94,76 @@ class EngineService {
     } catch (e) {
       debugPrint('Error getting engines: $e');
       return [];
+    }
+  }
+
+  Future<void> updateEngine(
+      {required EngineModel engineModel, required String token}) async {
+    String apiUrl = '${ApiEndPoints.baseUrl}${ApiEndPoints.updateEngineUrl}';
+    debugPrint(jsonEncode(engineModel.toJson()));
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'engine_brand': engineModel.toJson(),
+        }),
+      );
+      if (response.statusCode == 201) {
+        Map<String, dynamic> responseData = json.decode(response.body);
+        String message = responseData['message'];
+
+        print(message);
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again',
+            backgroundColor: Colors.red);
+        print(
+            'Failed to update engine: ${response.statusCode} ${response.body}');
+      }
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> deleteEngine(
+      {required EngineModel engineModel, required String token}) async {
+    String apiUrl = '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteEngineUrl}';
+    debugPrint(jsonEncode(engineModel.toJson()));
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'engine_brand': engineModel.toJson(),
+        }),
+      );
+      if (response.statusCode == 201) {
+        Map<String, dynamic> responseData = json.decode(response.body);
+        String message = responseData['message'];
+
+        print(message);
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again',
+            backgroundColor: Colors.red);
+        print(
+            'Failed to delete engine: ${response.statusCode} ${response.body}');
+      }
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
     }
   }
 }

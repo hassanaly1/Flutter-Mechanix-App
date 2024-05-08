@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -33,11 +34,14 @@ class ReUsableAppbar extends StatelessWidget {
                   onPressed: () => showBackArrow ? Get.back() : null,
                   icon: Icon(Icons.arrow_back,
                       color: showBackArrow ? iconColor : Colors.transparent)),
-          CustomTextWidget(
-            text: title,
-            fontWeight: FontWeight.w700,
-            fontSize: 20.0,
-            textColor: Colors.white,
+          Flexible(
+            child: CustomTextWidget(
+              text: title,
+              maxLines: 2,
+              fontWeight: FontWeight.w500,
+              fontSize: 20.0,
+              textColor: Colors.white,
+            ),
           ),
           showProfileAvatar
               ? const ProfileAvatar()

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -20,91 +22,123 @@ class EngineDetailScreen extends StatelessWidget {
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
               backgroundColor: Colors.transparent,
-              // body: NestedScrollView(
-              //   headerSliverBuilder: (context, innerBoxIsScrolled) {
-              //     return [
-              //       SliverAppBar(
-              //           floating: true,
-              //           automaticallyImplyLeading: false,
-              //           backgroundColor: Colors.transparent,
-              //           forceMaterialTransparency: true,
-              //           expandedHeight: context.height * 0.15,
-              //           flexibleSpace: ListView(children: [
-              //             Padding(
-              //                 padding: const EdgeInsets.all(12.0),
-              //                 child: Column(children: [
-              //                   ReUsableAppbar(
-              //                       title:
-              //                           "${model.name ?? 'No Name Specified'} (${model.type ?? 'No type Specified'})"),
-              //                 ]))
-              //           ]))
-              //     ];
-              //   },
-              //   body: Container(
-              //     padding: EdgeInsets.symmetric(
-              //         vertical: context.height * 0.02,
-              //         horizontal: context.width * 0.05),
-              //     decoration: const BoxDecoration(
-              //       gradient: LinearGradient(
-              //         begin: Alignment.centerLeft,
-              //         end: Alignment.centerRight,
-              //         colors: [
-              //           Color.fromRGBO(255, 220, 105, 0.4),
-              //           Color.fromRGBO(86, 127, 255, 0.4),
-              //         ],
-              //       ),
-              //       borderRadius: BorderRadius.only(
-              //         topLeft: Radius.circular(40.0),
-              //         topRight: Radius.circular(40.0),
-              //       ),
-              //       boxShadow: [
-              //         BoxShadow(
-              //             color: Colors.black26,
-              //             blurRadius: 5.0,
-              //             spreadRadius: 5.0),
-              //         BoxShadow(
-              //             color: Colors.white,
-              //             offset: Offset(0.0, 0.0),
-              //             blurRadius: 0.0,
-              //             spreadRadius: 0.0),
-              //       ],
-              //     ),
-              //     child: SingleChildScrollView(
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           SizedBox(height: context.height * 0.1),
-              //           Container(
-              //             decoration: BoxDecoration(
-              //                 border: Border.all(color: Colors.black54)),
-              //             child: QrImageView(
-              //               data: model.name ?? '',
-              //               version: QrVersions.auto,
-              //               size: context.height * 0.3,
-              //               errorStateBuilder: (cxt, err) {
-              //                 return Center(
-              //                   child: CustomTextWidget(
-              //                     text: 'Uh oh! Something went wrong...',
-              //                     textAlign: TextAlign.center,
-              //                     maxLines: 2,
-              //                     fontSize: 12.0,
-              //                   ),
-              //                 );
-              //               },
-              //             ),
-              //           ),
-              //           SizedBox(height: context.height * 0.02),
-              //           CustomTextWidget(
-              //             text: model.subtitle ?? '',
-              //             textAlign: TextAlign.center,
-              //             maxLines: 2,
-              //             fontSize: 16.0,
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              body: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                        floating: true,
+                        automaticallyImplyLeading: false,
+                        backgroundColor: Colors.transparent,
+                        forceMaterialTransparency: true,
+                        expandedHeight: context.height * 0.15,
+                        flexibleSpace: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: ReUsableAppbar(
+                                title:
+                                    "${model.name ?? 'No Name Specified'})")))
+                  ];
+                },
+                body: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: context.height * 0.02,
+                      horizontal: context.width * 0.05),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color.fromRGBO(255, 220, 105, 0.4),
+                        Color.fromRGBO(86, 127, 255, 0.4),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40.0),
+                      topRight: Radius.circular(40.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5.0,
+                          spreadRadius: 5.0),
+                      BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0),
+                    ],
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: context.height * 0.1),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black54)),
+                          child: QrImageView(
+                            data: model.name ?? '',
+                            version: QrVersions.auto,
+                            size: context.height * 0.3,
+                            errorStateBuilder: (cxt, err) {
+                              return Center(
+                                child: CustomTextWidget(
+                                  text: 'Uh oh! Something went wrong...',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: context.height * 0.02),
+                        const Divider(color: Colors.black87),
+                        SizedBox(height: context.height * 0.02),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextWidget(
+                              text: 'Engine Subtitle: ',
+                              textAlign: TextAlign.start,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.0,
+                            ),
+                            Flexible(
+                              child: CustomTextWidget(
+                                text: model.subname ?? '',
+                                textAlign: TextAlign.start,
+                                maxLines: 2,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: context.height * 0.02),
+                        Row(
+                          children: [
+                            CustomTextWidget(
+                              text: 'Engine Type: ',
+                              textAlign: TextAlign.start,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.0,
+                            ),
+                            Flexible(
+                              child: CustomTextWidget(
+                                text: model.isGenerator!
+                                    ? 'Generator'
+                                    : 'Compressor' ?? '',
+                                textAlign: TextAlign.start,
+                                maxLines: 2,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

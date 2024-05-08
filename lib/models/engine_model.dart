@@ -27,7 +27,7 @@ class EngineModel {
   });
 
   factory EngineModel.fromJson(Map<String, dynamic> json) => EngineModel(
-        id: json[" _id"],
+        id: json["_id"],
         userId: json[" user"],
         name: json["name"],
         imageUrl: json["url"],
@@ -37,6 +37,7 @@ class EngineModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "_id": id,
         "user": userId,
         "name": name,
         "subname": subname,

@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/engine_service.dart';
@@ -20,7 +19,7 @@ class EnginesController extends GetxController {
   TextEditingController engineName = TextEditingController();
   TextEditingController engineSubtitle = TextEditingController();
   RxString engineType = 'Generator'.obs;
-  GlobalKey qrFormKey = GlobalKey<FormState>();
+  GlobalKey engineFormKey = GlobalKey<FormState>();
   RxString qrCodeData = ''.obs;
 
   final ImagePicker picker = ImagePicker();
@@ -51,32 +50,40 @@ class EnginesController extends GetxController {
   }
 
   void addEngine() {
+    isLoading.value = true;
     if (engineImageUrl.value == '') {
       ToastMessage.showToastMessage(
           message: 'Please Select an Engine Image',
           backgroundColor: Colors.red);
     } else {
-      var newEngine = EngineModel(
-        userId: _storage.read('user_info')['_id'],
-        name: engineName.text.trim(),
-        imageUrl: engineImageUrl.value,
-        subname: engineSubtitle.text.trim(),
-        isGenerator: engineType.value == 'Generator',
-        isCompressor: engineType.value == 'Compressor',
-      );
+      try {
+        var newEngine = EngineModel(
+          userId: _storage.read('user_info')['_id'],
+          name: engineName.text.trim(),
+          imageUrl: engineImageUrl.value,
+          subname: engineSubtitle.text.trim(),
+          isGenerator: engineType.value == 'Generator',
+          isCompressor: engineType.value == 'Compressor',
+        );
 
-      engineService
-          .addEngine(
-              engineModel: newEngine, engineImageInBytes: engineImageInBytes!)
-          .then((value) {
-        ToastMessage.showToastMessage(
-            message: 'Engine Added Successfully',
-            backgroundColor: Colors.green);
-        pageController.nextPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.ease);
-        isQrCodeGenerated.value = true;
-        engineType.value = 'Generator';
-      });
+        engineService
+            .addEngine(
+                engineModel: newEngine, engineImageInBytes: engineImageInBytes!)
+            .then((value) {
+          ToastMessage.showToastMessage(
+              message: 'Engine Added Successfully',
+              backgroundColor: Colors.green);
+          pageController.nextPage(
+              duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          getAllEngines();
+          isQrCodeGenerated.value = true;
+          engineType.value = 'Generator';
+        });
+      } catch (e) {
+        debugPrint(e.toString());
+      } finally {
+        isLoading.value = false;
+      }
     }
   }
 
@@ -92,6 +99,68 @@ class EnginesController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       debugPrint('Error fetching engines: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void updateEngine({required String id}) {
+    debugPrint('UpdateEngineFunctionCalled');
+    isLoading.value = true;
+    try {
+      var updatedEngineData = EngineModel(
+        id: id,
+        userId: _storage.read('user_info')['_id'],
+        name: engineName.text.trim(),
+        subname: engineSubtitle.text.trim(),
+        isGenerator: engineType.value == 'Generator',
+        isCompressor: engineType.value == 'Compressor',
+      );
+      engineService
+          .updateEngine(
+              engineModel: updatedEngineData, token: _storage.read('token'))
+          .then((value) {
+        ToastMessage.showToastMessage(
+            message: 'Engine Updated Successfully',
+            backgroundColor: Colors.green);
+        getAllEngines();
+        Get.back();
+      });
+    } catch (e) {
+      debugPrint('Error updating engine: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void deleteEngine({required EngineModel engineModel}) {
+    debugPrint('DeleteEngineFunctionCalled');
+    isLoading.value = true;
+    try {
+      var deletedEngineData = EngineModel(
+        id: engineModel.id,
+        userId: _storage.read('user_info')['_id'],
+        name: engineModel.name,
+        subname: engineModel.subname,
+        isGenerator: engineModel.isGenerator,
+        isCompressor: engineModel.isCompressor,
+      );
+      engineService
+          .deleteEngine(
+              engineModel: deletedEngineData, token: _storage.read('token'))
+          .then((value) {
+        getAllEngines();
+        ToastMessage.showToastMessage(
+            message: 'Engine Deleted Successfully',
+            backgroundColor: Colors.green);
+
+        Get.back();
+      });
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+      debugPrint('Error deleting engine: $e');
     } finally {
       isLoading.value = false;
     }
