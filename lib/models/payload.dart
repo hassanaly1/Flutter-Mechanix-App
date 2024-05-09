@@ -31,34 +31,45 @@ class Payload {
     this.parts,
   });
 
-  factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-        geolocation: json["geolocation"] == null
-            ? null
-            : Geolocation.fromJson(json["geolocation"]),
-        task: json["task"] == null ? null : TaskModel.fromJson(json["task"]),
-        turboTemperature: json["turbo_temperature"] == null
-            ? []
-            : List<TurboTemperature>.from(json["turbo_temperature"]!
-                .map((x) => TurboTemperature.fromJson(x))),
-        hotCompression: json["hot_compression"] == null
-            ? []
-            : List<Temperatures>.from(
-                json["hot_compression"]!.map((x) => Temperatures.fromJson(x))),
-        cylinderExhaustPyrometer: json["cylinder_exhaust_pyrometer"] == null
-            ? []
-            : List<Temperatures>.from(json["cylinder_exhaust_pyrometer"]!
-                .map((x) => Temperatures.fromJson(x))),
-        burnCompression: json["burn_compression"] == null
-            ? []
-            : List<Temperatures>.from(
-                json["burn_compression"]!.map((x) => Temperatures.fromJson(x))),
-        leakageFound: json["leakage_found"] == null
-            ? null
-            : LeakageFound.fromJson(json["leakage_found"]),
-        parts: json["parts"] == null
-            ? []
-            : List<Part>.from(json["parts"]!.map((x) => Part.fromJson(x))),
-      );
+  factory Payload.fromJson(Map<String, dynamic> taskJson) {
+    Payload payload = Payload(
+      geolocation: taskJson["geolocation"] == null
+          ? null
+          : Geolocation.fromJson(taskJson["geolocation"]),
+      task: TaskModel.fromJson(taskJson),
+      turboTemperature: taskJson["turbo_temperature"] == null
+          ? []
+          : List<TurboTemperature>.from(taskJson["turbo_temperature"]
+              .map((x) => TurboTemperature.fromJson(x))),
+      hotCompression: taskJson["hot_compression"] == null
+          ? []
+          : List<Temperatures>.from(
+              taskJson["hot_compression"].map((x) => Temperatures.fromJson(x))),
+      cylinderExhaustPyrometer: taskJson["cylinder_exhaust_pyrometer"] == null
+          ? []
+          : List<Temperatures>.from(taskJson["cylinder_exhaust_pyrometer"]
+              .map((x) => Temperatures.fromJson(x))),
+      burnCompression: taskJson["burn_compression"] == null
+          ? []
+          : List<Temperatures>.from(taskJson["burn_compression"]
+              .map((x) => Temperatures.fromJson(x))),
+      leakageFound: taskJson["leakage_found"] == null
+          ? null
+          : LeakageFound.fromJson(taskJson["leakage_found"]),
+      parts: taskJson["parts"] == null
+          ? []
+          : List<Part>.from(taskJson["parts"].map((x) => Part.fromJson(x))),
+    );
+    // print(payload.geolocation);
+    // print(payload.task);
+    // print(payload.turboTemperature);
+    // print(payload.hotCompression);
+    // print(payload.cylinderExhaustPyrometer);
+    // print(payload.burnCompression);
+    // print(payload.leakageFound);
+    // print(payload.parts);
+    return payload;
+  }
 
   Map<String, dynamic> toJson() => {
         "geolocation": geolocation?.toJson(),
@@ -110,14 +121,13 @@ class Temperatures {
   }
 
   // Create Temperatures object from a JSON string
-  factory Temperatures.fromJson(String jsonString) {
-    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+  factory Temperatures.fromJson(Map<String, dynamic> json) {
     return Temperatures(
-      temperatureNumber: jsonMap['temperatureNumber'],
-      forCylinder: jsonMap['forCylinder'],
-      forBurnTemperature: jsonMap['forHotCompression'],
-      forHotCompression: jsonMap['forEngineTuneUpHotCompressionTest'],
-      temperature: jsonMap['temperature'],
+      temperatureNumber: json['temperature_number'],
+      forCylinder: json['for_cylinder'],
+      forBurnTemperature: json['for_burn_compression'],
+      forHotCompression: json['for_hot_compression'],
+      temperature: json['temperature'],
     );
   }
 }
@@ -125,8 +135,8 @@ class Temperatures {
 class Geolocation {
   double? geolat;
   double? geolong;
-  double? geohash;
-  double? address;
+  String? geohash;
+  String? address;
 
   Geolocation({
     this.geolat,
@@ -146,7 +156,7 @@ class Geolocation {
         "geolat": geolat ?? 0.0,
         "geolong": geolong ?? 0.0,
         "geohash": geohash ?? 0.0,
-        "address": address ?? 0.0,
+        "address": address ?? "",
       };
 }
 
@@ -205,7 +215,7 @@ class LeakageFound {
 class Part {
   String? name;
   String? description;
-  double? quantity;
+  int? quantity;
   String? vendor;
 
   Part({
@@ -248,11 +258,11 @@ class GasSampleAs {
 
 class TurboTemperature {
   String? lbInType;
-  double? lbInValue;
+  int? lbInValue;
   bool? isTurboIn;
   bool? isTurboOut;
   String? rbInType;
-  double? rbInValue;
+  int? rbInValue;
 
   TurboTemperature({
     this.lbInType,
@@ -282,3 +292,40 @@ class TurboTemperature {
         "rb_in_value": rbInValue ?? 0,
       };
 }
+
+// -----------------------
+// factory Payload.fromJson(Map<String, dynamic> json) => Payload(
+//       // This is previous
+//       // geolocation: json["geolocation"] == null
+//       //     ? null
+//       //     : Geolocation.fromJson(json["geolocation"]),
+//       //This is latest
+//       geolocation: json["tasks"] == null
+//           ? null
+//           : json["tasks"]["geolocation"] == null
+//               ? null
+//               : Geolocation.fromJson(json["tasks"]["geolocation"]),
+//       task: json["tasks"] == null ? null : TaskModel.fromJson(json["task"]),
+//       turboTemperature: json["turbo_temperature"] == null
+//           ? []
+//           : List<TurboTemperature>.from(json["turbo_temperature"]!
+//               .map((x) => TurboTemperature.fromJson(x))),
+//       hotCompression: json["hot_compression"] == null
+//           ? []
+//           : List<Temperatures>.from(
+//               json["hot_compression"]!.map((x) => Temperatures.fromJson(x))),
+//       cylinderExhaustPyrometer: json["cylinder_exhaust_pyrometer"] == null
+//           ? []
+//           : List<Temperatures>.from(json["cylinder_exhaust_pyrometer"]!
+//               .map((x) => Temperatures.fromJson(x))),
+//       burnCompression: json["burn_compression"] == null
+//           ? []
+//           : List<Temperatures>.from(
+//               json["burn_compression"]!.map((x) => Temperatures.fromJson(x))),
+//       leakageFound: json["leakage_found"] == null
+//           ? null
+//           : LeakageFound.fromJson(json["leakage_found"]),
+//       parts: json["parts"] == null
+//           ? []
+//           : List<Part>.from(json["parts"]!.map((x) => Part.fromJson(x))),
+//     );

@@ -72,8 +72,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                           ),
                         ],
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(22.0),
-                          topRight: Radius.circular(22.0),
+                          topLeft: Radius.circular(32.0),
+                          topRight: Radius.circular(32.0),
                         ),
                       ),
                       child: Row(
@@ -187,28 +187,18 @@ class HomeAppbar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/images/app-logo-white.png',
-                        height: context.height * 0.1,
-                        fit: BoxFit.cover,
-                      ),
-                      // Obx(
-                      //   () => Visibility(
-                      //     visible:
-                      //         controller.currentPage.value == 0 ? false : true,
-                      //     child: IconButton(
-                      //       onPressed: () {
-                      //         controller.currentPage.value == 0
-                      //             ? null
-                      //             : sideMenu.changePage(0);
-                      //       },
-                      //       icon: Icon(Icons.arrow_back_rounded,
-                      //           color: controller.currentPage.value == 0
-                      //               ? Colors.transparent
-                      //               : Colors.white70),
-                      //     ),
-                      //   ),
-                      // ),
+                      context.isLandscape
+                          ? Image.asset(
+                              'assets/images/app-logo-white.png',
+                              height: context.height * 0.1,
+                              fit: BoxFit.cover,
+                            )
+                          : const SizedBox(),
+                      //todo: Back button functionality remaining.
+                      // : IconButton(
+                      //     onPressed: () => sideMenu.changePage(0),
+                      //     icon: const Icon(Icons.arrow_back_rounded,
+                      //         color: Colors.white70)),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: context.isLandscape

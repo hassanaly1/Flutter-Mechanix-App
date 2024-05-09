@@ -11,14 +11,14 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
-import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
+import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody4 extends StatelessWidget {
-  final SideMenuController sideMenu;
+  final SideMenuController? sideMenu;
   CustomStepperBody4({
     super.key,
-    required this.sideMenu,
+    this.sideMenu,
   });
   final AddTaskController controller = Get.find();
   final GlobalKey<FormState> _partsFormkey = GlobalKey<FormState>();
@@ -30,8 +30,8 @@ class CustomStepperBody4 extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(40.0),
-          topRight: Radius.circular(40.0),
+          topLeft: Radius.circular(32.0),
+          topRight: Radius.circular(32.0),
         ),
       ),
       child: ListView(
@@ -268,7 +268,7 @@ class CustomStepperBody4 extends StatelessWidget {
                           Part(
                             name: controller.partName.text.trim(),
                             description: controller.partDescription.text.trim(),
-                            quantity: double.tryParse(
+                            quantity: int.tryParse(
                                 controller.partQuantity.text.trim()),
                             vendor: controller.partVendor.text.trim(),
                           ),
@@ -326,7 +326,7 @@ class CustomStepperBody4 extends StatelessWidget {
                     isLoading: false,
                     buttonText: 'SUBMIT',
                     onTap: () async => await controller.addTask().then((value) {
-                          sideMenu.changePage(0);
+                          sideMenu?.changePage(0);
                           // Get.off(() => const DashboardScreen());
                           Get.delete<AddTaskController>();
                           Get.delete<MapController>();

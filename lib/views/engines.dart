@@ -13,43 +13,24 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/validator.dart';
 import 'package:mechanix/models/engine_model.dart';
-import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
+import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/engine_detail.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class EnginesScreen extends StatefulWidget {
+class EnginesScreen extends StatelessWidget {
   final SideMenuController sideMenu;
-  const EnginesScreen({super.key, required this.sideMenu});
-
-  @override
-  State<EnginesScreen> createState() => _EnginesScreenState();
-}
-
-class _EnginesScreenState extends State<EnginesScreen> {
-  late EnginesController controller;
-  @override
-  void initState() {
-    controller = Get.put(EnginesController());
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+  EnginesScreen({super.key, required this.sideMenu});
+  final EnginesController controller = Get.put(EnginesController());
+  final UniversalController universalController = Get.find();
   @override
   Widget build(BuildContext context) {
-    final EnginesController controller = Get.find();
-    final UniversalController universalController = Get.find();
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: PopScope(
           canPop: false,
           onPopInvoked: (didPop) {
-            widget.sideMenu.changePage(0);
+            sideMenu.changePage(0);
             Get.delete<EnginesController>();
           },
           child: Scaffold(
@@ -85,7 +66,7 @@ class _EnginesScreenState extends State<EnginesScreen> {
                             context: context, controller: controller),
                       ),
                       Obx(
-                        () => controller.isLoading.value
+                        () => controller.isEnginesAreLoading.value
                             ? const SingleChildScrollView(
                                 physics: AlwaysScrollableScrollPhysics(),
                                 child: Center(
@@ -276,24 +257,22 @@ class DialogFirstView extends StatelessWidget {
                 fontSize: 12.0,
                 fontWeight: FontWeight.w600,
                 maxLines: 2),
-            Obx(
-              () => Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: ['Generator', 'Compressor'].map((option) {
-                  return Row(children: [
-                    Radio(
-                        visualDensity: VisualDensity.compact,
-                        activeColor: AppColors.blueTextColor,
-                        value: option,
-                        groupValue: controller.engineType.value,
-                        onChanged: (value) {
-                          controller.engineType.value = value.toString();
-                        }),
-                    CustomTextWidget(text: option, fontSize: 11.0)
-                  ]);
-                }).toList(),
-              ),
-            )
+            Obx(() => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: ['Generator', 'Compressor'].map((option) {
+                    return Row(children: [
+                      Radio(
+                          visualDensity: VisualDensity.compact,
+                          activeColor: AppColors.blueTextColor,
+                          value: option,
+                          groupValue: controller.engineType.value,
+                          onChanged: (value) {
+                            controller.engineType.value = value.toString();
+                          }),
+                      CustomTextWidget(text: option, fontSize: 11.0)
+                    ]);
+                  }).toList(),
+                ))
           ])),
       Obx(
         () => CustomButton(
@@ -687,31 +666,33 @@ void _showDeletePopup(
                             textAlign: TextAlign.center,
                             fontWeight: FontWeight.w400),
                         const SizedBox(height: 12.0),
-                        InkWell(
-                            onTap: () {
-                              controller.deleteEngine(engineModel: model);
-                            },
-                            child: ReUsableContainer(
-                              verticalPadding: context.height * 0.01,
-                              height: 50,
-                              color: Colors.red,
-                              child: Center(
-                                  child: controller.isLoading.value
-                                      ? const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: SpinKitRing(
-                                            lineWidth: 2.0,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                      : CustomTextWidget(
-                                          text: 'Delete',
-                                          fontSize: 12,
-                                          textColor: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          textAlign: TextAlign.center,
-                                        )),
-                            )),
+                        Obx(
+                          () => InkWell(
+                              onTap: () {
+                                controller.deleteEngine(engineModel: model);
+                              },
+                              child: ReUsableContainer(
+                                verticalPadding: context.height * 0.01,
+                                height: 50,
+                                color: Colors.red,
+                                child: Center(
+                                    child: controller.isLoading.value
+                                        ? const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: SpinKitRing(
+                                              lineWidth: 2.0,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : CustomTextWidget(
+                                            text: 'Delete',
+                                            fontSize: 12,
+                                            textColor: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            textAlign: TextAlign.center,
+                                          )),
+                              )),
+                        ),
                         CustomButton(
                           isLoading: false,
                           usePrimaryColor: false,

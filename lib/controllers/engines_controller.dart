@@ -11,7 +11,8 @@ import 'package:image_picker/image_picker.dart';
 
 class EnginesController extends GetxController {
   final _storage = GetStorage();
-  RxBool isLoading = false.obs;
+  var isLoading = false.obs;
+  var isEnginesAreLoading = false.obs;
   RxBool isQrCodeGenerated = false.obs;
   XFile? engineImage;
   Uint8List? engineImageInBytes;
@@ -50,12 +51,12 @@ class EnginesController extends GetxController {
   }
 
   void addEngine() {
-    isLoading.value = true;
     if (engineImageUrl.value == '') {
       ToastMessage.showToastMessage(
           message: 'Please Select an Engine Image',
           backgroundColor: Colors.red);
     } else {
+      isLoading.value = true;
       try {
         var newEngine = EngineModel(
           userId: _storage.read('user_info')['_id'],
@@ -65,24 +66,30 @@ class EnginesController extends GetxController {
           isGenerator: engineType.value == 'Generator',
           isCompressor: engineType.value == 'Compressor',
         );
-
-        engineService
-            .addEngine(
-                engineModel: newEngine, engineImageInBytes: engineImageInBytes!)
-            .then((value) {
-          ToastMessage.showToastMessage(
-              message: 'Engine Added Successfully',
-              backgroundColor: Colors.green);
-          pageController.nextPage(
-              duration: const Duration(milliseconds: 300), curve: Curves.ease);
-          getAllEngines();
-          isQrCodeGenerated.value = true;
-          engineType.value = 'Generator';
-        });
+        engineImageInBytes != null
+            ? engineService
+                .addEngine(
+                    engineModel: newEngine,
+                    engineImageInBytes: engineImageInBytes!)
+                .then((value) {
+                ToastMessage.showToastMessage(
+                    message: 'Engine Added Successfully',
+                    backgroundColor: Colors.green);
+                isLoading.value = false;
+                pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease);
+                getAllEngines();
+                isQrCodeGenerated.value = true;
+                engineType.value = 'Generator';
+              })
+            : ToastMessage.showToastMessage(
+                message: 'Please Select an Engine Image',
+                backgroundColor: Colors.red);
       } catch (e) {
         debugPrint(e.toString());
       } finally {
-        isLoading.value = false;
+        // isLoading.value = false;
       }
     }
   }
@@ -90,17 +97,17 @@ class EnginesController extends GetxController {
   Future<void> getAllEngines() async {
     debugPrint('GetAllEnginesFunctionCalled');
     try {
-      isLoading.value = true;
+      isEnginesAreLoading.value = true;
       // Call the service method to fetch the engines
       List<EngineModel> fetchedEngines = await engineService.getAllEngines();
       // Assign the fetched engines to the engines list
       universalController.engines = fetchedEngines;
       debugPrint('EnginesCount: ${universalController.engines.length}');
-      isLoading.value = false;
+      isEnginesAreLoading.value = false;
     } catch (e) {
       debugPrint('Error fetching engines: $e');
     } finally {
-      isLoading.value = false;
+      isEnginesAreLoading.value = false;
     }
   }
 
@@ -120,6 +127,7 @@ class EnginesController extends GetxController {
           .updateEngine(
               engineModel: updatedEngineData, token: _storage.read('token'))
           .then((value) {
+        isLoading.value = false;
         ToastMessage.showToastMessage(
             message: 'Engine Updated Successfully',
             backgroundColor: Colors.green);
@@ -129,7 +137,7 @@ class EnginesController extends GetxController {
     } catch (e) {
       debugPrint('Error updating engine: $e');
     } finally {
-      isLoading.value = false;
+      // isLoading.value = false;
     }
   }
 
@@ -150,6 +158,7 @@ class EnginesController extends GetxController {
               engineModel: deletedEngineData, token: _storage.read('token'))
           .then((value) {
         getAllEngines();
+        isLoading.value = false;
         ToastMessage.showToastMessage(
             message: 'Engine Deleted Successfully',
             backgroundColor: Colors.green);
@@ -157,12 +166,13 @@ class EnginesController extends GetxController {
         Get.back();
       });
     } catch (e) {
+      isLoading.value = false;
       ToastMessage.showToastMessage(
           message: 'Something went wrong, please try again',
           backgroundColor: Colors.red);
       debugPrint('Error deleting engine: $e');
     } finally {
-      isLoading.value = false;
+      // isLoading.value = false;
     }
   }
 

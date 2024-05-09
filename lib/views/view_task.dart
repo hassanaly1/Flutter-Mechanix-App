@@ -8,7 +8,9 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
-import 'package:mechanix/models/task_model.dart';
+import 'package:mechanix/models/payload.dart';
+import 'package:mechanix/views/add_task/add_task.dart';
+import 'package:mechanix/views/update_task.dart';
 
 class ViewAllTasksScreen extends StatelessWidget {
   final SideMenuController sideMenu;
@@ -81,8 +83,14 @@ class ViewAllTasksScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: controller.tasks.length,
-                          itemBuilder: (context, index) => CustomTaskCard(
-                            model: controller.tasks[index],
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              Get.to(() => UpdateTaskScreen(
+                                  model: controller.tasks[index]));
+                            },
+                            child: CustomTaskCard(
+                              model: controller.tasks[index],
+                            ),
                           ),
                         ),
                       )
@@ -96,7 +104,7 @@ class ViewAllTasksScreen extends StatelessWidget {
 }
 
 class CustomTaskCard extends StatelessWidget {
-  final TaskModel model;
+  final Payload model;
   const CustomTaskCard({
     super.key,
     required this.model,
@@ -111,38 +119,26 @@ class CustomTaskCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Flexible(
-                //   child: CustomTextWidget(
-                //     text: model.geolocation?.address! == ""
-                //         ? 'Not Assigned'
-                //         : model.geolocation?.address ?? '',
-                //     fontSize: 12.0,
-                //     decoration: TextDecoration.underline,
-                //   ),
-                // ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // CustomTextWidget(
-                    //   text: model.date == null
-                    //       ? 'Not Assigned'
-                    //       : '${model.date?.day.toString().padLeft(2, '0')} : ${model.date?.month.toString().padLeft(2, '0')} : ${model.date?.year.toString().padLeft(2, '0')}',
-                    //   fontSize: 10.0,
-                    // ),
-                    // CustomTextWidget(
-                    //   text: model.time == null
-                    //       ? 'Not Assigned'
-                    //       : '${model.time?.format(context).padLeft(2, '0')}',
-                    //   fontSize: 10.0,
-                    // ),
-                  ],
-                )
-              ],
+            CustomTextWidget(
+              textAlign: TextAlign.center,
+              text: model.geolocation?.address! == ""
+                  ? 'Not Assigned'
+                  : model.geolocation?.address ?? '',
+              fontSize: 12.0,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
             ),
+            const SizedBox(height: 4.0),
+            CustomTextWidget(
+                text:
+                    'Date: ${model.task?.date == null ? 'Not Assigned' : DateFormat('yyyy-MM-dd').format(DateTime.parse(model.task?.date ?? ''))}',
+                fontSize: 10.0),
+            CustomTextWidget(
+              text:
+                  'Time: ${model.task?.time == null ? 'Not Assigned' : '${model.task?.time}'}',
+              fontSize: 10.0,
+            ),
+            const Divider(),
             Row(
               children: [
                 Image.asset(
@@ -153,9 +149,9 @@ class CustomTaskCard extends StatelessWidget {
                 const SizedBox(width: 4.0),
                 Flexible(
                   child: CustomTextWidget(
-                    text: model.nameJourneyMan!.isEmpty
+                    text: model.task?.nameJourneyMan! == ''
                         ? 'Not Assigned'
-                        : model.nameJourneyMan!,
+                        : model.task?.nameJourneyMan ?? '',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
                   ),
@@ -168,7 +164,9 @@ class CustomTaskCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             CustomTextWidget(
-              text: model.jobScope!.isEmpty ? 'Not Assigned' : model.jobScope!,
+              text: model.task?.jobScope! == ''
+                  ? 'Not Assigned'
+                  : model.task?.jobScope ?? '',
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
               maxLines: 3,

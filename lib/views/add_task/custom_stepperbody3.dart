@@ -7,7 +7,7 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
-import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
+import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody3 extends StatelessWidget {
@@ -24,8 +24,8 @@ class CustomStepperBody3 extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(40.0),
-          topRight: Radius.circular(40.0),
+          topLeft: Radius.circular(32.0),
+          topRight: Radius.circular(32.0),
         ),
       ),
       child: ListView(

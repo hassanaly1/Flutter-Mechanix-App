@@ -5,14 +5,18 @@ import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
+import 'package:mechanix/helpers/dropdown.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
+import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/add_task/select_location.dart';
-import 'package:mechanix/views/add_task/widgets/heading&textfield.dart';
+import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody1 extends StatelessWidget {
+  final bool isTaskUpdating;
   CustomStepperBody1({
     super.key,
+    required this.isTaskUpdating,
   });
 
   final UniversalController universalController = Get.find();
@@ -25,8 +29,8 @@ class CustomStepperBody1 extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(40.0),
-          topRight: Radius.circular(40.0),
+          topLeft: Radius.circular(32.0),
+          topRight: Radius.circular(32.0),
         ),
       ),
       child: ListView(
@@ -39,10 +43,12 @@ class CustomStepperBody1 extends StatelessWidget {
                 HeadingAndTextfield(
                   title: 'Client\'s Name',
                   controller: controller.clientName,
+                  readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
                   title: 'Client\'s Email',
                   controller: controller.clientEmail,
+                  readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
                     title: 'Select Location',
@@ -56,15 +62,19 @@ class CustomStepperBody1 extends StatelessWidget {
                   children: [
                     Flexible(
                       child: HeadingAndTextfield(
-                          title: 'Set Unit',
-                          controller: controller.setUnits,
-                          keyboardType: TextInputType.number),
+                        title: 'Set Unit',
+                        controller: controller.setUnits,
+                        keyboardType: TextInputType.number,
+                        readOnly: isTaskUpdating,
+                      ),
                     ),
                     Flexible(
                       child: HeadingAndTextfield(
-                          title: 'Unit Hours',
-                          controller: controller.unitHours,
-                          keyboardType: TextInputType.number),
+                        title: 'Unit Hours',
+                        controller: controller.unitHours,
+                        keyboardType: TextInputType.number,
+                        readOnly: isTaskUpdating,
+                      ),
                     )
                   ],
                 ),
@@ -107,27 +117,28 @@ class CustomStepperBody1 extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       maxLines: 2,
                     ),
-                    // CustomDropdown(
-                    //   items: universalController.engines,
-                    //   hintText: 'Select Engine Brand',
-                    //   onTap: () {
-                    //     debugPrint('Dropdown tapped');
-                    //     universalController.engines.isEmpty
-                    //         ? ToastMessage.showToastMessage(
-                    //             message:
-                    //                 'Please Add Engines first from the Engine section.',
-                    //             backgroundColor: Colors.red)
-                    //         : null;
-                    //   },
-                    //   onChanged: (value) {
-                    //     controller.engineBrand.value = value!.name!;
-                    //   },
-                    // ),
+                    CustomDropdown(
+                      items: universalController.engines,
+                      hintText: 'Select Engine Brand',
+                      onTap: () {
+                        debugPrint('Dropdown tapped');
+                        universalController.engines.isEmpty
+                            ? ToastMessage.showToastMessage(
+                                message:
+                                    'Please Add Engines first from the Engine section.',
+                                backgroundColor: Colors.red)
+                            : null;
+                      },
+                      onChanged: (value) {
+                        controller.engineBrandId.value = value?.id ?? '';
+                      },
+                    ),
                   ],
                 ),
                 HeadingAndTextfield(
                   title: 'Name of JOURNEYMAN',
                   controller: controller.nameOfJourneyMan,
+                  readOnly: isTaskUpdating,
                 ),
                 CustomRadioButton(
                   heading: 'Unit Online on Arrival?',
@@ -138,27 +149,32 @@ class CustomStepperBody1 extends StatelessWidget {
                   title: 'Job Scope',
                   maxLines: 5,
                   controller: controller.jobScope,
+                  readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
                   title: 'Report Any Operations Problems',
                   maxLines: 5,
                   controller: controller.operationalProblems,
+                  readOnly: isTaskUpdating,
                 ),
                 Row(children: [
                   Flexible(
                       child: HeadingAndTextfield(
                           title: 'Model Number',
                           controller: controller.modelNumber,
+                          readOnly: isTaskUpdating,
                           keyboardType: TextInputType.number)),
                   Flexible(
                       child: HeadingAndTextfield(
                           title: 'Serial Number',
                           controller: controller.serialNumber,
+                          readOnly: isTaskUpdating,
                           keyboardType: TextInputType.number))
                 ]),
                 HeadingAndTextfield(
                     title: 'Arrangement Number',
                     controller: controller.arrangementNumber,
+                    readOnly: isTaskUpdating,
                     keyboardType: TextInputType.number),
                 CustomRadioButton(
                   heading: 'Oil Sample (s) Taken?',
@@ -181,60 +197,60 @@ class CustomStepperBody1 extends StatelessWidget {
   }
 }
 
-_openSelectEngineDialog(
-    {required BuildContext context,
-    required UniversalController controller,
-    required AddTaskController taskController}) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true,
-    barrierLabel: 'Dismiss',
-    transitionDuration: const Duration(milliseconds: 400),
-    pageBuilder: (context, animation, secondaryAnimation) => Container(),
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return ScaleTransition(
-        scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-        child: FadeTransition(
-          opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-          child: AlertDialog(
-            scrollable: true,
-            backgroundColor: Colors.transparent,
-            content: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(
-                  horizontal: 8.0, vertical: context.height * 0.02),
-              decoration: const BoxDecoration(
-                color: Colors.white60,
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
-              ),
-              child: Column(
-                children: [
-                  CustomTextWidget(
-                      text: 'Engines',
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.engines.length,
-                    itemBuilder: (context, index) {
-                      final engine = controller.engines[index];
-                      return null;
-                      // return CustomEngineCard(
-                      //   model: engine,
-                      //   onTap: () {
-                      //     taskController.engineBrand.value = engine.name ?? '';
-                      //     Get.back();
-                      //   },
-                      // );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+// _openSelectEngineDialog(
+//     {required BuildContext context,
+//     required UniversalController controller,
+//     required AddTaskController taskController}) {
+//   showGeneralDialog(
+//     context: context,
+//     barrierDismissible: true,
+//     barrierLabel: 'Dismiss',
+//     transitionDuration: const Duration(milliseconds: 400),
+//     pageBuilder: (context, animation, secondaryAnimation) => Container(),
+//     transitionBuilder: (context, animation, secondaryAnimation, child) {
+//       return ScaleTransition(
+//         scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+//         child: FadeTransition(
+//           opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+//           child: AlertDialog(
+//             scrollable: true,
+//             backgroundColor: Colors.transparent,
+//             content: Container(
+//               width: double.infinity,
+//               padding: EdgeInsets.symmetric(
+//                   horizontal: 8.0, vertical: context.height * 0.02),
+//               decoration: const BoxDecoration(
+//                 color: Colors.white60,
+//                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
+//               ),
+//               child: Column(
+//                 children: [
+//                   CustomTextWidget(
+//                       text: 'Engines',
+//                       fontSize: 18.0,
+//                       fontWeight: FontWeight.w600),
+//                   ListView.builder(
+//                     shrinkWrap: true,
+//                     physics: const NeverScrollableScrollPhysics(),
+//                     itemCount: controller.engines.length,
+//                     itemBuilder: (context, index) {
+//                       final engine = controller.engines[index];
+//                       return null;
+//                       // return CustomEngineCard(
+//                       //   model: engine,
+//                       //   onTap: () {
+//                       //     taskController.engineBrand.value = engine.name ?? '';
+//                       //     Get.back();
+//                       //   },
+//                       // );
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }

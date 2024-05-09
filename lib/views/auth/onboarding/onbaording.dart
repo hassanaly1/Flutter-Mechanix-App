@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/views/auth/login.dart';
-import 'package:mechanix/views/auth/onboarding/reusableOnBoardingScreen.dart';
+import 'package:mechanix/views/auth/onboarding/reusable_on_boarding_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {

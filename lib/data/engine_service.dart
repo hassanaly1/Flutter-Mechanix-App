@@ -117,12 +117,12 @@ class EngineService {
         Map<String, dynamic> responseData = json.decode(response.body);
         String message = responseData['message'];
 
-        print(message);
+        debugPrint(message);
       } else {
         ToastMessage.showToastMessage(
             message: 'Something went wrong, please try again',
             backgroundColor: Colors.red);
-        print(
+        debugPrint(
             'Failed to update engine: ${response.statusCode} ${response.body}');
       }
     } catch (e) {
@@ -152,12 +152,12 @@ class EngineService {
         Map<String, dynamic> responseData = json.decode(response.body);
         String message = responseData['message'];
 
-        print(message);
+        debugPrint(message);
       } else {
         ToastMessage.showToastMessage(
             message: 'Something went wrong, please try again',
             backgroundColor: Colors.red);
-        print(
+        debugPrint(
             'Failed to delete engine: ${response.statusCode} ${response.body}');
       }
     } catch (e) {

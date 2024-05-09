@@ -13,15 +13,17 @@ import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
 import 'package:mechanix/views/add_task/scan_qrcode.dart';
 import 'package:mechanix/views/add_task/stepper_header.dart';
 
-class AddTaskScreen extends StatefulWidget {
+class TaskScreen extends StatefulWidget {
+  final bool isUpdatingTask;
   final SideMenuController sideMenu;
-  const AddTaskScreen({super.key, required this.sideMenu});
+  const TaskScreen(
+      {super.key, required this.sideMenu, required this.isUpdatingTask});
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<TaskScreen> createState() => _TaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _TaskScreenState extends State<TaskScreen> {
   late AddTaskController controller;
   @override
   void initState() {
@@ -47,7 +49,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         Get.delete<MapController>();
       },
       child: Container(
-        color: Colors.transparent,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(32.0),
+            topRight: Radius.circular(32.0),
+          ),
+        ),
         child: DefaultTabController(
           length: 4,
           child: Scaffold(
@@ -107,36 +115,39 @@ class TopSection extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(
-            width: context.width,
-            child: Obx(
-              () => ReUsableContainer(
-                color: AppColors.primaryColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const IconButton(
-                        onPressed: null,
-                        icon: Icon(Icons.qr_code_scanner_rounded,
-                            color: Colors.transparent)),
-                    Expanded(
-                      child: CustomTextWidget(
-                        text: controller.engineBrand.value == ''
-                            ? 'CAT 3600 SERVICE'
-                            : controller.engineBrand.value,
-                        fontSize: 16.0,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        fontWeight: FontWeight.w600,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: context.width,
+              child: Obx(
+                () => ReUsableContainer(
+                  color: AppColors.primaryColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const IconButton(
+                          onPressed: null,
+                          icon: Icon(Icons.qr_code_scanner_rounded,
+                              color: Colors.transparent)),
+                      Expanded(
+                        child: CustomTextWidget(
+                          text: controller.engineBrandId.value == ''
+                              ? 'CAT 3600 SERVICE'
+                              : controller.engineBrandId.value,
+                          fontSize: 16.0,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(() => const ScanQrCodeScreen(),
-                              transition: Transition.rightToLeft);
-                        },
-                        icon: const Icon(Icons.qr_code_scanner_rounded))
-                  ],
+                      IconButton(
+                          onPressed: () {
+                            Get.to(() => const ScanQrCodeScreen(),
+                                transition: Transition.rightToLeft);
+                          },
+                          icon: const Icon(Icons.qr_code_scanner_rounded))
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -144,12 +155,16 @@ class TopSection extends StatelessWidget {
           Obx(
             () => CustomTextWidget(
               text: 'Steps ${controller.activePageIndex.value + 1} of 4',
-              fontSize: 18.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.w600,
               textColor: AppColors.blueTextColor,
               textAlign: TextAlign.center,
             ),
           ),
+          Divider(
+              indent: context.width * 0.3,
+              endIndent: context.width * 0.3,
+              color: Colors.black26),
           StepperHeader(controller: controller),
         ],
       ),
@@ -177,7 +192,7 @@ class BottomPageViewSection extends StatelessWidget {
               sizing: StackFit.loose,
               index: controller.activePageIndex.value,
               children: [
-                CustomStepperBody1(),
+                CustomStepperBody1(isTaskUpdating: false),
                 CustomStepperBody2(),
                 CustomStepperBody3(),
                 CustomStepperBody4(sideMenu: sideMenu),
@@ -188,30 +203,4 @@ class BottomPageViewSection extends StatelessWidget {
       ),
     );
   }
-}
-
-BoxDecoration reusableDecoration() {
-  return const BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-      colors: [
-        Color.fromRGBO(255, 220, 105, 0.4),
-        Color.fromRGBO(86, 127, 255, 0.4),
-      ],
-    ),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black26,
-        blurRadius: 5.0,
-        spreadRadius: 5.0,
-      ),
-      BoxShadow(
-        color: Colors.white,
-        offset: Offset(0.0, 0.0),
-        blurRadius: 0.0,
-        spreadRadius: 0.0,
-      ),
-    ],
-  );
 }

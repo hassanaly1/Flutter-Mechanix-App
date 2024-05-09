@@ -57,4 +57,56 @@ class TaskService {
       debugPrint('Error creating task: $error');
     }
   }
+
+  Future<List<Payload>> getAllTasks(
+      {required String userId, required String token}) async {
+    const apiUrl =
+        'https://mechanix-api-production.up.railway.app/api/task/getalltasks';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'user': userId}),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        if (jsonData['data'] != null) {
+          final tasksList = jsonData['data'];
+
+          final List<Payload> tasks = [];
+
+          // {
+          //   'tasks': [],
+          //   'totalCount': int
+          // }
+
+          if (tasksList['tasks'] != null) {
+            final List<dynamic> tasksDataList = tasksList['tasks'];
+
+            // Payload payload = Payload.fromJson(tasksDataList[0]);
+            // print(payload);
+
+            tasks.addAll(tasksDataList.map((data) => Payload.fromJson(data)));
+          }
+
+          return tasks;
+        } else {
+          debugPrint('No tasks found');
+          return [];
+        }
+      } else {
+        debugPrint('Failed to get tasks: ${response.reasonPhrase}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error getting tasks: $e');
+      return [];
+    }
+  }
 }

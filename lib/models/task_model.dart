@@ -1,58 +1,60 @@
 import 'package:mechanix/models/payload.dart';
 
 class TaskModel {
+  //Page1
   String? name;
   String? userId;
   String? customerEmail;
-  double? unit;
-  double? unitHours;
+  int? unit;
+  int? unitHours;
   String? date;
   String? time;
-  String? engineBrand;
+  String? engineBrandId;
   String? nameJourneyMan;
   String? unitOnlineArrival;
   String? jobScope;
   String? problems;
-  double? modelNumber;
-  double? serialNumber;
-  double? arrangementNumber;
+  int? modelNumber;
+  int? serialNumber;
+  int? arrangementNumber;
   String? isOilSampleTaken;
-  double? engineLoad;
-  double? engineRpm;
-  double? btdc;
+  //Page2
+  int? engineLoad;
+  int? engineRpm;
+  int? btdc;
   List<GasSampleAs>? gasSampleAsFound;
-  double? lbBankAsGasFound;
-  double? rbBankAsGasFound;
+  int? lbBankAsGasFound;
+  int? rbBankAsGasFound;
   List<GasSampleAs>? gasSampleAsAdjusted;
-  double? lbBankAsGasAdjusted;
-  double? rbBankAsGasAdjusted;
-  double? btdcValue;
+  int? lbBankAsGasAdjusted;
+  int? rbBankAsGasAdjusted;
+  int? btdcValue;
   String? btuType;
   String? isMisfiresDetected;
-  double? throttleActuatorPosition;
-  double? throttleActuatorFuelValue;
-  double? engineOilPressurePsi;
-  double? oilPressureDifferentialFilter;
+  int? throttleActuatorPosition;
+  int? throttleActuatorFuelValue;
+  int? engineOilPressurePsi;
+  int? oilPressureDifferentialFilter;
   String? engineOilPressureDifferentialFilterNa;
-  double? oilTemperatureIn;
-  double? oilTemperatureOut;
+  int? oilTemperatureIn;
+  int? oilTemperatureOut;
   String? oilEngineLevel;
-  double? engineCoolantValue;
+  int? engineCoolantValue;
   String? engineCoolantType;
   String? jacketWaterLevel;
   String? auxiliaryCoolant;
-  double? jacketWaterTemperatureIn;
-  double? jacketWaterTemperatureOut;
-  double? coolantTemperatureIn;
-  double? coolantTemperatureOut;
+  int? jacketWaterTemperatureIn;
+  int? jacketWaterTemperatureOut;
+  int? coolantTemperatureIn;
+  int? coolantTemperatureOut;
   String? inletAirTemperatureType;
-  double? inletAirTemperatureValue;
+  int? inletAirTemperatureValue;
   String? inletAirPressureType;
-  double? inletAirPressureValue;
-  double? primaryFuelPressurePsi;
-  double? cranKCaseFuelRatio;
-  double? vaccumCrankCasePressure;
-  double? airfilterRestrictionValue;
+  int? inletAirPressureValue;
+  int? primaryFuelPressurePsi;
+  int? cranKCaseFuelRatio;
+  int? vaccumCrankCasePressure;
+  int? airfilterRestrictionValue;
   String? airfilterRestrictionType;
   String? cranKCaseHydraulicOilCondition;
   String? isLeakageFound;
@@ -60,15 +62,16 @@ class TaskModel {
   String? excessiveVibrationDescription;
   String? isInDrivingProblem;
   String? drivingProblemDescription;
-  double? intakeValue;
+  //Page3
+  int? intakeValue;
   String? intakeType;
-  double? exhaustValue;
+  int? exhaustValue;
   String? exhaustType;
   String? majorValueDetected;
   String? boroscopeRecommended;
   String? boroscopeInspectionCompleted;
   String? installNewSparkPlug;
-  double? sparkplugGap; //
+  int? sparkplugGap;
   String? extensionInstalled;
   String? anyNewExtension;
   String? replaceExtensionList;
@@ -95,6 +98,7 @@ class TaskModel {
   String? hyraulicOilNew;
   String? oilLevelCorrect;
   String? oilDrainedIsolation;
+  //Page4
   String? tankFilter;
   String? tankValuesOpen;
   String? oilPressureEngineGood;
@@ -118,7 +122,7 @@ class TaskModel {
     this.unitHours,
     this.date,
     this.time,
-    this.engineBrand,
+    this.engineBrandId,
     this.nameJourneyMan,
     this.unitOnlineArrival,
     this.jobScope,
@@ -230,7 +234,7 @@ class TaskModel {
         unitHours: json["unit_hours"],
         date: json["date"],
         time: json["time"],
-        engineBrand: json["engine_brand"],
+        engineBrandId: json["engine_brand"],
         nameJourneyMan: json["name_journey_man"],
         unitOnlineArrival: json["unit_online_arrival"],
         jobScope: json["job_scope"],
@@ -350,7 +354,7 @@ class TaskModel {
         "unit_hours": unitHours ?? 0,
         "date": date ?? "",
         "time": time ?? "",
-        "engine_brand": engineBrand ?? "",
+        "engine_brand": engineBrandId ?? "",
         "name_journey_man": nameJourneyMan ?? "",
         "unit_online_arrival": unitOnlineArrival ?? "",
         "job_scope": jobScope ?? "",
@@ -460,387 +464,3 @@ class TaskModel {
         "part_repaired_order": partRepairedOrder ?? "",
       };
 }
-
-// PREVIOUS
-/////////////////
-// import 'package:flutter/material.dart';
-// import 'package:mechanix/models/payload_model.dart';
-//
-// class TaskModel {
-//   //Page1 -> 14 fields.
-//   double? userId;
-//   String? name;
-//   String? customerEmail;
-//   double? setUnits;
-//   double? unitHours;
-//   DateTime? selectedDate;
-//   TimeOfDay? selectedTime;
-//   String? engineBrand; //id
-//   String? nameOfJourneyMan;
-//   String? unitOnlineOnArrival;
-//   String? jobScope;
-//   String? operationalProblems;
-//   double? modelNumber;
-//   double? serialNumber;
-//   double? arrangementNumber;
-//   String? oilSamplesTaken;
-//
-//   //Page2 -> 56 fields
-//   double? engineLoad;
-//   double? engineRPM;
-//   double? ignitionTiming;
-//   List<GasSample>? exhaustGasSampleFound; // ?
-//   double? leftBankFound;
-//   double? rightBankFound;
-//   List<GasSample>? exhaustGasSampleAdjusted; // ?
-//   double? leftBankAdjusted;
-//   double? rightBankAdjusted;
-//   double? btuValue;
-//   String? selectedBtuValue; //C or F
-//   String? lbTurboIn;
-//   double? lbTurboInTemp;
-//   String? rbTurboIn;
-//   double? rbTurboInTemp;
-//   String? lbTurboOut;
-//   double? lbTurboOutTemp;
-//   String? rbTurboOut;
-//   double? rbTurboOutTemp;
-//   String? missFireDetected;
-//   double? throttleActuatorPosition;
-//   double? fuelValue;
-//   double? engineOilPressure;
-//   double? oilPressureDifferential;
-//   String? oilPressureDifferentialTextField;
-//   double? oilTemperatureIn;
-//   double? oilTemperatureOut;
-//   String? oilLevelEngine; // 'GOOD'
-//   double? engineCoolantPressure;
-//   String? engineCoolantPressureRadioValue;
-//   String? jacketWaterLevel; // 'GOOD'
-//   String? auxiliaryCoolantLevel1;
-//   double? jacketWaterTemperaturesIn;
-//   double? jacketWaterTemperaturesOut;
-//   double? auxCoolantTemperaturesIn;
-//   double? auxCoolantTemperaturesOut;
-//   double? inletAirTemp;
-//   String? inletAirTempRadio;
-//   double? inletAirPressure;
-//   String? inletAirPressureRadio;
-//   double? primaryFuelPressure;
-//   double? actualAirToFuelRatio;
-//   double? crankcasePressure;
-//   double? airFilterRestriction;
-//   String? airFilterRestrictionRadio;
-//   String? hydraulicOil;
-//   String? anyLeaksFound;
-//   String? excessiveVibrationAndOddNoises;
-//   String? excessiveVibrationAndOddNoisesDescription;
-//   String? problemsWithDriver;
-//   String? problemsWithDriverDescription;
-//
-//   //Page3 -> 38 fields
-//   double? intakeValueSet;
-//   String? intakeValueSetRadioValue;
-//   double? exhaustValueSet;
-//   String? exhaustValueSetRadioValue;
-//   String? majorValueRecessionDetected;
-//   String? boroscopeRecommended;
-//   String? boroscopeInspectionCompleted;
-//   String? installNewSparkplugs;
-//   double? sparkplugGap;
-//   String? sparkplugExtensionInstalled;
-//   String? newExtensionInstalled;
-//   String? listOfNewExtensionInstalled;
-//   String? sparkplugWireCondition;
-//   String? listOfSparkplugWireCondition;
-//   String? cannonPlugConnectorsTight;
-//   String? listOfTransformerCoilsReplaced;
-//   String? crankcaseBreatherInspection;
-//   String? newBreatherElementInstalled;
-//   String? checkAllCanonFan;
-//   String? listOfCheckAllCanonFan;
-//   String? coolantSystemCheck;
-//   String? lubricationSystemCheck;
-//   String? coolingSystemCheck;
-//   String? checkFuelGasFilter;
-//   String? fuelGasFilterFound;
-//   String? airFilterInspection;
-//   String? turboChargerInspection;
-//   String? carburetorInternalCleaningInspection;
-//   String? engineOilFilterChange;
-//   String? engineOilFilterChange2;
-//   String? oilCoolerDrained;
-//   String? hydraulicOilFilterChange;
-//   String? hydraulicOilNew;
-//   String? engineOilSystemPrimed;
-//   String? oilDrainIsolationValvesShutIn;
-//   String? dayTankFiltersInstalledNew;
-//   String? dayTankValvesOpen;
-//
-//   //Page4 -> 13 fields
-//   String? oilPressureEngineAndGood;
-//   String? engineOilLevel;
-//   String? jacketWaterCoolantLevel;
-//   String? auxiliaryCoolantLevel2;
-//   String? temperatureAndPressureCheck;
-//   String? noisesOrVibrationsDetected;
-//   String? engineExhaustGasCheckedAndAdjustedAtMaxLoad;
-//   String? documentFinalSetPointExhaustGasOxygenOrCOLevels;
-//   String? documentFinalManifoldPressureAndRPM;
-//   String? engineDeficienciesRadio;
-//   String? engineDeficienciesTextfield;
-//   String? partsOrderingStatus;
-//
-//   // Constructor
-//   TaskModel({
-//     //Page1 -> 14 fields.
-//     this.userId,
-//     this.name,
-//     this.customerEmail,
-//     this.setUnits,
-//     this.unitHours,
-//     this.selectedDate,
-//     this.selectedTime,
-//     this.nameOfJourneyMan,
-//     this.unitOnlineOnArrival,
-//     this.jobScope,
-//     this.operationalProblems,
-//     this.engineBrand,
-//     this.modelNumber,
-//     this.serialNumber,
-//     this.arrangementNumber,
-//     this.oilSamplesTaken,
-//
-//     //Page2 -> 56 fields
-//     this.engineLoad,
-//     this.engineRPM,
-//     this.ignitionTiming,
-//     this.exhaustGasSampleFound,
-//     this.leftBankFound,
-//     this.rightBankFound,
-//     this.exhaustGasSampleAdjusted,
-//     this.leftBankAdjusted,
-//     this.rightBankAdjusted,
-//     this.btuValue,
-//     this.selectedBtuValue,
-//     this.lbTurboIn,
-//     this.lbTurboInTemp,
-//     this.rbTurboIn,
-//     this.rbTurboInTemp,
-//     this.lbTurboOut,
-//     this.lbTurboOutTemp,
-//     this.rbTurboOut,
-//     this.rbTurboOutTemp,
-//     this.missFireDetected,
-//     this.throttleActuatorPosition,
-//     this.fuelValue,
-//     this.engineOilPressure,
-//     this.oilPressureDifferential,
-//     this.oilPressureDifferentialTextField,
-//     this.oilTemperatureIn,
-//     this.oilTemperatureOut,
-//     this.oilLevelEngine,
-//     this.engineCoolantPressure,
-//     this.engineCoolantPressureRadioValue,
-//     this.jacketWaterLevel,
-//     this.auxiliaryCoolantLevel1,
-//     this.jacketWaterTemperaturesIn,
-//     this.jacketWaterTemperaturesOut,
-//     this.auxCoolantTemperaturesIn,
-//     this.auxCoolantTemperaturesOut,
-//     this.inletAirTemp,
-//     this.inletAirTempRadio,
-//     this.inletAirPressure,
-//     this.inletAirPressureRadio,
-//     this.primaryFuelPressure,
-//     this.actualAirToFuelRatio,
-//     this.crankcasePressure,
-//     this.airFilterRestriction,
-//     this.airFilterRestrictionRadio,
-//     this.hydraulicOil,
-//     this.anyLeaksFound,
-//     this.excessiveVibrationAndOddNoises,
-//     this.excessiveVibrationAndOddNoisesDescription,
-//     this.problemsWithDriver,
-//     this.problemsWithDriverDescription,
-//
-//     //Page3 -> 38 fields
-//     this.intakeValueSet,
-//     this.intakeValueSetRadioValue,
-//     this.exhaustValueSet,
-//     this.exhaustValueSetRadioValue,
-//     this.majorValueRecessionDetected,
-//     this.boroscopeRecommended,
-//     this.boroscopeInspectionCompleted,
-//     this.installNewSparkplugs,
-//     this.sparkplugGap,
-//     this.sparkplugExtensionInstalled,
-//     this.newExtensionInstalled,
-//     this.listOfNewExtensionInstalled,
-//     this.sparkplugWireCondition,
-//     this.listOfSparkplugWireCondition,
-//     this.cannonPlugConnectorsTight,
-//     this.listOfTransformerCoilsReplaced,
-//     this.crankcaseBreatherInspection,
-//     this.newBreatherElementInstalled,
-//     this.checkAllCanonFan,
-//     this.listOfCheckAllCanonFan,
-//     this.coolantSystemCheck,
-//     this.lubricationSystemCheck,
-//     this.coolingSystemCheck,
-//     this.checkFuelGasFilter,
-//     this.fuelGasFilterFound,
-//     this.airFilterInspection,
-//     this.turboChargerInspection,
-//     this.carburetorInternalCleaningInspection,
-//     this.engineOilFilterChange,
-//     this.engineOilFilterChange2,
-//     this.oilCoolerDrained,
-//     this.hydraulicOilFilterChange,
-//     this.hydraulicOilNew,
-//     this.engineOilSystemPrimed,
-//     this.oilDrainIsolationValvesShutIn,
-//     this.dayTankFiltersInstalledNew,
-//     this.dayTankValvesOpen,
-//
-//     //Page4 -> 12 fields
-//     this.oilPressureEngineAndGood,
-//     this.engineOilLevel,
-//     this.jacketWaterCoolantLevel,
-//     this.auxiliaryCoolantLevel2,
-//     this.temperatureAndPressureCheck,
-//     this.noisesOrVibrationsDetected,
-//     this.engineExhaustGasCheckedAndAdjustedAtMaxLoad,
-//     this.documentFinalSetPointExhaustGasOxygenOrCOLevels,
-//     this.documentFinalManifoldPressureAndRPM,
-//     this.engineDeficienciesRadio,
-//     this.engineDeficienciesTextfield,
-//     this.partsOrderingStatus,
-//   });
-//
-//   factory TaskModel.fromJson(Map<String, dynamic> json) {
-//     return TaskModel(
-//       //Page1
-//       userId: json['user'],
-//       name: json['name'],
-//       customerEmail: json['customer_email'],
-//       setUnits: json['unit'],
-//       unitHours: json['unit_hours'],
-//       selectedDate: json['date'],
-//       selectedTime: json['time'],
-//       engineBrand: json['engine_brand'],
-//       nameOfJourneyMan: json['name_journey_man'],
-//       unitOnlineOnArrival: json['unit_online_arrival'],
-//       jobScope: json['job_scope'],
-//       operationalProblems: json['problems'],
-//       modelNumber: json['model_number'],
-//       serialNumber: json['serial_number'],
-//       arrangementNumber: json['arrangement_number'],
-//       oilSamplesTaken: json['is_oil_sample_taken'],
-//       //Page2
-//       engineLoad: json['engine_load'],
-//       engineRPM: json['engine_rpm'],
-//       ignitionTiming: json['btdc'],
-//       exhaustGasSampleFound: json['gas_sample_as_found'],
-//       leftBankFound: json['lb_bank_as_gas_found'],
-//       rightBankFound: json['rb_bank_as_gas_found'],
-//       exhaustGasSampleAdjusted: json['gas_sample_as_adjusted'],
-//       leftBankAdjusted: json['lb_bank_as_gas_adjusted'],
-//       rightBankAdjusted: json['rb_bank_as_gas_adjusted'],
-//       btuValue: json['btdc_value'],
-//       selectedBtuValue: json['btu_type'],
-//       missFireDetected: json['is_misfires_detected'],
-//       throttleActuatorPosition: json['throttle_actuator_position'],
-//       fuelValue: json['throttle_actuator_fuel_value'],
-//       engineOilPressure: json['engine_oil_pressure_psi'],
-//       oilPressureDifferential:
-//           json['engine_oil_pressure_differential_filter_na'],
-//       oilPressureDifferentialTextField:
-//           json['oil_pressure_differential_filter'],
-//       oilTemperatureIn: json['oil_temperature_in'],
-//       oilTemperatureOut: json['oil_temperature_out'],
-//       oilLevelEngine: json['oil_engine_level'],
-//       engineCoolantPressure: json['engine_coolant_value'],
-//       engineCoolantPressureRadioValue: json['engine_coolant_type'],
-//       jacketWaterLevel: json['jacket_water_level'],
-//       auxiliaryCoolantLevel1: json['auxiliary_coolant'],
-//       jacketWaterTemperaturesIn: json['jacket_water_temperature_in'],
-//       jacketWaterTemperaturesOut: json['jacket_water_temperature_out'],
-//       auxCoolantTemperaturesIn: json['coolant_temperature_in'],
-//       auxCoolantTemperaturesOut: json['coolant_temperature_out'],
-//
-//       inletAirTemp: json['inlet_air_temperature_value'],
-//       inletAirTempRadio: json['inlet_air_temperature_type'],
-//       inletAirPressure: json['inlet_air_pressure_value'],
-//       inletAirPressureRadio: json['inlet_air_pressure_type'],
-//       primaryFuelPressure: json['primary_fuel_pressure_psi'],
-//       actualAirToFuelRatio: json['cranK_case_fuel_ratio'],
-//       crankcasePressure: json['vaccum_crank_case_pressure'],
-//       airFilterRestriction: json['airfilter_restriction_value'],
-//       airFilterRestrictionRadio: json['airfilter_restriction_type'],
-//       hydraulicOil: json['cranK_case_HYDRAULIC_oil_condition'],
-//       anyLeaksFound: json['is_leakage_found'],
-//       excessiveVibrationAndOddNoises: json['is_excessive_vibration'],
-//       excessiveVibrationAndOddNoisesDescription:
-//           json['excessive_vibration_description'],
-//       problemsWithDriver: json['is_in_driving_problem'],
-//       problemsWithDriverDescription: json['driving_problem_description'],
-//       //Page3
-//       intakeValueSet: json['intake_value'],
-//       intakeValueSetRadioValue: json['intake_type'],
-//       exhaustValueSet: json['exhaust_value'],
-//       exhaustValueSetRadioValue: json['exhaust_type'],
-//       majorValueRecessionDetected: json['major_value_detected'],
-//       boroscopeRecommended: json['boroscope_recommended'],
-//       boroscopeInspectionCompleted: json['boroscope_inspection_completed'],
-//       installNewSparkplugs: json['install_new_spark_plug'],
-//       sparkplugGap: json['sparkplug_gap'],
-//       sparkplugExtensionInstalled: json['extension_installed'],
-//       newExtensionInstalled: json['any_new_extension'],
-//       listOfNewExtensionInstalled: json['replace_extension_list'],
-//       sparkplugWireCondition: json['spark_wire_condition'],
-//       listOfSparkplugWireCondition: json['spark_wire_condition_value'], //??
-//       cannonPlugConnectorsTight: json['canNOn_plug_tight'],
-//       listOfTransformerCoilsReplaced: json['replaced_list_transformer_coils'],
-//       crankcaseBreatherInspection: json['crankcase_inspection'],
-//       newBreatherElementInstalled: json['new_breather_element_installed'],
-//       //
-//       checkAllCanonFan: json['belts_coolers'],
-//       listOfCheckAllCanonFan: json[''],
-//       coolantSystemCheck: json[''],
-//       lubricationSystemCheck: json[''],
-//       //
-//       coolingSystemCheck: json['coolant_system_leakage_greasers'],
-//       checkFuelGasFilter: json['fuel_gas_filter'],
-//       fuelGasFilterFound: json['fuel_gas_filter_found'],
-//       airFilterInspection: json['air_filter_inspection'],
-//       turboChargerInspection: json['turbo_charges_inspection'],
-//       carburetorInternalCleaningInspection: json['carburetor_inspection'],
-//       engineOilFilterChange: json['engine_oil_filter_ask'],
-//       engineOilFilterChange2: json['engine_oil_filter_value'],
-//       oilCoolerDrained: json['oil_cooler_drained'],
-//       hydraulicOilFilterChange: json['hyraulic_oil_filter'],
-//       hydraulicOilNew: json['hyraulic_oil_new'],
-//       engineOilSystemPrimed: json['oil_level_correct'],
-//       oilDrainIsolationValvesShutIn: json['oil_drained_isolation'],
-//       dayTankFiltersInstalledNew: json['tank_filter'],
-//       dayTankValvesOpen: json['tank_values_open'],
-//       //Page4
-//       oilPressureEngineAndGood: json['oil_pressure_engine_good'],
-//       engineOilLevel: json['engine_oil_level'],
-//       jacketWaterCoolantLevel: json['jacket_water_coolant_level'],
-//       auxiliaryCoolantLevel2: json['auxiliary_coolant_level'],
-//       temperatureAndPressureCheck: json['temperature_pressure_checks'],
-//       noisesOrVibrationsDetected: json['NOise_vibration_detected'],
-//       engineExhaustGasCheckedAndAdjustedAtMaxLoad:
-//           json['engine_exhaust_gas_adjusted'],
-//       documentFinalSetPointExhaustGasOxygenOrCOLevels:
-//           json['document_final_set_points'],
-//       documentFinalManifoldPressureAndRPM:
-//           json['document_final_manifold_pressure'],
-//       engineDeficienciesRadio: json['engine_deficiencies_repaired_future'],
-//       engineDeficienciesTextfield: json[''], //Missing
-//       partsOrderingStatus: json['part_repaired_order'],
-//     );
-//   }
-// }

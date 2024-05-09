@@ -31,7 +31,7 @@ class RightSideWidget extends StatelessWidget {
         children: [
           HomeScreen(sideMenu: sideMenu),
           const SizedBox.shrink(), //Drawer
-          AddTaskScreen(sideMenu: sideMenu),
+          TaskScreen(sideMenu: sideMenu, isUpdatingTask: false),
           ViewAllTasksScreen(sideMenu: sideMenu),
           ReportsScreen(sideMenu: sideMenu),
           const SizedBox.shrink(), //Customize Units

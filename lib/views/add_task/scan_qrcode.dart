@@ -65,7 +65,7 @@ class _QrCodeScannerState extends State<ScanQrCodeScreen> {
                   final Uint8List? image = capture.image;
                   for (final barcode in barcodes) {
                     debugPrint('QRCode Found: ${barcode.rawValue}');
-                    controller.engineBrand.value = barcode.rawValue ?? '';
+                    controller.engineBrandId.value = barcode.rawValue ?? '';
                   }
                   if (image != null) {
                     _showDialog(
