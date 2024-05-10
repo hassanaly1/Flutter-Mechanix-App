@@ -4,6 +4,7 @@ class TaskModel {
   //Page1
   String? name;
   String? userId;
+  String? taskId;
   String? customerEmail;
   int? unit;
   int? unitHours;
@@ -98,9 +99,9 @@ class TaskModel {
   String? hyraulicOilNew;
   String? oilLevelCorrect;
   String? oilDrainedIsolation;
-  //Page4
   String? tankFilter;
   String? tankValuesOpen;
+  //Page4
   String? oilPressureEngineGood;
   String? engineOilLevel;
   String? jacketWaterCoolantLevel;
@@ -117,6 +118,7 @@ class TaskModel {
   TaskModel({
     this.name,
     this.userId,
+    this.taskId,
     this.customerEmail,
     this.unit,
     this.unitHours,
@@ -229,6 +231,7 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         name: json["name"],
         userId: json["user"],
+        taskId: json["_id"],
         customerEmail: json["customer_email"],
         unit: json["unit"],
         unitHours: json["unit_hours"],

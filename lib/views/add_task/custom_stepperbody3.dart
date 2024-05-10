@@ -11,8 +11,10 @@ import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody3 extends StatelessWidget {
+  final bool isTaskUpdating;
   CustomStepperBody3({
     super.key,
+    required this.isTaskUpdating,
   });
 
   final AddTaskController controller = Get.find();
@@ -52,13 +54,13 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '1',
-                        controller: controller.hotCompressionTemperature1,
+                        controller: controller.hotCompressionTemperatureCtrl[0],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '2',
-                        controller: controller.hotCompressionTemperature2,
+                        controller: controller.hotCompressionTemperatureCtrl[1],
                       ),
                     ),
                   ],
@@ -68,13 +70,13 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '3',
-                        controller: controller.hotCompressionTemperature3,
+                        controller: controller.hotCompressionTemperatureCtrl[2],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '4',
-                        controller: controller.hotCompressionTemperature4,
+                        controller: controller.hotCompressionTemperatureCtrl[3],
                       ),
                     ),
                   ],
@@ -84,13 +86,13 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '5',
-                        controller: controller.hotCompressionTemperature5,
+                        controller: controller.hotCompressionTemperatureCtrl[4],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '6',
-                        controller: controller.hotCompressionTemperature6,
+                        controller: controller.hotCompressionTemperatureCtrl[5],
                       ),
                     ),
                   ],
@@ -100,13 +102,13 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '7',
-                        controller: controller.hotCompressionTemperature7,
+                        controller: controller.hotCompressionTemperatureCtrl[6],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '8',
-                        controller: controller.hotCompressionTemperature8,
+                        controller: controller.hotCompressionTemperatureCtrl[7],
                       ),
                     ),
                   ],
@@ -116,13 +118,13 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '9',
-                        controller: controller.hotCompressionTemperature9,
+                        controller: controller.hotCompressionTemperatureCtrl[8],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '10',
-                        controller: controller.hotCompressionTemperature10,
+                        controller: controller.hotCompressionTemperatureCtrl[9],
                       ),
                     ),
                   ],
@@ -132,13 +134,15 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '11',
-                        controller: controller.hotCompressionTemperature11,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[10],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '12',
-                        controller: controller.hotCompressionTemperature12,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[11],
                       ),
                     ),
                   ],
@@ -148,13 +152,15 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '13',
-                        controller: controller.hotCompressionTemperature13,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[12],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '14',
-                        controller: controller.hotCompressionTemperature14,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[13],
                       ),
                     ),
                   ],
@@ -164,13 +170,15 @@ class CustomStepperBody3 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '15',
-                        controller: controller.hotCompressionTemperature15,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[14],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '16',
-                        controller: controller.hotCompressionTemperature16,
+                        controller:
+                            controller.hotCompressionTemperatureCtrl[15],
                       ),
                     ),
                   ],

@@ -15,10 +15,14 @@ import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody4 extends StatelessWidget {
+  final bool isTaskUpdating;
   final SideMenuController? sideMenu;
+  final Payload? model;
   CustomStepperBody4({
     super.key,
     this.sideMenu,
+    required this.isTaskUpdating,
+    this.model,
   });
   final AddTaskController controller = Get.find();
   final GlobalKey<FormState> _partsFormkey = GlobalKey<FormState>();
@@ -229,7 +233,7 @@ class CustomStepperBody4 extends StatelessWidget {
             showBackgroundShadow: false,
             color: Colors.grey.shade300,
             child: Form(
-              key: _partsFormkey,
+              // key: _partsFormkey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -260,10 +264,10 @@ class CustomStepperBody4 extends StatelessWidget {
                     //     fieldName: 'Vendor', value: value),
                   ),
                   CustomButton(
-                    isLoading: false,
-                    buttonText: 'Add',
-                    onTap: () {
-                      if (_partsFormkey.currentState!.validate()) {
+                      isLoading: false,
+                      buttonText: 'Add',
+                      onTap: () {
+                        // if (_partsFormkey.currentState!.validate()) {
                         controller.partsList.add(
                           Part(
                             name: controller.partName.text.trim(),
@@ -277,9 +281,7 @@ class CustomStepperBody4 extends StatelessWidget {
                         controller.partDescription.clear();
                         controller.partQuantity.clear();
                         controller.partVendor.clear();
-                      }
-                    },
-                  )
+                      })
                 ],
               ),
             ),
@@ -308,7 +310,10 @@ class CustomStepperBody4 extends StatelessWidget {
                         },
                       )),
           ),
-          //   List of Parts
+          CustomTextWidget(
+            text: model?.task?.taskId ?? 'NO TASK ID FOUND',
+          ),
+
           Row(
             children: [
               Expanded(
@@ -322,15 +327,17 @@ class CustomStepperBody4 extends StatelessWidget {
                     }),
               ),
               Expanded(
-                child: CustomButton(
-                    isLoading: false,
-                    buttonText: 'SUBMIT',
-                    onTap: () async => await controller.addTask().then((value) {
-                          sideMenu?.changePage(0);
-                          // Get.off(() => const DashboardScreen());
-                          Get.delete<AddTaskController>();
-                          Get.delete<MapController>();
-                        })),
+                child: Obx(
+                  () => CustomButton(
+                      isLoading: controller.isLoading.value,
+                      buttonText: isTaskUpdating ? 'Update' : 'SUBMIT',
+                      onTap: () async {
+                        isTaskUpdating
+                            ? await controller
+                                .updateTask(model?.task?.taskId ?? '')
+                            : await controller.addTask(sideMenu!);
+                      }),
+                ),
               ),
             ],
           )

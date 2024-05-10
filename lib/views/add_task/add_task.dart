@@ -193,9 +193,9 @@ class BottomPageViewSection extends StatelessWidget {
               index: controller.activePageIndex.value,
               children: [
                 CustomStepperBody1(isTaskUpdating: false),
-                CustomStepperBody2(),
-                CustomStepperBody3(),
-                CustomStepperBody4(sideMenu: sideMenu),
+                CustomStepperBody2(isTaskUpdating: false),
+                CustomStepperBody3(isTaskUpdating: false),
+                CustomStepperBody4(isTaskUpdating: false, sideMenu: sideMenu),
               ],
             ),
           ),

@@ -11,8 +11,10 @@ import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody2 extends StatelessWidget {
+  final bool isTaskUpdating;
   CustomStepperBody2({
     super.key,
+    required this.isTaskUpdating,
   });
 
   final AddTaskController controller = Get.find();
@@ -154,15 +156,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '1',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature1,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[0],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '2',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature2,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[1],
                       ),
                     ),
                   ],
@@ -172,15 +174,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '3',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature3,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[2],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '4',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature4,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[3],
                       ),
                     ),
                   ],
@@ -190,15 +192,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '5',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature5,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[4],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '6',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature6,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[5],
                       ),
                     ),
                   ],
@@ -208,15 +210,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '7',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature7,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[6],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '8',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature8,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[7],
                       ),
                     ),
                   ],
@@ -226,15 +228,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '9',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature9,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[8],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '10',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature10,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[9],
                       ),
                     ),
                   ],
@@ -244,15 +246,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '11',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature11,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[10],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '12',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature12,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[11],
                       ),
                     ),
                   ],
@@ -262,15 +264,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '13',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature13,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[12],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '14',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature14,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[13],
                       ),
                     ),
                   ],
@@ -280,15 +282,15 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '15',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature15,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[14],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '16',
-                        controller:
-                            controller.cylinderExhaustPyrometerTemperature16,
+                        controller: controller
+                            .cylinderExhaustPyrometerTemperatureCtrl[15],
                       ),
                     ),
                   ],
@@ -397,13 +399,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '1',
-                        controller: controller.burnTemperature1,
+                        controller: controller.burnTemperatureCtrl[0],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '2',
-                        controller: controller.burnTemperature2,
+                        controller: controller.burnTemperatureCtrl[1],
                       ),
                     ),
                   ],
@@ -413,13 +415,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '3',
-                        controller: controller.burnTemperature3,
+                        controller: controller.burnTemperatureCtrl[2],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '4',
-                        controller: controller.burnTemperature4,
+                        controller: controller.burnTemperatureCtrl[3],
                       ),
                     ),
                   ],
@@ -429,13 +431,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '5',
-                        controller: controller.burnTemperature5,
+                        controller: controller.burnTemperatureCtrl[4],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '6',
-                        controller: controller.burnTemperature6,
+                        controller: controller.burnTemperatureCtrl[5],
                       ),
                     ),
                   ],
@@ -445,13 +447,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '7',
-                        controller: controller.burnTemperature7,
+                        controller: controller.burnTemperatureCtrl[6],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '8',
-                        controller: controller.burnTemperature8,
+                        controller: controller.burnTemperatureCtrl[7],
                       ),
                     ),
                   ],
@@ -461,13 +463,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '9',
-                        controller: controller.burnTemperature9,
+                        controller: controller.burnTemperatureCtrl[8],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '10',
-                        controller: controller.burnTemperature10,
+                        controller: controller.burnTemperatureCtrl[9],
                       ),
                     ),
                   ],
@@ -477,13 +479,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '11',
-                        controller: controller.burnTemperature11,
+                        controller: controller.burnTemperatureCtrl[10],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '12',
-                        controller: controller.burnTemperature12,
+                        controller: controller.burnTemperatureCtrl[11],
                       ),
                     ),
                   ],
@@ -493,13 +495,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '13',
-                        controller: controller.burnTemperature13,
+                        controller: controller.burnTemperatureCtrl[12],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '14',
-                        controller: controller.burnTemperature14,
+                        controller: controller.burnTemperatureCtrl[13],
                       ),
                     ),
                   ],
@@ -509,13 +511,13 @@ class CustomStepperBody2 extends StatelessWidget {
                     Flexible(
                       child: NumberWithTextField(
                         number: '15',
-                        controller: controller.burnTemperature15,
+                        controller: controller.burnTemperatureCtrl[14],
                       ),
                     ),
                     Flexible(
                       child: NumberWithTextField(
                         number: '16',
-                        controller: controller.burnTemperature16,
+                        controller: controller.burnTemperatureCtrl[15],
                       ),
                     ),
                   ],

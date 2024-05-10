@@ -63,9 +63,10 @@ class Payload {
     // print(payload.geolocation);
     // print(payload.task);
     // print(payload.turboTemperature);
-    // print(payload.hotCompression);
-    // print(payload.cylinderExhaustPyrometer);
-    // print(payload.burnCompression);
+    // print('HotCompression: ${payload.hotCompression}');
+    // print('cylinderExhaustPyrometer: ${payload.cylinderExhaustPyrometer}');
+    // print('burnCompression: ${payload.burnCompression}');
+    //
     // print(payload.leakageFound);
     // print(payload.parts);
     return payload;
@@ -95,11 +96,11 @@ class Payload {
 }
 
 class Temperatures {
-  double? temperatureNumber;
+  int? temperatureNumber;
   bool? forCylinder;
   bool? forBurnTemperature;
   bool? forHotCompression;
-  double? temperature;
+  int? temperature;
 
   Temperatures({
     this.temperatureNumber,
@@ -110,31 +111,29 @@ class Temperatures {
   });
 
   // Convert Temperatures object to a JSON string
-  String toJson() {
-    return jsonEncode({
-      'temperatureNumber': temperatureNumber ?? 0,
-      'forCylinder': forCylinder ?? false,
-      'forHotCompression': forBurnTemperature ?? false,
-      'forEngineTuneUpHotCompressionTest': forHotCompression ?? false,
-      'temperature': temperature ?? 0,
-    });
-  }
+  Map<String, dynamic> toJson() => {
+        'temperatureNumber': temperatureNumber ?? 0,
+        'forCylinder': forCylinder ?? false,
+        'forEngineTuneUpHotCompressionTest': forBurnTemperature ?? false,
+        'forHotCompression': forHotCompression ?? false,
+        'temperature': temperature ?? 0,
+      };
 
   // Create Temperatures object from a JSON string
   factory Temperatures.fromJson(Map<String, dynamic> json) {
     return Temperatures(
       temperatureNumber: json['temperature_number'],
-      forCylinder: json['for_cylinder'],
-      forBurnTemperature: json['for_burn_compression'],
-      forHotCompression: json['for_hot_compression'],
+      forCylinder: json['cylinder_exhaust_pyrometer'],
+      forBurnTemperature: json['burn_compression'],
+      forHotCompression: json['hot_compression'],
       temperature: json['temperature'],
     );
   }
 }
 
 class Geolocation {
-  double? geolat;
-  double? geolong;
+  int? geolat;
+  int? geolong;
   String? geohash;
   String? address;
 

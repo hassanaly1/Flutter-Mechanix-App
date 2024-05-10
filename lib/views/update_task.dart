@@ -22,7 +22,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
   @override
   void initState() {
     controller = Get.put(AddTaskController());
-    controller.updateTask(widget.model);
+    controller.updateControllers(widget.model);
     controller.setActivePage(0);
     super.initState();
   }
@@ -45,7 +45,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
             child: Scaffold(
               backgroundColor: Colors.transparent,
               body: NestedScrollView(
-                controller: controller.scrollController,
+                // controller: controller.scrollController,
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverAppBar(
@@ -77,9 +77,17 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                                 CustomStepperBody1(
                                     isTaskUpdating:
                                         controller.isTaskUpdating.value),
-                                CustomStepperBody2(),
-                                CustomStepperBody3(),
-                                CustomStepperBody4(),
+                                CustomStepperBody2(
+                                    isTaskUpdating:
+                                        controller.isTaskUpdating.value),
+                                CustomStepperBody3(
+                                    isTaskUpdating:
+                                        controller.isTaskUpdating.value),
+                                CustomStepperBody4(
+                                  isTaskUpdating:
+                                      controller.isTaskUpdating.value,
+                                  model: widget.model,
+                                ),
                               ],
                             ),
                           ),

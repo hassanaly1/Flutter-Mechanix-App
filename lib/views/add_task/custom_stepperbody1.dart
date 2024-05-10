@@ -43,12 +43,12 @@ class CustomStepperBody1 extends StatelessWidget {
                 HeadingAndTextfield(
                   title: 'Client\'s Name',
                   controller: controller.clientName,
-                  readOnly: isTaskUpdating,
+                  // readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
                   title: 'Client\'s Email',
                   controller: controller.clientEmail,
-                  readOnly: isTaskUpdating,
+                  // readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
                     title: 'Select Location',

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mechanix/data/api_endpoints.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
 
@@ -16,8 +17,8 @@ class TaskService {
     required LeakageFound leakageFound,
     required List<Part> parts,
   }) async {
-    const String url =
-        'https://mechanix-api-production.up.railway.app/api/task/createtask';
+    final Uri apiUrl =
+        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.createTaskUrl);
     final Map<String, dynamic> payload = {
       "geolocation": geolocation.toJson(),
       "task": task.toJson(),
@@ -38,7 +39,7 @@ class TaskService {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse(url),
+        apiUrl,
         headers: headers,
         body: json.encode(payload),
       );
@@ -46,11 +47,12 @@ class TaskService {
       if (response.statusCode == 201) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         debugPrint('Task created successfully: ${responseData["message"]}');
+        debugPrint('Task Response Body: ${response.body}');
 
         // Handle the response data here
       } else {
         debugPrint(
-            'Failed to create task. Status Code: ${response.statusCode}');
+            'Failed to create task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
         debugPrint('Response Body: ${response.body}');
       }
     } catch (error) {
@@ -60,12 +62,12 @@ class TaskService {
 
   Future<List<Payload>> getAllTasks(
       {required String userId, required String token}) async {
-    const apiUrl =
-        'https://mechanix-api-production.up.railway.app/api/task/getalltasks';
+    final Uri apiUrl =
+        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.getAllTaskUrl);
 
     try {
       final response = await http.post(
-        Uri.parse(apiUrl),
+        apiUrl,
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -86,13 +88,17 @@ class TaskService {
           //   'totalCount': int
           // }
 
+          // Payload payload = Payload.fromJson(tasksDataList[0]);
+          // print(payload);
           if (tasksList['tasks'] != null) {
             final List<dynamic> tasksDataList = tasksList['tasks'];
-
-            // Payload payload = Payload.fromJson(tasksDataList[0]);
-            // print(payload);
-
-            tasks.addAll(tasksDataList.map((data) => Payload.fromJson(data)));
+            // Check if tasksDataList is not empty
+            if (tasksDataList.isNotEmpty) {
+              tasks.addAll(tasksDataList.map((data) => Payload.fromJson(data)));
+            } else {
+              debugPrint('No tasks found');
+              return [];
+            }
           }
 
           return tasks;
@@ -107,6 +113,108 @@ class TaskService {
     } catch (e) {
       debugPrint('Error getting tasks: $e');
       return [];
+    }
+  }
+
+  Future<void> updateTaskById({
+    required String taskId,
+    required String token,
+    required Geolocation geolocation,
+    required TaskModel task,
+    required List<TurboTemperature> turboTemperature,
+    required List<Temperatures> hotCompression,
+    required List<Temperatures> cylinderExhaustPyrometer,
+    required List<Temperatures> burnCompression,
+    required LeakageFound leakageFound,
+    required List<Part> parts,
+  }) async {
+    final Uri apiUrl = Uri.parse(
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
+    );
+
+    final Map<String, dynamic> payload = {
+      "geolocation": geolocation.toJson(),
+      "task": task.toJson(),
+      "turbo_temperature": turboTemperature.map((e) => e.toJson()).toList(),
+      "hot_compression": hotCompression.map((e) => e.toJson()).toList(),
+      "cylinder_exhaust_pyrometer":
+          cylinderExhaustPyrometer.map((e) => e.toJson()).toList(),
+      "burn_compression": burnCompression.map((e) => e.toJson()).toList(),
+      "leakage_found": leakageFound.toJson(),
+      "parts": parts.map((e) => e.toJson()).toList(),
+    };
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final http.Response response = await http.post(
+        apiUrl,
+        headers: headers,
+        body: json.encode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic>? responseData = json.decode(response.body);
+        if (responseData != null) {
+          final String? message = responseData['message'];
+          if (message != null) {
+            debugPrint('Updated task MESSAGE: $message');
+          } else {
+            debugPrint('No message found in the response');
+          }
+
+          debugPrint(
+              'Task Updated successfully: ${response.statusCode} ${response.reasonPhrase}');
+          debugPrint('Task Updated Body: ${response.body}');
+
+          // Handle the "data" if needed
+          // For example, you can parse and use the "data" here
+        } else {
+          debugPrint('No data found in the response');
+        }
+      } else {
+        debugPrint(
+            'Failed to update task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+        debugPrint('Response Body: ${response.body}');
+      }
+    } catch (error) {
+      debugPrint('Error Updating task: $error');
+    }
+  }
+
+  Future<void> deleteTaskById(
+      {required String taskId, required String token}) async {
+    final Uri apiUrl = Uri.parse(
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteTaskUrl}?id=$taskId',
+    );
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final http.Response response = await http.post(
+        apiUrl,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final String message = responseData['message'];
+        final Map<String, dynamic> data = responseData['data'];
+        print('Task deletion message: $message');
+        print('Deleted Task details: $data');
+      } else {
+        print(
+            'Failed to delete task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+        print('Response Body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error deleting task: $error');
     }
   }
 }
