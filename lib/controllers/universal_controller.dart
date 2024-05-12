@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mechanix/controllers/user_controller.dart';
 import 'package:mechanix/data/task_service.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/models/task_model.dart';
 
 class UniversalController extends GetxController {
   RxBool isLoading = false.obs;
@@ -20,22 +21,52 @@ class UniversalController extends GetxController {
   final TaskService taskService = TaskService();
   final _storage = GetStorage();
 
+  //For Searching
+  TextEditingController searchController = TextEditingController();
+
+  //For Pagination
+  ScrollController scrollController = ScrollController();
+  final RxInt currentPage = 1.obs;
+
+  UserController userController = Get.put(UserController());
+
   @override
   void onInit() async {
     super.onInit();
     await getAllTasks();
-    debugPrint('Tasks: ${tasks.length}');
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (!isLoading.value) {
+          _loadNextPage();
+        }
+      }
+    });
   }
 
-  Future<void> getAllTasks() async {
+  void _loadNextPage() async {
+    debugPrint('Loading Next Page');
+    isLoading.value = true;
+    List<Payload> nextPageTasks = await taskService.getAllTasks(
+      token: _storage.read('token'),
+      page: currentPage.value,
+    );
+
+    tasks.addAll(nextPageTasks);
+    currentPage.value++;
+    isLoading.value = false;
+  }
+
+  Future<void> getAllTasks({String? searchName}) async {
     try {
       isTasksAreLoading.value = true;
       List<Payload> fetchedTasks = await taskService.getAllTasks(
-        userId: _storage.read('user_info')['_id'],
+        searchString: searchName ?? '',
         token: _storage.read('token'),
+        page: currentPage.value,
       );
       if (fetchedTasks.isNotEmpty) {
-        debugPrint('FetchedList: $fetchedTasks');
+        debugPrint('TasksCount: ${fetchedTasks.length}');
         tasks = fetchedTasks;
       } else {
         tasks = [];

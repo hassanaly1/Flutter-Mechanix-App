@@ -1,24 +1,47 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mechanix/controllers/universal_controller.dart';
+import 'package:mechanix/controllers/user_controller.dart';
+import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/auth/login.dart';
 
-class ProfileSection extends StatelessWidget {
+class ProfileSection extends StatefulWidget {
   final SideMenuController sideMenu;
   const ProfileSection({super.key, required this.sideMenu});
 
   @override
+  State<ProfileSection> createState() => _ProfileSectionState();
+}
+
+class _ProfileSectionState extends State<ProfileSection> {
+  final UniversalController controller = Get.find();
+  RxBool isLoading = false.obs;
+  final GetStorage _storage = GetStorage();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  final ImagePicker picker = ImagePicker();
+  XFile? userImage;
+  Uint8List? userImageInBytes;
+
+  @override
   Widget build(BuildContext context) {
+    final UserController controller = Get.find();
     final storage = GetStorage();
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        sideMenu.changePage(0);
+        widget.sideMenu.changePage(0);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,55 +52,78 @@ class ProfileSection extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // const ProfileHeader(),
-                Container(
-                  height: context.height * 0.15,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/user2.jpg"))),
+                InkWell(
+                  onTap: updateUserImage,
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundColor: Colors.white,
+                    backgroundImage: userImage?.path == null
+                        ? const AssetImage('assets/images/placeholder.png')
+                            as ImageProvider
+                        : FileImage(File(userImage?.path ?? '')),
+                  ),
                 ),
                 const SizedBox(height: 12.0),
+                Obx(
+                  () => CustomTextWidget(
+                    text: (controller.userInfo.value['first_name'] ?? '') +
+                        ' ' +
+                        (controller.userInfo['last_name'] ?? ''),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                  ),
+                ),
                 CustomTextWidget(
-                  text: 'James Anderson',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
+                  text: controller.userInfo.value['email'] ?? '',
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
                   textAlign: TextAlign.center,
                   maxLines: 2,
+                  textColor: AppColors.lightTextColor,
                 ),
-                CustomTextWidget(
-                  text: 'Lead of all mechanics Lead of all mechanics',
-                  maxLines: 3,
-                  fontWeight: FontWeight.w300,
-                  textAlign: TextAlign.center,
-                  fontSize: 12,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: context.height * 0.05,
-                      horizontal: context.width * 0.01),
-                  child: Column(
-                    children: [
-                      ReUsableTextField(hintText: 'jamesanderson@gmail.com'),
-                      ReUsableTextField(hintText: '0123456789'),
-                      ReUsableTextField(hintText: '*********'),
-                      CustomButton(
-                        isLoading: false,
-                        buttonText: 'Update',
-                        onTap: () {},
-                        usePrimaryColor: true,
-                        textColor: Colors.black87,
-                      ),
-                      CustomButton(
-                        isLoading: false,
-                        buttonText: 'Logout',
-                        onTap: () {
-                          storage.remove('token');
-                          Get.offAll(() => LoginScreen());
-                        },
-                        textColor: Colors.white60,
-                      )
-                    ],
+                Obx(
+                  () => Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: context.height * 0.03,
+                        horizontal: context.width * 0.01),
+                    child: Column(
+                      children: [
+                        ReUsableTextField(
+                            controller: firstNameController,
+                            hintText:
+                                controller.userInfo.value['first_name'] ?? ''),
+                        ReUsableTextField(
+                            controller: lastNameController,
+                            hintText:
+                                controller.userInfo.value['last_name'] ?? ''),
+                        ReUsableTextField(
+                            hintText: controller.userInfo.value['email'] ?? '',
+                            readOnly: true),
+                        Obx(
+                          () => CustomButton(
+                            isLoading: isLoading.value,
+                            buttonText: 'Update',
+                            onTap: () {
+                              updateProfileInfo();
+                            },
+                            usePrimaryColor: true,
+                            textColor: Colors.black87,
+                          ),
+                        ),
+                        CustomButton(
+                          isLoading: false,
+                          buttonText: 'Logout',
+                          onTap: () {
+                            storage.remove('token');
+                            storage.remove('user_info');
+                            Get.offAll(() => LoginScreen());
+                          },
+                          textColor: Colors.white60,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -87,78 +133,35 @@ class ProfileSection extends StatelessWidget {
       ),
     );
   }
-}
 
-class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({
-    super.key,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: context.height * 0.25,
-      color: Colors.transparent,
-      child: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 12.0),
-            height: context.height * 0.18,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/home-bg.png'),
-                fit: BoxFit.cover,
-              ),
-              color: AppColors.blueTextColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
-              ),
-            ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [],
-                ),
-                SizedBox(height: 16.0),
-              ],
-            ),
-          ),
-          Positioned(
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: Container(
-              height: context.height * 0.15,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/user2.jpg"))),
-            ),
-          ),
-        ],
-      ),
-    );
+  Future<void> updateProfileInfo() async {
+    try {
+      isLoading.value = true;
+      await AuthService().updateProfile(
+          firstName: firstNameController.text.trim(),
+          lastName: lastNameController.text.trim(),
+          userImageInBytes: userImageInBytes ?? Uint8List(0),
+          token: _storage.read('token'));
+      isLoading.value = false;
+      ToastMessage.showToastMessage(
+          message: 'Profile Updated', backgroundColor: Colors.green);
+      // setState(() {});
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, try again',
+          backgroundColor: Colors.green);
+      isLoading.value = false;
+    }
   }
-}
 
-BoxDecoration reusableContainerDecoration() {
-  return BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(12.0),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.shade300,
-        blurRadius: 5.0,
-        spreadRadius: 1.0,
-      ),
-      const BoxShadow(
-        color: Colors.white,
-        offset: Offset(0.0, 0.0),
-        blurRadius: 0.0,
-        spreadRadius: 0.0,
-      ),
-    ],
-  );
+  Future<void> updateUserImage() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      userImage = image;
+      userImageInBytes = await userImage?.readAsBytes();
+      debugPrint('Image Picked');
+      setState(() {});
+    }
+  }
 }

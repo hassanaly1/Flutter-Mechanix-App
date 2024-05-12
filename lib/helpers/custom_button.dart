@@ -41,11 +41,11 @@ class CustomButton extends StatelessWidget {
               : AppColors.secondaryColor,
           child: Center(
               child: isLoading
-                  ? const Padding(
-                      padding: EdgeInsets.all(8.0),
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: SpinKitRing(
                         lineWidth: 2.0,
-                        color: Colors.white,
+                        color: usePrimaryColor ? Colors.black87 : Colors.white,
                       ),
                     )
                   : CustomTextWidget(

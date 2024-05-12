@@ -10,6 +10,7 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
+import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
 
 class AddTaskController extends GetxController {
   RxBool isLoading = false.obs;
@@ -25,7 +26,7 @@ class AddTaskController extends GetxController {
 
   RxBool isTaskUpdating = false.obs;
 
-  List<Part> partsList = <Part>[].obs; //List of Parts
+  List<Part> partsList = <Part>[].obs;
   @override
   void onInit() {
     selectedAddress.text = mapController.selectedAddress.value;
@@ -49,7 +50,8 @@ class AddTaskController extends GetxController {
     super.onInit();
   }
 
-  Future<void> addTask(SideMenuController sideMenuController) async {
+  Future<void> addTask(
+      BuildContext context, SideMenuController sideMenuController) async {
     //Geolocation
     Geolocation geolocation = Geolocation(
       address: selectedAddress.text.trim(),
@@ -266,9 +268,10 @@ class AddTaskController extends GetxController {
 
     try {
       debugPrint('Add Task Called');
-      if (clientName.text.trim() == '') {
+      if (clientName.text.trim() == '' && clientEmail.text.trim() == '') {
         ToastMessage.showToastMessage(
-            message: 'Please Enter Client Name', backgroundColor: Colors.red);
+            message: 'Please Enter Client Name and Email',
+            backgroundColor: Colors.red);
       } else {
         isLoading.value = true;
         await taskService.createTask(
@@ -285,14 +288,17 @@ class AddTaskController extends GetxController {
         ToastMessage.showToastMessage(
             message: 'Task Created Successfully',
             backgroundColor: AppColors.blueTextColor);
-        controller.getAllTasks();
+        showConfirmationPopup(
+            context: context,
+            customerName: clientName.text.trim(),
+            customerEmail: clientEmail.text.trim());
+        await controller.getAllTasks();
         isLoading.value = false;
         sideMenuController.changePage(0);
         Get.delete<AddTaskController>();
         Get.delete<MapController>();
       }
     } catch (error) {
-      // Handle error scenario
       debugPrint('Error adding task: $error');
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
@@ -581,22 +587,31 @@ class AddTaskController extends GetxController {
     engineLoad.text = payload.task?.engineLoad.toString() ?? '';
     engineRPM.text = payload.task?.engineRpm.toString() ?? '';
     ignitionTiming.text = payload.task?.btdc.toString() ?? '';
-    // exhaustGasSampleFound.value = payload.task?.gasSampleAsFound?.gasName ?? [];
+    // payload.task?.gasSampleAsFound?[0].gasName == 'Yes';
+    exhaustGasSampleFound.value = (payload.task?.gasSampleAsFound ?? [])
+        .map((item) => item.toString())
+        .toList();
+    leftBankFound.text = payload.task?.lbBankAsGasFound.toString() ?? '';
+    rightBankFound.text = payload.task?.rbBankAsGasFound.toString() ?? '';
+    exhaustGasSampleAdjusted.value = (payload.task?.gasSampleAsAdjusted ?? [])
+        .map((item) => item.toString())
+        .toList();
+    leftBankAdjusted.text = payload.task?.lbBankAsGasAdjusted.toString() ?? '';
+    rightBankAdjusted.text = payload.task?.rbBankAsGasAdjusted.toString() ?? '';
 
     btuValue.text = payload.task?.btdcValue.toString() ?? '';
     selectedBtuValue.value = payload.task?.btuType ?? 'C';
-    //TODO: Exhaust Gas Sample
-    //TODO: CylinderExhaustPyrometer
+    //CylinderExhaustPyrometer
     for (int i = 0; i < 16; i++) {
       cylinderExhaustPyrometerTemperatureCtrl[i].text =
           payload.cylinderExhaustPyrometer?[i].temperature.toString() ?? 0;
     }
-    //TODO: BurnTemperatures
+    //BurnTemperatures
     for (int i = 0; i < 16; i++) {
       burnTemperatureCtrl[i].text =
           payload.burnCompression?[i].temperature.toString() ?? 0;
     }
-    // todo: HotCompressionTemperature
+    //HotCompressionTemperature
     for (int i = 0; i < 16; i++) {
       hotCompressionTemperatureCtrl[i].text =
           payload.hotCompression?[i].temperature.toString() ?? 0;

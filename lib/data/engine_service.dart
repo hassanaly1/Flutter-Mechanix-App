@@ -11,7 +11,7 @@ import 'package:mechanix/models/engine_model.dart';
 class EngineService {
   final _storage = GetStorage();
 
-  Future<void> addEngine({
+  Future<bool> addEngine({
     required EngineModel engineModel,
     required Uint8List engineImageInBytes,
   }) async {
@@ -33,8 +33,6 @@ class EngineService {
       'engine_brand[is_generator]': '${engineModel.isGenerator}',
       'engine_brand[is_compressor]': '${engineModel.isCompressor}',
     });
-
-    // Add image file to the request
     request.files.add(
       http.MultipartFile.fromBytes(
         'engines',
@@ -44,37 +42,36 @@ class EngineService {
     );
 
     request.headers.addAll(headers);
-
     try {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 201) {
         debugPrint(await response.stream.bytesToString());
+        return true;
       } else {
-        ToastMessage.showToastMessage(
-            message: 'Something went wrong, please try again',
-            backgroundColor: Colors.red);
         debugPrint(response.reasonPhrase);
+        return false;
       }
     } catch (e) {
-      ToastMessage.showToastMessage(
-          message: 'Something went wrong, please try again',
-          backgroundColor: Colors.red);
-
       debugPrint('Error adding engine: $e');
+      return false;
     }
   }
 
-  Future<List<EngineModel>> getAllEngines() async {
+  Future<List<EngineModel>> getAllEngines(
+      {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        'https://mechanix-api-production.up.railway.app/api/engine/getenginebrandpagination';
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.getEngineUrl}?page=$page';
 
     try {
-      http.Response response = await http.get(
+      http.Response response = await http.post(
         Uri.parse(apiUrl),
         headers: {
-          'Authorization': 'Bearer ${_storage.read('token')}',
+          'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
         },
+        body: jsonEncode({
+          'search': {"name": searchString}
+        }),
       );
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -164,6 +161,51 @@ class EngineService {
       ToastMessage.showToastMessage(
           message: 'Something went wrong, please try again',
           backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> updateEngineImage({
+    required Uint8List engineImageInBytes,
+    required String engineId,
+    required String token,
+  }) async {
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+          '${ApiEndPoints.baseUrl}${ApiEndPoints.updateEngineImageUrl}?id=$engineId'),
+    );
+    // Add image file to the request
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'engines',
+        engineImageInBytes,
+        filename: 'engine.png',
+      ),
+    );
+
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 201) {
+        debugPrint(await response.stream.bytesToString());
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again',
+            backgroundColor: Colors.red);
+        debugPrint('Error updating engine image:${response.reasonPhrase}');
+      }
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+
+      debugPrint('Error updating engine image: $e');
     }
   }
 }

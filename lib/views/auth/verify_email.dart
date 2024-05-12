@@ -5,6 +5,8 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/helpers/validator.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
   VerifyEmailScreen({super.key});
@@ -94,16 +96,15 @@ class VerifyEmailScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: context.height * 0.03),
                                   ReUsableTextField(
-                                      controller: controller.emailController,
-                                      hintText: 'Email',
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: AppColors.primaryColor,
-                                      )
-
-                                      // validator: (val) =>
-                                      //     AppValidator.validateEmail(value: val),
-                                      ),
+                                    controller: controller.emailController,
+                                    hintText: 'Email',
+                                    prefixIcon: Icon(
+                                      Icons.email_outlined,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    validator: (val) =>
+                                        AppValidator.validateEmail(value: val),
+                                  ),
                                 ],
                               ),
                             ),
@@ -113,8 +114,14 @@ class VerifyEmailScreen extends StatelessWidget {
                                 isLoading: controller.isLoading.value,
                                 buttonText: 'Verify Email',
                                 onTap: () {
-                                  controller.sendOtp(
-                                      verifyOtpForForgetPassword: false);
+                                  if (controller.emailController.text.isEmpty) {
+                                    ToastMessage.showToastMessage(
+                                        message: 'Please Enter your Email',
+                                        backgroundColor: Colors.red);
+                                  } else {
+                                    controller.sendOtp(
+                                        verifyOtpForForgetPassword: false);
+                                  }
                                 },
                               ),
                             ),

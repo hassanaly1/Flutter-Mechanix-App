@@ -1,7 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:mechanix/controllers/user_controller.dart';
 import 'package:mechanix/data/api_endpoints.dart';
+
+final GetStorage _storage = GetStorage();
 
 class AuthService {
   // RegisterUser
@@ -253,6 +260,74 @@ class AuthService {
         'status': 'error',
         'message': 'Network error: $e',
       };
+    }
+  }
+
+// UpdateProfile
+  Future<void> updateProfile({
+    required String firstName,
+    required String lastName,
+    Uint8List? userImageInBytes,
+    required String token,
+  }) async {
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+          'https://mechanix-api-production.up.railway.app/api/auth/editprofile'),
+    );
+
+    request.fields.addAll({
+      'first_name': firstName,
+      'last_name': lastName,
+    });
+
+    // Validate image data
+    // if (userImageInBytes != null && userImageInBytes.isNotEmpty) {
+    //   request.files.add(
+    //     http.MultipartFile.fromBytes(
+    //       'profile',
+    //       userImageInBytes,
+    //       filename: 'profile.png',
+    //     ),
+    //   );
+    // } else {
+    //   debugPrint('Image data is empty or null');
+    // }
+
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        String responseString = await response.stream.bytesToString();
+        try {
+          Map<String, dynamic> jsonResponse = json.decode(responseString);
+          if (jsonResponse['status'] == 'success') {
+            Map<String, dynamic> userData = jsonResponse['data'][0]['user'];
+            _storage.write('user_info', userData);
+            Get.find<UserController>().updateUserInfo(userData);
+          } else {
+            debugPrint(
+                'Error: ${jsonResponse['message']} ${response.reasonPhrase}}');
+          }
+          debugPrint('Profile updated successfully');
+        } on FormatException catch (e) {
+          debugPrint('Error parsing response: $e');
+        }
+      } else {
+        debugPrint(
+            'Error: Status code ${response.statusCode} - ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      if (e is SocketException) {
+        debugPrint('Network error: $e');
+      } else {
+        debugPrint('Error updating info: $e');
+      }
     }
   }
 }

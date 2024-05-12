@@ -5,6 +5,7 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/validator.dart';
 import 'package:mechanix/views/auth/forget_password.dart';
 import 'package:mechanix/views/auth/signup.dart';
 
@@ -92,34 +93,32 @@ class LoginScreen extends StatelessWidget {
                                 maxLines: 4,
                               ),
                               Form(
+                                key: controller.loginFormKey,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     SizedBox(height: context.height * 0.03),
                                     ReUsableTextField(
-                                        controller: controller.emailController,
-                                        hintText: 'Email',
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        prefixIcon: Icon(
-                                          Icons.email_outlined,
-                                          color: AppColors.primaryColor,
-                                        )
-
-                                        // validator: (val) =>
-                                        //     AppValidator.validateEmail(value: val),
-                                        ),
+                                      controller: controller.emailController,
+                                      hintText: 'Email',
+                                      keyboardType: TextInputType.emailAddress,
+                                      prefixIcon: Icon(
+                                        Icons.email_outlined,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validateEmail(
+                                              value: val),
+                                    ),
                                     ReUsableTextField(
-                                        controller:
-                                            controller.passwordController,
-                                        hintText: 'Password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_rounded,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validatePassword(value: val),
-                                        ),
+                                      controller: controller.passwordController,
+                                      hintText: 'Password',
+                                      obscureText: true,
+                                      prefixIcon: Icon(
+                                        Icons.lock_open_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
                                     InkWell(
                                       onTap: () => Get.to(
                                         () => ForgetPasswordScreen(),
@@ -142,7 +141,10 @@ class LoginScreen extends StatelessWidget {
                                   buttonText: 'Login',
                                   isLoading: controller.isLoading.value,
                                   onTap: () {
-                                    controller.loginUser();
+                                    if (controller.loginFormKey.currentState!
+                                        .validate()) {
+                                      controller.loginUser();
+                                    }
                                   },
                                 ),
                               ),

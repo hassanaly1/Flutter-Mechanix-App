@@ -15,69 +15,70 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
   RxBool showPassword = false.obs;
   RxBool showConfirmPassword = false.obs;
-  TextEditingController nameController = TextEditingController();
+  // TextEditingController nameController = TextEditingController();
+  TextEditingController fNameController = TextEditingController();
+  TextEditingController lNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController otpController = TextEditingController();
-  RxString firstName = ''.obs;
-  RxString lastName = ''.obs;
 
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> changePasswordFormKey = GlobalKey<FormState>();
+
+  // final UniversalController controller = Get.find();
 
   final _storage = GetStorage();
   void saveUserInfo(Map<String, dynamic> userInfo) {
     _storage.write('user_info', userInfo);
   }
 
+  // void saveUserInfo(Map<String, dynamic> userInfo) {
+  //   // _storage.write('user_info', userInfo);
+  //   controller.userInfo.value = userInfo;
+  //   debugPrint('User Info: ${controller.userInfo}');
+  //   debugPrint('User Info: ${controller.userInfo['first_name']}');
+  // }
+
   //Calling Apis Methods.
 
   // RegisterUser
   Future<void> registerUser() async {
-    // if (signupFormKey.currentState?.validate() ?? false) {
-    isLoading.value = true;
+    if (signupFormKey.currentState?.validate() ?? false) {
+      isLoading.value = true;
 
-    debugPrint('Name: ${nameController.text.trim()}');
-    debugPrint('Email: ${emailController.text.trim()}');
-    debugPrint('Password: ${passwordController.text.trim()}');
-    debugPrint('Confirm Password: ${confirmPasswordController.text.trim()}');
+      // Call the registerUser method in AuthService
+      try {
+        Map<String, dynamic> response = await AuthService().registerUser(
+            firstName: fNameController.text.trim(),
+            lastName: lNameController.text.trim(),
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+            confirmPassword: confirmPasswordController.text.trim());
 
-    // Call the separateNames method
-    separateNames(nameController.text.trim());
-    debugPrint('First Name: $firstName');
-    debugPrint('Last Name: $lastName');
-    // Call the registerUser method in AuthService
-    try {
-      // Call the registerUser method in AuthService and handle the response
-      Map<String, dynamic> response = await AuthService().registerUser(
-          firstName: firstName.value,
-          lastName: lastName.value,
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-          confirmPassword: confirmPasswordController.text.trim());
+        if (response['status'] == 'success') {
+          debugPrint('Registration successful');
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.green);
 
-      // Handle registration success and failure
-      if (response['status'] == 'success') {
-        debugPrint('Registration successful');
-        Fluttertoast.showToast(msg: response['message']);
-        Get.to(() => OtpScreen(
-              verifyOtpForForgetPassword: false,
-              email: emailController.text.trim(),
-            ));
-        // clearAllControllers();
-        // if response['status'] == 'error'
-      } else {
-        debugPrint('Registration failed');
-        debugPrint(response['message']);
+          Get.to(() => OtpScreen(
+                verifyOtpForForgetPassword: false,
+                email: emailController.text.trim(),
+              ));
+        } else {
+          debugPrint(response['message']);
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
+        }
+      } catch (e) {
+        debugPrint('An error occurred during registration: $e');
         ToastMessage.showToastMessage(
-            message: response['message'], backgroundColor: Colors.red);
+            message: 'An error occurred during registration',
+            backgroundColor: Colors.red);
+      } finally {
+        isLoading.value = false;
       }
-    } catch (e) {
-      debugPrint('An error occurred during registration: $e');
-      Fluttertoast.showToast(msg: 'An error occurred during registration');
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -95,15 +96,19 @@ class AuthController extends GetxController {
         );
 
         if (response['status'] == 'success') {
-          Fluttertoast.showToast(msg: response['message']);
+          ToastMessage.showToastMessage(
+              message: 'Email Verified Successfully',
+              backgroundColor: Colors.green);
           Get.offAll(() => LoginScreen());
-          // clearAllControllers();
+          clearAllControllers();
         } else {
-          Fluttertoast.showToast(msg: response['message']);
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
         }
       } catch (e) {
-        Fluttertoast.showToast(
-            msg: 'An error occurred during email verification');
+        ToastMessage.showToastMessage(
+            message: 'An error occurred during email verification',
+            backgroundColor: Colors.red);
       } finally {
         isLoading.value = false;
       }
@@ -124,30 +129,30 @@ class AuthController extends GetxController {
         );
 
         if (response['status'] == 'success') {
-          Fluttertoast.showToast(
-              msg: 'Login Successfully', backgroundColor: Colors.green);
+          ToastMessage.showToastMessage(
+              message: 'Login Successfully', backgroundColor: Colors.green);
           _storage.write('token', response['token']);
-          debugPrint('TokenAtStorage: ${_storage.read('token')}');
-
+          // controller.saveUserInfo(response['user']);
           saveUserInfo(response['user']);
-          debugPrint('UserInfo: ${_storage.read('user_info')}');
           Get.offAll(() => const DashboardScreen(),
               transition: Transition.zoom);
-          // clearAllControllers();
+          emailController.clear();
+          passwordController.clear();
+        } else if (response['message'] == 'Please Verify Your Email First') {
+          Get.to(() => VerifyEmailScreen(), transition: Transition.rightToLeft);
+          ToastMessage.showToastMessage(
+              message: 'Please Verify Your Email First',
+              backgroundColor: Colors.green);
+          // emailController.clear();
+          // passwordController.clear();
         } else {
-          response['message'] == 'Please Verify Your Email First'
-              ? Get.to(() => VerifyEmailScreen(),
-                  transition: Transition.rightToLeft)
-              : null;
-          Fluttertoast.showToast(
-              msg: response['message'], backgroundColor: Colors.red);
-          // Get.offAll(() => OtpScreen(
-          //       email: emailController.text.trim(),
-          //       verifyOtpForForgetPassword: false,
-          //     ));
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
         }
       } catch (e) {
-        Fluttertoast.showToast(msg: 'Something went wrong, please try again.');
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again.',
+            backgroundColor: Colors.green);
       } finally {
         isLoading.value = false;
       }
@@ -166,18 +171,22 @@ class AuthController extends GetxController {
         );
 
         if (response['status'] == 'success') {
-          Fluttertoast.showToast(msg: response['message']);
-
+          ToastMessage.showToastMessage(
+              message: 'Please check your email, we have sent you an OTP',
+              backgroundColor: Colors.green);
+          // emailController.clear();
           Get.off(() => OtpScreen(
                 verifyOtpForForgetPassword: verifyOtpForForgetPassword,
                 email: emailController.text.trim(),
               ));
-          // clearAllControllers();
         } else {
-          Fluttertoast.showToast(msg: response['message']);
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
         }
       } catch (e) {
-        Fluttertoast.showToast(msg: 'Something went wrong, please try again.');
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again.',
+            backgroundColor: Colors.red);
       } finally {
         isLoading.value = false;
       }
@@ -209,18 +218,22 @@ class AuthController extends GetxController {
 
           debugPrint('TokenReceived: $token');
           _storage.write('token', token);
-          debugPrint('TokenAtStorage: ${_storage.read('token')}');
           verifyOtpForForgetPassword
               ? Get.offAll(() => ChangePasswordScreen())
               : Get.offAll(() => const DashboardScreen());
+          emailController.clear();
+          otpController.clear();
           // clearAllControllers();
         } else {
           debugPrint('RESPONSE: ${response['message']}');
-          Fluttertoast.showToast(msg: response['message']);
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
         }
       } catch (e) {
-        debugPrint('SOMETHING WENT WRONG: ${e.toString()}');
-        Fluttertoast.showToast(msg: e.toString());
+        debugPrint('Something went wrong. ${e.toString()}');
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, please try again.',
+            backgroundColor: Colors.red);
       } finally {
         isLoading.value = false;
       }
@@ -242,42 +255,44 @@ class AuthController extends GetxController {
             token: _storage.read('token'));
 
         if (response['status'] == 'success') {
-          Fluttertoast.showToast(msg: response['message']);
-          Get.offAll(() => const DashboardScreen());
+          ToastMessage.showToastMessage(
+              message: 'Password Changed Successfully',
+              backgroundColor: Colors.green);
+          passwordController.clear();
+          confirmPasswordController.clear();
+          Get.offAll(() => LoginScreen());
         } else {
-          Fluttertoast.showToast(msg: response['message']);
+          ToastMessage.showToastMessage(
+              message: response['message'], backgroundColor: Colors.red);
         }
       } catch (e) {
-        Fluttertoast.showToast(
-            msg: 'An error occurred during changing password');
+        ToastMessage.showToastMessage(
+            message: 'An error occurred during changing password',
+            backgroundColor: Colors.red);
       } finally {
         isLoading.value = false;
       }
-    }
-  }
-
-  void separateNames(String fullName) {
-    List<String> names = fullName.split(' ');
-    if (names.length > 1) {
-      firstName.value = names[0];
-      lastName.value = names.sublist(1).join(' ');
     } else {
-      firstName.value = fullName;
-      lastName.value = '';
+      ToastMessage.showToastMessage(
+        message: 'Passwords do not match',
+        backgroundColor: Colors.red,
+      );
     }
   }
 
-  // void clearAllControllers() {
-  //   nameController.clear();
-  //   emailController.clear();
-  //   passwordController.clear();
-  //   confirmPasswordController.clear();
-  //   otpController.clear();
-  // }
+  void clearAllControllers() {
+    fNameController.clear();
+    lNameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    otpController.clear();
+  }
 
   @override
   onClose() {
-    nameController.dispose();
+    fNameController.dispose();
+    lNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();

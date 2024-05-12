@@ -36,7 +36,7 @@ class EnginesScreen extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: Container(
                 padding: EdgeInsets.symmetric(
                     vertical: context.height * 0.02,
@@ -55,8 +55,12 @@ class EnginesScreen extends StatelessWidget {
                                 ? context.width * 0.08
                                 : 0.0),
                         child: ReUsableTextField(
+                          controller: controller.searchController,
                           hintText: 'Search Reports',
                           suffixIcon: const Icon(Icons.search_sharp),
+                          onChanged: (value) {
+                            controller.getAllEngines(searchName: value);
+                          },
                         ),
                       ),
                       CustomButton(
@@ -99,22 +103,20 @@ class EnginesScreen extends StatelessWidget {
                                   )
                                 : Expanded(
                                     child: ListView.builder(
+                                      controller: controller.scrollController,
                                       shrinkWrap: true,
                                       physics:
                                           const AlwaysScrollableScrollPhysics(),
-                                      itemCount:
-                                          universalController.engines.length,
+                                      itemCount: universalController
+                                              .engines.length +
+                                          (controller.isLoading.value ? 1 : 0),
                                       itemBuilder: (context, index) {
-                                        final engine =
-                                            universalController.engines[index];
-                                        return Dismissible(
-                                          key: Key(engine.id.toString()),
-                                          onDismissed: (direction) {
-                                            // todo: delete api call
-                                            universalController.engines
-                                                .removeAt(index);
-                                          },
-                                          child: CustomEngineCard(
+                                        if (index <
+                                            universalController
+                                                .engines.length) {
+                                          final engine = universalController
+                                              .engines[index];
+                                          return CustomEngineCard(
                                             controller: controller,
                                             model: engine,
                                             onTap: () {
@@ -123,8 +125,17 @@ class EnginesScreen extends StatelessWidget {
                                                       model: engine),
                                                   transition: Transition.size);
                                             },
-                                          ),
-                                        );
+                                          );
+                                        } else if (controller.isLoading.value) {
+                                          return const Center(
+                                            heightFactor: 3,
+                                            child: SpinKitCircle(
+                                                color: Colors.black87,
+                                                size: 40.0),
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
                                       },
                                     ),
                                   ),
@@ -515,7 +526,7 @@ void _showEditPopup(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () => controller.pickImage(),
+                              onTap: () => controller.updateImage(model),
                               child: CircleAvatar(
                                 radius: 45,
                                 backgroundColor: Colors.white,

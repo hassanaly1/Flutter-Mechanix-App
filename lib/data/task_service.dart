@@ -61,22 +61,26 @@ class TaskService {
   }
 
   Future<List<Payload>> getAllTasks(
-      {required String userId, required String token}) async {
-    final Uri apiUrl =
-        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.getAllTaskUrl);
+      {String? searchString, required String token, required int page}) async {
+    print('page: $page');
+    String apiUrl =
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
 
     try {
       final response = await http.post(
-        apiUrl,
+        Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({'user': userId}),
+        // body: jsonEncode({
+        //   'search': {"name": searchString}
+        // }),
       );
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
+        print('response: $jsonData');
 
         if (jsonData['data'] != null) {
           final tasksList = jsonData['data'];
@@ -103,7 +107,7 @@ class TaskService {
 
           return tasks;
         } else {
-          debugPrint('No tasks found');
+          debugPrint('No tasks found in the request response');
           return [];
         }
       } else {

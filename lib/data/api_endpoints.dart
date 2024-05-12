@@ -10,6 +10,7 @@ class ApiEndPoints {
   static String verifyOtpUrl = '/api/auth/verify-reset-otp'; //VerifyOtp
   static String changePasswordUrl =
       '/api/auth/changepassword'; //Change Password
+  static String updateProfileUrl = '/api/auth/editprofile';
 
   //Task
   static String createTaskUrl = '/api/task/createtask';
@@ -23,4 +24,11 @@ class ApiEndPoints {
   static String getEngineBrandById = '/api/engine/getenginebrandbyid';
   static String updateEngineUrl = '/api/engine/updateenginebrand';
   static String deleteEngineUrl = '/api/engine/deleteenginebrand';
+  static String updateEngineImageUrl = '/api/engine/updateengineprofile';
+
+  // Report
+  static String createReportUrl = '/api/report/generateReportbyid';
+  static String getReportUrl = '/api/report/getreportlistpagniation';
+  static String getReportByIdUrl = '/api/report/getreportbyid';
+  static String deleteReportUrl = '/api/report/deletereportbyid';
 }

@@ -5,6 +5,8 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/helpers/validator.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
@@ -91,32 +93,34 @@ class ChangePasswordScreen extends StatelessWidget {
                                 maxLines: 4,
                               ),
                               Form(
+                                key: controller.changePasswordFormKey,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     SizedBox(height: context.height * 0.03),
                                     ReUsableTextField(
-                                        controller:
-                                            controller.passwordController,
-                                        hintText: 'Password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_rounded,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validatePassword(value: val),
-                                        ),
+                                      controller: controller.passwordController,
+                                      hintText: 'Password',
+                                      prefixIcon: Icon(
+                                        Icons.lock_open_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validatePassword(
+                                              value: val),
+                                    ),
                                     ReUsableTextField(
-                                        controller: controller
-                                            .confirmPasswordController,
-                                        hintText: 'Confirm Password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_rounded,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validatePassword(value: val),
-                                        ),
+                                      controller:
+                                          controller.confirmPasswordController,
+                                      hintText: 'Confirm Password',
+                                      prefixIcon: Icon(
+                                        Icons.lock_open_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validatePassword(
+                                              value: val),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -126,7 +130,22 @@ class ChangePasswordScreen extends StatelessWidget {
                                   isLoading: controller.isLoading.value,
                                   buttonText: 'Change Password',
                                   onTap: () {
-                                    controller.changePassword();
+                                    if (controller
+                                        .changePasswordFormKey.currentState!
+                                        .validate()) {
+                                      if (controller.passwordController.text
+                                              .trim() !=
+                                          controller
+                                              .confirmPasswordController.text
+                                              .trim()) {
+                                        ToastMessage.showToastMessage(
+                                            message:
+                                                'Password and Confirm Password should be same',
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        controller.changePassword();
+                                      }
+                                    }
                                   },
                                 ),
                               ),

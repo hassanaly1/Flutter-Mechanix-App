@@ -2,7 +2,6 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -310,9 +309,9 @@ class CustomStepperBody4 extends StatelessWidget {
                         },
                       )),
           ),
-          CustomTextWidget(
-            text: model?.task?.taskId ?? 'NO TASK ID FOUND',
-          ),
+          // CustomTextWidget(
+          //   text: model?.task?.taskId ?? 'NO TASK ID FOUND',
+          // ),
 
           Row(
             children: [
@@ -335,7 +334,9 @@ class CustomStepperBody4 extends StatelessWidget {
                         isTaskUpdating
                             ? await controller
                                 .updateTask(model?.task?.taskId ?? '')
-                            : await controller.addTask(sideMenu!);
+                            : await controller.addTask(context, sideMenu!);
+                        // showConfirmationPopup(
+                        //     context: context, payload: model!);
                       }),
                 ),
               ),
@@ -418,4 +419,85 @@ class SinglePartDetail extends StatelessWidget {
       ),
     );
   }
+}
+
+void showConfirmationPopup(
+    {required BuildContext context,
+    required String customerName,
+    required String customerEmail}) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'Dismiss',
+    transitionDuration: const Duration(milliseconds: 400),
+    pageBuilder: (context, animation, secondaryAnimation) => Container(),
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return ScaleTransition(
+          scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+          child: FadeTransition(
+              opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+              child: AlertDialog(
+                  scrollable: true,
+                  backgroundColor: Colors.transparent,
+                  content: Container(
+                    width: context.width * 0.7,
+                    // height: context.height * 0.3,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: context.height * 0.02),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color.fromRGBO(255, 220, 105, 0.4),
+                          Color.fromRGBO(86, 127, 255, 0.4),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 5.0,
+                            spreadRadius: 5.0),
+                        BoxShadow(
+                            color: Colors.white,
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0)
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomTextWidget(
+                            text:
+                                'Do you want to send this report to $customerName at $customerEmail?',
+                            fontSize: 14.0,
+                            maxLines: 3,
+                            textAlign: TextAlign.center,
+                            fontWeight: FontWeight.w400),
+                        const SizedBox(height: 12.0),
+                        CustomButton(
+                          isLoading: false,
+                          usePrimaryColor: true,
+                          buttonText: 'Yes',
+                          fontSize: 12.0,
+                          onTap: () {
+                            Get.back();
+                          },
+                        ),
+                        CustomButton(
+                          isLoading: false,
+                          usePrimaryColor: false,
+                          buttonText: 'Not right now',
+                          fontSize: 12.0,
+                          onTap: () {
+                            Get.back();
+                          },
+                        )
+                      ],
+                    ),
+                  ))));
+    },
+  );
 }

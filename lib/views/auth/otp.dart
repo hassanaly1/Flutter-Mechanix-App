@@ -6,6 +6,7 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/helpers/toast.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -226,13 +227,20 @@ class _OtpScreenState extends State<OtpScreen> {
                                   isLoading: controller.isLoading.value,
                                   buttonText: 'Verify OTP',
                                   onTap: () {
-                                    debugPrint(widget.verifyOtpForForgetPassword
-                                        .toString());
-                                    widget.verifyOtpForForgetPassword
-                                        ? controller.verifyOtp(
-                                            verifyOtpForForgetPassword: widget
-                                                .verifyOtpForForgetPassword)
-                                        : controller.verifyEmail();
+                                    if (controller.otpController.text.isEmpty) {
+                                      ToastMessage.showToastMessage(
+                                          message: 'Please Enter OTP',
+                                          backgroundColor: Colors.red);
+                                    } else {
+                                      debugPrint(widget
+                                          .verifyOtpForForgetPassword
+                                          .toString());
+                                      widget.verifyOtpForForgetPassword
+                                          ? controller.verifyOtp(
+                                              verifyOtpForForgetPassword: widget
+                                                  .verifyOtpForForgetPassword)
+                                          : controller.verifyEmail();
+                                    }
                                   },
                                 ),
                               ),

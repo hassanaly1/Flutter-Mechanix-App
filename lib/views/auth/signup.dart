@@ -5,6 +5,8 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/helpers/validator.dart';
 import 'package:mechanix/views/auth/login.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -90,56 +92,70 @@ class SignupScreen extends StatelessWidget {
                                 maxLines: 4,
                               ),
                               Form(
+                                key: controller.signupFormKey,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     SizedBox(height: context.height * 0.03),
                                     ReUsableTextField(
-                                        controller: controller.nameController,
-                                        hintText: 'Name',
-                                        prefixIcon: Icon(
-                                          Icons.account_circle_outlined,
-                                          color: AppColors.primaryColor,
-                                        )
-
-                                        // validator: (val) =>
-                                        //     AppValidator.validateEmail(value: val),
-                                        ),
+                                      controller: controller.fNameController,
+                                      hintText: 'First Name',
+                                      prefixIcon: Icon(
+                                        Icons.account_circle_outlined,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validateEmptyText(
+                                              value: val,
+                                              fieldName: 'First Name'),
+                                    ),
                                     ReUsableTextField(
-                                        controller: controller.emailController,
-                                        hintText: 'Email',
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        prefixIcon: Icon(
-                                          Icons.email_outlined,
-                                          color: AppColors.primaryColor,
-                                        )
-
-                                        // validator: (val) =>
-                                        //     AppValidator.validateEmail(value: val),
-                                        ),
+                                      controller: controller.lNameController,
+                                      hintText: 'Last Name',
+                                      prefixIcon: Icon(
+                                        Icons.account_circle_outlined,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validateEmptyText(
+                                              value: val,
+                                              fieldName: 'Last Name'),
+                                    ),
                                     ReUsableTextField(
-                                        controller:
-                                            controller.passwordController,
-                                        hintText: 'Password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_rounded,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validatePassword(value: val),
-                                        ),
+                                      controller: controller.emailController,
+                                      hintText: 'Email',
+                                      keyboardType: TextInputType.emailAddress,
+                                      prefixIcon: Icon(
+                                        Icons.email_outlined,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validateEmail(
+                                              value: val),
+                                    ),
                                     ReUsableTextField(
-                                        controller: controller
-                                            .confirmPasswordController,
-                                        hintText: 'Confirm Password',
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_rounded,
-                                          color: AppColors.primaryColor,
-                                        )
-                                        // validator: (val) =>
-                                        //     AppValidator.validatePassword(value: val),
-                                        ),
+                                      controller: controller.passwordController,
+                                      hintText: 'Password',
+                                      prefixIcon: Icon(
+                                        Icons.lock_open_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validatePassword(
+                                              value: val),
+                                    ),
+                                    ReUsableTextField(
+                                      controller:
+                                          controller.confirmPasswordController,
+                                      hintText: 'Confirm Password',
+                                      prefixIcon: Icon(
+                                        Icons.lock_open_rounded,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      validator: (val) =>
+                                          AppValidator.validatePassword(
+                                              value: val),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -148,8 +164,17 @@ class SignupScreen extends StatelessWidget {
                                 () => CustomButton(
                                   isLoading: controller.isLoading.value,
                                   buttonText: 'Register',
-                                  // isLoading: controller.isLoading.value,
-                                  onTap: () => controller.registerUser(),
+                                  onTap: () {
+                                    if (controller.passwordController.text ==
+                                        controller
+                                            .confirmPasswordController.text) {
+                                      controller.registerUser();
+                                    } else {
+                                      ToastMessage.showToastMessage(
+                                          message: 'Passwords do not match',
+                                          backgroundColor: Colors.red);
+                                    }
+                                  },
                                 ),
                               ),
                               SizedBox(height: context.height * 0.02),

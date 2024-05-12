@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -12,7 +11,6 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/views/add_task/add_task.dart';
 import 'package:mechanix/views/update_task.dart';
 
 class ViewAllTasksScreen extends StatelessWidget {
@@ -24,14 +22,16 @@ class ViewAllTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
+
     return SafeArea(
       child: PopScope(
         canPop: false,
         onPopInvoked: (didPop) {
           sideMenu.changePage(0);
+          controller.currentPage.value = 1;
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.only(top: 16.0),
           child: Container(
             padding: EdgeInsets.symmetric(
                 vertical: context.height * 0.02,
@@ -49,8 +49,12 @@ class ViewAllTasksScreen extends StatelessWidget {
                         horizontal:
                             context.isLandscape ? context.width * 0.08 : 0.0),
                     child: ReUsableTextField(
+                      controller: controller.searchController,
                       hintText: 'Search Task',
                       suffixIcon: const Icon(Icons.search_sharp),
+                      onChanged: (value) {
+                        controller.getAllTasks(searchName: value);
+                      },
                     ),
                   ),
                   ReUsableContainer(
@@ -100,20 +104,34 @@ class ViewAllTasksScreen extends StatelessWidget {
                               )
                             : Expanded(
                                 child: ListView.builder(
+                                  controller: controller.scrollController,
                                   shrinkWrap: true,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
-                                  itemCount: controller.tasks.length,
-                                  itemBuilder: (context, index) => InkWell(
-                                    onTap: () {
-                                      Get.to(() => UpdateTaskScreen(
-                                          model: controller.tasks[index]));
-                                    },
-                                    child: CustomTaskCard(
-                                      model: controller.tasks[index],
-                                      controller: controller,
-                                    ),
-                                  ),
+                                  itemCount: controller.tasks.length +
+                                      (controller.isLoading.value ? 1 : 0),
+                                  itemBuilder: (context, index) {
+                                    if (index < controller.tasks.length) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Get.to(() => UpdateTaskScreen(
+                                              model: controller.tasks[index]));
+                                        },
+                                        child: CustomTaskCard(
+                                          model: controller.tasks[index],
+                                          controller: controller,
+                                        ),
+                                      );
+                                    } else if (controller.isLoading.value) {
+                                      return const Center(
+                                        heightFactor: 3,
+                                        child: SpinKitCircle(
+                                            color: Colors.black87, size: 40.0),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
                                 ),
                               ),
                   )
