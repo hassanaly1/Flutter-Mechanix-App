@@ -48,7 +48,8 @@ class EngineService {
         debugPrint(await response.stream.bytesToString());
         return true;
       } else {
-        debugPrint(response.reasonPhrase);
+        debugPrint(
+            '${response.reasonPhrase}  ${response.statusCode} ${response.stream}');
         return false;
       }
     } catch (e) {
@@ -94,10 +95,12 @@ class EngineService {
     }
   }
 
-  Future<void> updateEngine(
-      {required EngineModel engineModel, required String token}) async {
+  Future<bool> updateEngine({
+    required EngineModel engineModel,
+    required String token,
+  }) async {
     String apiUrl = '${ApiEndPoints.baseUrl}${ApiEndPoints.updateEngineUrl}';
-    debugPrint(jsonEncode(engineModel.toJson()));
+    bool isSuccess = false;
 
     try {
       http.Response response = await http.post(
@@ -113,26 +116,25 @@ class EngineService {
       if (response.statusCode == 201) {
         Map<String, dynamic> responseData = json.decode(response.body);
         String message = responseData['message'];
-
         debugPrint(message);
+        isSuccess = true;
       } else {
-        ToastMessage.showToastMessage(
-            message: 'Something went wrong, please try again',
-            backgroundColor: Colors.red);
         debugPrint(
             'Failed to update engine: ${response.statusCode} ${response.body}');
       }
     } catch (e) {
-      ToastMessage.showToastMessage(
-          message: 'Something went wrong, please try again',
-          backgroundColor: Colors.red);
+      debugPrint('Error updating engine: $e');
     }
+
+    return isSuccess;
   }
 
-  Future<void> deleteEngine(
-      {required EngineModel engineModel, required String token}) async {
+  Future<bool> deleteEngine({
+    required EngineModel engineModel,
+    required String token,
+  }) async {
     String apiUrl = '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteEngineUrl}';
-    debugPrint(jsonEncode(engineModel.toJson()));
+    bool isSuccess = false;
 
     try {
       http.Response response = await http.post(
@@ -150,18 +152,16 @@ class EngineService {
         String message = responseData['message'];
 
         debugPrint(message);
+        isSuccess = true;
       } else {
-        ToastMessage.showToastMessage(
-            message: 'Something went wrong, please try again',
-            backgroundColor: Colors.red);
         debugPrint(
             'Failed to delete engine: ${response.statusCode} ${response.body}');
       }
     } catch (e) {
-      ToastMessage.showToastMessage(
-          message: 'Something went wrong, please try again',
-          backgroundColor: Colors.red);
+      debugPrint('Error deleting engine: $e');
     }
+
+    return isSuccess;
   }
 
   Future<void> updateEngineImage({
@@ -207,5 +207,71 @@ class EngineService {
 
       debugPrint('Error updating engine image: $e');
     }
+  }
+
+  Future<Map<String, dynamic>> getEngineData(
+      {required String engineName}) async {
+    debugPrint('GetEngineDataApiCalled');
+    final url =
+        'https://mechanix-api-production.up.railway.app/api/engine/getenginebrandbyid?name=$engineName';
+
+    bool success;
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${_storage.read('token')}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint(
+            'Status Code: ${response.statusCode}, Response: ${response.body}');
+        final data = json.decode(response.body);
+// Check if the data contains the engine
+        if (data['data'] != null && data['data']['engine'] != null) {
+          final engineData = data['data']['engine'];
+          success = true;
+          return {'data': engineData, 'success': success};
+        } else {
+          final message = data['message'] ?? 'Engine not found';
+          success = false;
+          return {'data': null, 'message': message, 'success': success};
+        }
+      } else {
+        debugPrint(
+            'Status Code: ${response.statusCode}, Response: ${response.body}');
+        final data = json.decode(response.body);
+        final message = data['message'] ?? 'Unknown error occurred';
+        success = false;
+        return {'data': null, 'message': message, 'success': success};
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      success = false;
+      return {
+        'data': null,
+        'message': 'An error occurred: $e',
+        'success': success
+      };
+    }
+
+    //WorkingCode
+    //   final engineData = data['data']['engine'];
+    //   success = true;
+    //   return {'data': engineData, 'success': success};
+    // } else {
+    //   debugPrint(
+    //       'Status Code: ${response.statusCode}, Response: ${response.body}');
+    //   success = false;
+    //   return {'data': null, 'success': success};
+    // }
+    // } catch (e) {
+    //   print('Error occurred: $e');
+    //   success = false;
+    //   return {'data': null, 'success': success};
+    // }
   }
 }

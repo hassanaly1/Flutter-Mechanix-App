@@ -18,6 +18,7 @@ class ViewAllTasksScreen extends StatelessWidget {
   ViewAllTasksScreen({super.key, required this.sideMenu});
 
   final UniversalController controller = Get.find();
+  // Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                 horizontal: context.width * 0.05),
             decoration: const BoxDecoration(color: Colors.transparent),
             child: RefreshIndicator(
-              onRefresh: controller.getAllTasks,
+              onRefresh: () => controller.getAllTasks(page: 1),
               color: AppColors.primaryColor,
               backgroundColor: AppColors.secondaryColor,
               triggerMode: RefreshIndicatorTriggerMode.onEdge,
@@ -55,21 +56,6 @@ class ViewAllTasksScreen extends StatelessWidget {
                       onChanged: (value) {
                         controller.getAllTasks(searchName: value);
                       },
-                    ),
-                  ),
-                  ReUsableContainer(
-                    child: ListTile(
-                      visualDensity: VisualDensity.compact,
-                      onTap: () {},
-                      leading: Icon(Icons.calendar_month,
-                          color: AppColors.blueTextColor),
-                      title: CustomTextWidget(
-                        text: DateFormat('yyyy-MM-dd').format(now),
-                      ),
-                      trailing: CustomTextWidget(
-                        text: 'Change',
-                        fontSize: 12.0,
-                      ),
                     ),
                   ),
                   Obx(
@@ -97,7 +83,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w600,
                                       ),
-                                      SizedBox(height: context.height * 0.25),
+                                      SizedBox(height: context.height * 0.4),
                                     ],
                                   ),
                                 ),
@@ -143,6 +129,22 @@ class ViewAllTasksScreen extends StatelessWidget {
       ),
     );
   }
+
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: selectedDate.value,
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2101),
+  //   );
+  //   if (picked != null && picked != selectedDate.value) {
+  //     selectedDate.value = picked;
+  //     String formattedStartDate =
+  //         DateFormat('yyyy-MM-dd').format(selectedDate.value);
+  //     print('SelectedDate: $formattedStartDate');
+  //     await controller.getAllTasks(date: formattedStartDate);
+  //   }
+  // }
 }
 
 class CustomTaskCard extends StatelessWidget {
@@ -170,7 +172,7 @@ class CustomTaskCard extends StatelessWidget {
                   child: CustomTextWidget(
                     textAlign: TextAlign.center,
                     text: model.geolocation?.address! == ""
-                        ? 'Not Assigned'
+                        ? 'Location not assigned'
                         : model.geolocation?.address ?? '',
                     fontSize: 12.0,
                     fontWeight: FontWeight.w500,
@@ -210,12 +212,28 @@ class CustomTaskCard extends StatelessWidget {
                 const SizedBox(width: 4.0),
                 Flexible(
                   child: CustomTextWidget(
-                    text: model.task?.nameJourneyMan! == ''
+                    text: model.task?.name! == ''
                         ? 'Not Assigned'
-                        : model.task?.nameJourneyMan ?? '',
+                        : model.task?.name ?? '',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
                   ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                CustomTextWidget(
+                  text: 'Technician: ',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w700,
+                ),
+                CustomTextWidget(
+                  text: model.task?.nameJourneyMan! == ''
+                      ? 'Not Assigned'
+                      : model.task?.nameJourneyMan ?? '',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w300,
                 ),
               ],
             ),

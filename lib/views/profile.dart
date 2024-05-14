@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/controllers/user_controller.dart';
 import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -25,18 +22,17 @@ class ProfileSection extends StatefulWidget {
 }
 
 class _ProfileSectionState extends State<ProfileSection> {
-  final UniversalController controller = Get.find();
+  final UniversalController universalController = Get.find();
   RxBool isLoading = false.obs;
   final GetStorage _storage = GetStorage();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final ImagePicker picker = ImagePicker();
-  XFile? userImage;
-  Uint8List? userImageInBytes;
+  // XFile? userImage;
+  // Uint8List? userImageInBytes;
 
   @override
   Widget build(BuildContext context) {
-    final UserController controller = Get.find();
     final storage = GetStorage();
     return PopScope(
       canPop: false,
@@ -55,20 +51,24 @@ class _ProfileSectionState extends State<ProfileSection> {
                 InkWell(
                   onTap: updateUserImage,
                   child: CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Colors.white,
-                    backgroundImage: userImage?.path == null
-                        ? const AssetImage('assets/images/placeholder.png')
-                            as ImageProvider
-                        : FileImage(File(userImage?.path ?? '')),
-                  ),
+                      radius: 45,
+                      backgroundColor: Colors.white,
+                      // backgroundImage:
+                      //     MemoryImage(universalController.userImageInBytes!),
+                      backgroundImage: universalController.userImageURL.value !=
+                              ''
+                          ? NetworkImage(
+                              universalController.userImageURL.value ?? '')
+                          : const AssetImage('assets/images/placeholder.png')
+                              as ImageProvider),
                 ),
                 const SizedBox(height: 12.0),
                 Obx(
                   () => CustomTextWidget(
-                    text: (controller.userInfo.value['first_name'] ?? '') +
+                    text: (universalController.userInfo.value['first_name'] ??
+                            '') +
                         ' ' +
-                        (controller.userInfo['last_name'] ?? ''),
+                        (universalController.userInfo['last_name'] ?? ''),
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
                     textAlign: TextAlign.center,
@@ -76,7 +76,7 @@ class _ProfileSectionState extends State<ProfileSection> {
                   ),
                 ),
                 CustomTextWidget(
-                  text: controller.userInfo.value['email'] ?? '',
+                  text: universalController.userInfo.value['email'] ?? '',
                   fontWeight: FontWeight.w300,
                   fontSize: 14,
                   textAlign: TextAlign.center,
@@ -92,14 +92,18 @@ class _ProfileSectionState extends State<ProfileSection> {
                       children: [
                         ReUsableTextField(
                             controller: firstNameController,
-                            hintText:
-                                controller.userInfo.value['first_name'] ?? ''),
+                            hintText: universalController
+                                    .userInfo.value['first_name'] ??
+                                ''),
                         ReUsableTextField(
                             controller: lastNameController,
-                            hintText:
-                                controller.userInfo.value['last_name'] ?? ''),
+                            hintText: universalController
+                                    .userInfo.value['last_name'] ??
+                                ''),
                         ReUsableTextField(
-                            hintText: controller.userInfo.value['email'] ?? '',
+                            hintText:
+                                universalController.userInfo.value['email'] ??
+                                    '',
                             readOnly: true),
                         Obx(
                           () => CustomButton(
@@ -137,15 +141,22 @@ class _ProfileSectionState extends State<ProfileSection> {
   Future<void> updateProfileInfo() async {
     try {
       isLoading.value = true;
-      await AuthService().updateProfile(
+      bool success = await AuthService().updateProfile(
           firstName: firstNameController.text.trim(),
           lastName: lastNameController.text.trim(),
-          userImageInBytes: userImageInBytes ?? Uint8List(0),
+          // userImageInBytes: universalController.userImageInBytes!,
           token: _storage.read('token'));
       isLoading.value = false;
-      ToastMessage.showToastMessage(
-          message: 'Profile Updated', backgroundColor: Colors.green);
-      // setState(() {});
+
+      if (success) {
+        setState(() {});
+        // Profile update successful
+      } else {
+        // Profile update failed
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, try again',
+            backgroundColor: Colors.green);
+      }
     } catch (e) {
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
@@ -156,12 +167,41 @@ class _ProfileSectionState extends State<ProfileSection> {
 
   Future<void> updateUserImage() async {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
     if (image != null) {
-      userImage = image;
-      userImageInBytes = await userImage?.readAsBytes();
-      debugPrint('Image Picked');
+      universalController.userImage = image;
+      universalController.userImageURL.value = image.path;
+      universalController.userImageInBytes =
+          (await universalController.userImage?.readAsBytes())!;
+      debugPrint('UserImageInBytes: ${universalController.userImageInBytes}');
+
+      UpdateUserImageResult result = await AuthService().updateUserImage(
+        token: _storage.read('token'),
+        engineImageInBytes: universalController.userImageInBytes!,
+      );
+
+      if (result.isSuccess) {
+        if (result.userData != null) {
+          debugPrint('AfterUpdateProfileLink: ${result.userData!['profile']}');
+          universalController.setUserImageUrl = result.userData!['profile'];
+          debugPrint('AfterUpdate: ${universalController.userImageURL.value}');
+          ToastMessage.showToastMessage(
+              message: 'Profile Image Updated', backgroundColor: Colors.green);
+        } else {
+          ToastMessage.showToastMessage(
+              message: 'Profile Image Updated, but user data is missing',
+              backgroundColor: Colors.yellow);
+        }
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Something went wrong, try again',
+            backgroundColor: Colors.red);
+      }
+
       setState(() {});
+    } else {
+      debugPrint('No image selected');
+      ToastMessage.showToastMessage(
+          message: 'No image selected', backgroundColor: Colors.red);
     }
   }
 }

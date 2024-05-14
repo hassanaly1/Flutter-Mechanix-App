@@ -317,6 +317,7 @@ class CustomStepperBody2 extends StatelessWidget {
                           ReUsableTextField(
                             hintText: 'Temperature',
                             controller: controller.lbTurboInTemp,
+                            keyboardType: TextInputType.number,
                           )
                         ],
                       ),
@@ -331,6 +332,7 @@ class CustomStepperBody2 extends StatelessWidget {
                           ReUsableTextField(
                             hintText: 'Temperature',
                             controller: controller.rbTurboInTemp,
+                            keyboardType: TextInputType.number,
                           )
                         ],
                       ),
@@ -350,6 +352,7 @@ class CustomStepperBody2 extends StatelessWidget {
                           ReUsableTextField(
                             hintText: 'Temperature',
                             controller: controller.lbTurboOutTemp,
+                            keyboardType: TextInputType.number,
                           )
                         ],
                       ),
@@ -364,6 +367,7 @@ class CustomStepperBody2 extends StatelessWidget {
                           ReUsableTextField(
                             hintText: 'Temperature',
                             controller: controller.rbTurboOutTemp,
+                            keyboardType: TextInputType.number,
                           )
                         ],
                       ),
@@ -580,8 +584,7 @@ class CustomStepperBody2 extends StatelessWidget {
                                 controller:
                                     controller.oilPressureDifferentialTextField,
                                 onChanged: (value) {
-                                  controller.oilPressureDifferential.value =
-                                      value;
+                                  controller.oilPressureDifferential.value = '';
                                 },
                               ),
                             ),

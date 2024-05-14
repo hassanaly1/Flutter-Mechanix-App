@@ -15,7 +15,7 @@ class EnginesController extends GetxController {
   var isEnginesAreLoading = false.obs;
   RxBool isQrCodeGenerated = false.obs;
   XFile? engineImage;
-  Uint8List? engineImageInBytes;
+  late Uint8List engineImageInBytes;
   RxString engineImageUrl = ''.obs;
   TextEditingController engineName = TextEditingController();
   TextEditingController engineSubtitle = TextEditingController();
@@ -102,7 +102,7 @@ class EnginesController extends GetxController {
     if (image != null) {
       engineImage = image;
       engineImageUrl.value = image.path;
-      engineImageInBytes = await engineImage?.readAsBytes();
+      engineImageInBytes = (await engineImage?.readAsBytes())!;
       debugPrint(engineImageUrl.value);
       debugPrint('Image Picked');
       update();
@@ -117,10 +117,10 @@ class EnginesController extends GetxController {
     if (image != null) {
       engineImage = image;
       engineImageUrl.value = image.path;
-      engineImageInBytes = await engineImage?.readAsBytes();
-      debugPrint(engineImageInBytes!.lengthInBytes.toString());
+      engineImageInBytes = (await engineImage?.readAsBytes())!;
+      debugPrint(engineImageInBytes.lengthInBytes.toString());
       engineService.updateEngineImage(
-          engineImageInBytes: engineImageInBytes!,
+          engineImageInBytes: engineImageInBytes,
           engineId: model.id ?? '',
           token: _storage.read('token'));
     }
@@ -145,12 +145,12 @@ class EnginesController extends GetxController {
         debugPrint('UserId: ${newEngine.userId}');
         debugPrint('Name: ${newEngine.name}');
         debugPrint('ImageUrl: ${newEngine.imageUrl}');
-        debugPrint('Image: ${engineImageInBytes}');
+        debugPrint('Image: $engineImageInBytes');
         debugPrint('Subname: ${newEngine.subname}');
         debugPrint('IsGenerator: ${newEngine.isGenerator}');
         debugPrint('IsCompressor: ${newEngine.isCompressor}');
         bool success = await engineService.addEngine(
-            engineModel: newEngine, engineImageInBytes: engineImageInBytes!);
+            engineModel: newEngine, engineImageInBytes: engineImageInBytes);
 
         if (success) {
           ToastMessage.showToastMessage(
@@ -178,7 +178,7 @@ class EnginesController extends GetxController {
     }
   }
 
-  void updateEngine({required String id}) {
+  Future<void> updateEngine({required String id}) async {
     debugPrint('UpdateEngineFunctionCalled');
     isLoading.value = true;
     try {
@@ -190,17 +190,20 @@ class EnginesController extends GetxController {
         isGenerator: engineType.value == 'Generator',
         isCompressor: engineType.value == 'Compressor',
       );
-      engineService
-          .updateEngine(
-              engineModel: updatedEngineData, token: _storage.read('token'))
-          .then((value) {
-        isLoading.value = false;
+      bool success = await engineService.updateEngine(
+          engineModel: updatedEngineData, token: _storage.read('token'));
+      isLoading.value = false;
+      if (success) {
         ToastMessage.showToastMessage(
             message: 'Engine Updated Successfully',
             backgroundColor: Colors.green);
         getAllEngines();
         Get.back();
-      });
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Failed to update engine, please try again',
+            backgroundColor: Colors.red);
+      }
     } catch (e) {
       debugPrint('Error updating engine: $e');
     } finally {
@@ -208,7 +211,7 @@ class EnginesController extends GetxController {
     }
   }
 
-  void deleteEngine({required EngineModel engineModel}) {
+  Future<void> deleteEngine({required EngineModel engineModel}) async {
     debugPrint('DeleteEngineFunctionCalled');
     isLoading.value = true;
     try {
@@ -220,23 +223,30 @@ class EnginesController extends GetxController {
         isGenerator: engineModel.isGenerator,
         isCompressor: engineModel.isCompressor,
       );
-      engineService
-          .deleteEngine(
-              engineModel: deletedEngineData, token: _storage.read('token'))
-          .then((value) {
-        getAllEngines();
-        isLoading.value = false;
+      bool success = await engineService.deleteEngine(
+        engineModel: deletedEngineData,
+        token: _storage.read('token'),
+      );
+      getAllEngines();
+      isLoading.value = false;
+      if (success) {
         ToastMessage.showToastMessage(
-            message: 'Engine Deleted Successfully',
-            backgroundColor: Colors.green);
-
+          message: 'Engine Deleted Successfully',
+          backgroundColor: Colors.green,
+        );
         Get.back();
-      });
+      } else {
+        ToastMessage.showToastMessage(
+          message: 'Failed to delete engine, please try again',
+          backgroundColor: Colors.red,
+        );
+      }
     } catch (e) {
       isLoading.value = false;
       ToastMessage.showToastMessage(
-          message: 'Something went wrong, please try again',
-          backgroundColor: Colors.red);
+        message: 'Something went wrong, please try again',
+        backgroundColor: Colors.red,
+      );
       debugPrint('Error deleting engine: $e');
     } finally {
       // isLoading.value = false;
@@ -248,7 +258,7 @@ class EnginesController extends GetxController {
     engineName.clear();
     engineSubtitle.clear();
     engineImageUrl.value = '';
-    engineImageInBytes = null;
+    engineImageInBytes = Uint8List(0);
     isQrCodeGenerated.value = false;
     pageController.dispose();
     super.onClose();

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody1.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
@@ -45,7 +46,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
             child: Scaffold(
               backgroundColor: Colors.transparent,
               body: NestedScrollView(
-                // controller: controller.scrollController,
+                controller: controller.scrollController,
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverAppBar(
@@ -69,20 +70,21 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                     child: Obx(
                       () => Column(
                         children: [
+                          CustomTextWidget(
+                            text: widget.model.task?.name ?? '',
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.center,
+                            textColor: Colors.white,
+                          ),
                           Expanded(
                             child: IndexedStack(
                               sizing: StackFit.loose,
                               index: controller.activePageIndex.value,
                               children: [
-                                CustomStepperBody1(
-                                    isTaskUpdating:
-                                        controller.isTaskUpdating.value),
-                                CustomStepperBody2(
-                                    isTaskUpdating:
-                                        controller.isTaskUpdating.value),
-                                CustomStepperBody3(
-                                    isTaskUpdating:
-                                        controller.isTaskUpdating.value),
+                                CustomStepperBody1(isTaskUpdating: false),
+                                CustomStepperBody2(isTaskUpdating: false),
+                                CustomStepperBody3(isTaskUpdating: false),
                                 CustomStepperBody4(
                                   isTaskUpdating:
                                       controller.isTaskUpdating.value,

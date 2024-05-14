@@ -131,9 +131,9 @@ class TopSection extends StatelessWidget {
                               color: Colors.transparent)),
                       Expanded(
                         child: CustomTextWidget(
-                          text: controller.engineBrandId.value == ''
+                          text: controller.engineBrandName.value == ''
                               ? 'CAT 3600 SERVICE'
-                              : controller.engineBrandId.value,
+                              : controller.engineBrandName.value,
                           fontSize: 16.0,
                           maxLines: 2,
                           textAlign: TextAlign.center,

@@ -413,8 +413,9 @@ class CustomStepperBody3 extends StatelessWidget {
                   options: const [
                     'YES',
                     'NO',
-                    'REPLACED, RETURN TO SERVICE',
-                    'REPLACE NEW'
+                    'REPLACED',
+                    'RETURN TO SERVICE',
+                    'REPLACED NEW'
                   ],
                   selectedOption: controller.checkFuelGasFilter,
                 ),
@@ -444,8 +445,9 @@ class CustomStepperBody3 extends StatelessWidget {
                   options: const [
                     'YES',
                     'NO',
-                    'REPLACED, RETURN TO SERVICE',
-                    'REPLACE NEW'
+                    'REPLACED',
+                    'RETURN TO SERVICE',
+                    'REPLACED NEW'
                   ],
                   selectedOption: controller.airFilterInspection,
                 ),
@@ -484,7 +486,7 @@ class CustomStepperBody3 extends StatelessWidget {
                     'YES',
                     'NO',
                     'RETURN TO SERVICE',
-                    'REPLACE INTERNALS NEW'
+                    'REPLACED INTERNALS NEW'
                   ],
                   selectedOption:
                       controller.carburetorInternalCleaningInspection,

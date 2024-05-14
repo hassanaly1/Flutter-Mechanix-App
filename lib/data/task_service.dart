@@ -5,8 +5,16 @@ import 'package:mechanix/data/api_endpoints.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
 
+class TaskResponse {
+  final bool success;
+  final String message;
+  final String? taskId; // Add taskId field
+
+  TaskResponse({required this.success, required this.message, this.taskId});
+}
+
 class TaskService {
-  Future<void> createTask({
+  Future<TaskResponse> createTask({
     required String token,
     required Geolocation geolocation,
     required TaskModel task,
@@ -30,7 +38,6 @@ class TaskService {
       "leakage_found": leakageFound.toJson(),
       "parts": parts.map((e) => e.toJson()).toList(),
     };
-    // debugPrint(payload.toString());
 
     final headers = {
       'Content-Type': 'application/json',
@@ -48,24 +55,28 @@ class TaskService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         debugPrint('Task created successfully: ${responseData["message"]}');
         debugPrint('Task Response Body: ${response.body}');
-
-        // Handle the response data here
+        return TaskResponse(
+          success: true,
+          message: responseData["message"],
+          taskId: responseData["task"]["_id"], // Get taskId from response
+        );
       } else {
+        // Handle errors from the server
         debugPrint(
             'Failed to create task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
         debugPrint('Response Body: ${response.body}');
+        return TaskResponse(success: false, message: 'Failed to create task');
       }
     } catch (error) {
       debugPrint('Error creating task: $error');
+      return TaskResponse(success: false, message: 'Error creating task');
     }
   }
 
   Future<List<Payload>> getAllTasks(
       {String? searchString, required String token, required int page}) async {
-    print('page: $page');
     String apiUrl =
         '${ApiEndPoints.baseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
-
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -73,14 +84,16 @@ class TaskService {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        // body: jsonEncode({
-        //   'search': {"name": searchString}
-        // }),
+        body: jsonEncode({
+          'search': {
+            "name": searchString,
+          }
+        }),
       );
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        print('response: $jsonData');
+        print('response: ${response.statusCode} ${response.reasonPhrase}');
 
         if (jsonData['data'] != null) {
           final tasksList = jsonData['data'];
@@ -120,7 +133,7 @@ class TaskService {
     }
   }
 
-  Future<void> updateTaskById({
+  Future<bool> updateTaskById({
     required String taskId,
     required String token,
     required Geolocation geolocation,
@@ -132,6 +145,8 @@ class TaskService {
     required LeakageFound leakageFound,
     required List<Part> parts,
   }) async {
+    bool isSuccess = false;
+
     final Uri apiUrl = Uri.parse(
       '${ApiEndPoints.baseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
     );
@@ -169,16 +184,14 @@ class TaskService {
           } else {
             debugPrint('No message found in the response');
           }
-
-          debugPrint(
-              'Task Updated successfully: ${response.statusCode} ${response.reasonPhrase}');
-          debugPrint('Task Updated Body: ${response.body}');
-
-          // Handle the "data" if needed
-          // For example, you can parse and use the "data" here
         } else {
           debugPrint('No data found in the response');
         }
+
+        debugPrint(
+            'Task Updated successfully: ${response.statusCode} ${response.reasonPhrase}');
+        debugPrint('Task Updated Body: ${response.body}');
+        isSuccess = true;
       } else {
         debugPrint(
             'Failed to update task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
@@ -187,10 +200,16 @@ class TaskService {
     } catch (error) {
       debugPrint('Error Updating task: $error');
     }
+
+    return isSuccess;
   }
 
-  Future<void> deleteTaskById(
-      {required String taskId, required String token}) async {
+  Future<bool> deleteTaskById({
+    required String taskId,
+    required String token,
+  }) async {
+    bool isSuccess = false;
+
     final Uri apiUrl = Uri.parse(
       '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteTaskUrl}?id=$taskId',
     );
@@ -212,6 +231,7 @@ class TaskService {
         final Map<String, dynamic> data = responseData['data'];
         print('Task deletion message: $message');
         print('Deleted Task details: $data');
+        isSuccess = true;
       } else {
         print(
             'Failed to delete task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
@@ -220,5 +240,7 @@ class TaskService {
     } catch (error) {
       print('Error deleting task: $error');
     }
+
+    return isSuccess;
   }
 }

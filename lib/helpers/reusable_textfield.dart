@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
@@ -52,6 +53,10 @@ class ReUsableTextField extends StatelessWidget {
           color: AppColors.textColor,
         ),
         keyboardType: keyboardType,
+        inputFormatters: [
+          if (keyboardType == TextInputType.number)
+            FilteringTextInputFormatter.digitsOnly,
+        ],
         decoration: InputDecoration(
           // contentPadding: EdgeInsets.symmetric(vertical: 4.0),
           // isCollapsed: true,

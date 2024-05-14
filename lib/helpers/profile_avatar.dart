@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mechanix/controllers/universal_controller.dart';
 
 class ProfileAvatar extends StatelessWidget {
   final VoidCallback? onTap;
@@ -9,11 +12,19 @@ class ProfileAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UniversalController universalController = Get.find();
     return GestureDetector(
-        onTap: onTap,
-        child: const CircleAvatar(
-          radius: 22,
-          backgroundImage: AssetImage('assets/images/user2.jpg'),
-        ));
+      onTap: onTap,
+      child: Obx(
+        () => CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.white,
+            // backgroundImage: MemoryImage(controller.userImageInBytes!),
+            backgroundImage: universalController.userImageURL.value != ''
+                ? NetworkImage(universalController.userImageURL.value)
+                : const AssetImage('assets/images/placeholder.png')
+                    as ImageProvider),
+      ),
+    );
   }
 }

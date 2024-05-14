@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/data/engine_service.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -54,32 +55,24 @@ class _QrCodeScannerState extends State<ScanQrCodeScreen> {
             Expanded(
               child: MobileScanner(
                 controller: mobileScannerController,
-                // controller: MobileScannerController(
-                //   //this only scans the same qr code only once
-                //   detectionSpeed: DetectionSpeed.noDuplicates,
-                //
-                //   returnImage: true,
-                // ),
-                onDetect: (capture) {
+                onDetect: (capture) async {
                   final List<Barcode> barcodes = capture.barcodes;
                   final Uint8List? image = capture.image;
+
                   for (final barcode in barcodes) {
-                    debugPrint('QRCode Found: ${barcode.rawValue}');
-                    controller.engineBrandId.value = barcode.rawValue ?? '';
+                    final String? engineName = barcode.rawValue;
+                    if (engineName != null && engineName.isNotEmpty) {
+                      debugPrint('QRCode Found: $engineName');
+                      Timer(
+                        const Duration(seconds: 2),
+                        () => _showDialog(
+                          context: context,
+                          controller: controller,
+                          engineName: barcodes.first.rawValue,
+                        ),
+                      );
+                    }
                   }
-                  if (image != null) {
-                    _showDialog(
-                        context: context,
-                        image: image,
-                        barCodeValue: barcodes.first.rawValue);
-                  }
-                  Timer(const Duration(seconds: 1), () {
-                    Get.back();
-                    Get.back();
-                    ToastMessage.showToastMessage(
-                        message: 'QR Code Scanned Successfully',
-                        backgroundColor: AppColors.blueTextColor);
-                  });
                 },
               ),
             ),
@@ -91,7 +84,9 @@ class _QrCodeScannerState extends State<ScanQrCodeScreen> {
 }
 
 void _showDialog(
-    {required BuildContext context, Uint8List? image, String? barCodeValue}) {
+    {required BuildContext context,
+    String? engineName,
+    required AddTaskController controller}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
@@ -136,7 +131,7 @@ void _showDialog(
               child: Column(
                 children: [
                   CustomTextWidget(
-                      text: barCodeValue ?? '',
+                      text: engineName ?? '',
                       fontSize: 12.0,
                       maxLines: 2,
                       textAlign: TextAlign.center),
@@ -144,16 +139,45 @@ void _showDialog(
                   //   padding: const EdgeInsets.all(8.0),
                   //   child: Image(image: MemoryImage(image!)),
                   // ),
-                  QrImageView(data: barCodeValue ?? ''),
+                  QrImageView(data: engineName ?? ''),
                   CustomButton(
                     isLoading: false,
                     usePrimaryColor: true,
                     buttonText: 'Save QR Code Value',
                     fontSize: 12.0,
-                    onTap: () {
-                      ToastMessage.showToastMessage(
-                          message: 'QR Code Scanned Successfully',
-                          backgroundColor: AppColors.blueTextColor);
+                    onTap: () async {
+                      debugPrint('Saving QR Code for $engineName');
+                      final result = await EngineService()
+                          .getEngineData(engineName: engineName ?? '');
+
+                      if (result['success']) {
+                        final engineData = result['data'];
+                        final engineId = engineData['_id'];
+                        final engineName = engineData['name'];
+
+                        debugPrint('EngineId: ${engineId.toString()}');
+                        debugPrint('EngineName: ${engineName.toString()}');
+
+                        controller.engineBrandName.value = engineName ?? '';
+                        controller.engineBrandId.value = engineId;
+
+                        ToastMessage.showToastMessage(
+                            message: 'QR Code Scanned Successfully',
+                            backgroundColor: AppColors.blueTextColor);
+                        Get.back();
+                        Get.back();
+                      } else {
+                        final errorMessage = result['message'];
+                        print('Failed to fetch engine data');
+                        print('ErrorData: ${result['data']}');
+                        debugPrint('ErrorMessage: $errorMessage');
+
+                        ToastMessage.showToastMessage(
+                            message: errorMessage,
+                            backgroundColor: AppColors.blueTextColor);
+                        Get.back();
+                        Get.back();
+                      }
                     },
                   ),
                   const Divider(color: Colors.black54),

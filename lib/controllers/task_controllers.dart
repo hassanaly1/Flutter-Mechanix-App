@@ -103,7 +103,7 @@ class AddTaskController extends GetxController {
     //Task
     TaskModel newTask = TaskModel(
       //Page1
-      name: clientName.text.trim(),
+      name: taskName.text.trim(),
       // name: _storage.read('user_info')['first_name'],
       userId: _storage.read('user_info')['_id'],
       customerEmail: clientEmail.text.trim(),
@@ -268,13 +268,13 @@ class AddTaskController extends GetxController {
 
     try {
       debugPrint('Add Task Called');
-      if (clientName.text.trim() == '' && clientEmail.text.trim() == '') {
+      if (taskName.text.trim() == '' && clientEmail.text.trim() == '') {
         ToastMessage.showToastMessage(
             message: 'Please Enter Client Name and Email',
             backgroundColor: Colors.red);
       } else {
         isLoading.value = true;
-        await taskService.createTask(
+        TaskResponse taskResponse = await taskService.createTask(
           token: _storage.read('token'),
           geolocation: geolocation,
           task: newTask,
@@ -285,18 +285,27 @@ class AddTaskController extends GetxController {
           leakageFound: leakageFound,
           parts: parts,
         );
-        ToastMessage.showToastMessage(
-            message: 'Task Created Successfully',
-            backgroundColor: AppColors.blueTextColor);
-        showConfirmationPopup(
+
+        if (taskResponse.success) {
+          ToastMessage.showToastMessage(
+              message: 'Task Created Successfully',
+              backgroundColor: AppColors.blueTextColor);
+          showConfirmationPopup(
             context: context,
-            customerName: clientName.text.trim(),
-            customerEmail: clientEmail.text.trim());
-        await controller.getAllTasks();
-        isLoading.value = false;
-        sideMenuController.changePage(0);
-        Get.delete<AddTaskController>();
-        Get.delete<MapController>();
+            taskId: taskResponse.taskId ?? '',
+            token: _storage.read('token'),
+            customerName: taskName.text.trim(),
+            customerEmail: clientEmail.text.trim(),
+          );
+          await controller.getAllTasks();
+          sideMenuController.changePage(0);
+          Get.delete<AddTaskController>();
+          Get.delete<MapController>();
+        } else {
+          ToastMessage.showToastMessage(
+              message: 'Failed to create task, please try again',
+              backgroundColor: Colors.red);
+        }
       }
     } catch (error) {
       debugPrint('Error adding task: $error');
@@ -360,8 +369,7 @@ class AddTaskController extends GetxController {
     //Task
     TaskModel newTask = TaskModel(
       //Page1
-      name: clientName.text.trim(),
-      // name: _storage.read('user_info')['first_name'],
+      name: taskName.text.trim(),
       userId: _storage.read('user_info')['_id'],
       customerEmail: clientEmail.text.trim(),
       unit: int.tryParse(setUnits.text.trim()),
@@ -525,13 +533,13 @@ class AddTaskController extends GetxController {
 
     try {
       debugPrint('Update Task Called');
-      if (clientName.text.trim() == '') {
+      if (taskName.text.trim() == '') {
         ToastMessage.showToastMessage(
-            message: 'Please Enter Client Name', backgroundColor: Colors.red);
+            message: 'Please Enter Task Name', backgroundColor: Colors.red);
       } else {
         print(newTask.name);
         isLoading.value = true;
-        await taskService.updateTaskById(
+        bool taskUpdated = await taskService.updateTaskById(
           taskId: taskId,
           token: _storage.read('token'),
           geolocation: geolocation,
@@ -543,15 +551,20 @@ class AddTaskController extends GetxController {
           leakageFound: leakageFound,
           parts: parts,
         );
-        ToastMessage.showToastMessage(
-            message: 'Task Updated Successfully',
-            backgroundColor: AppColors.blueTextColor);
-        controller.getAllTasks();
-        isLoading.value = false;
-        Get.back();
-        Get.delete<AddTaskController>();
-        Get.delete<MapController>();
-        isTaskUpdating.value = false;
+
+        if (taskUpdated) {
+          ToastMessage.showToastMessage(
+              message: 'Task Updated Successfully',
+              backgroundColor: AppColors.blueTextColor);
+          controller.getAllTasks();
+          Get.back();
+          Get.delete<AddTaskController>();
+          Get.delete<MapController>();
+        } else {
+          ToastMessage.showToastMessage(
+              message: 'Failed to update task, please try again',
+              backgroundColor: Colors.red);
+        }
       }
     } catch (error) {
       // Handle error scenario
@@ -561,14 +574,13 @@ class AddTaskController extends GetxController {
           backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
-      isTaskUpdating.value = false;
     }
   }
 
   void updateControllers(Payload payload) {
     isTaskUpdating.value = true;
     //Page1
-    clientName.text = payload.task?.name ?? '';
+    taskName.text = payload.task?.name ?? '';
     clientEmail.text = payload.task?.customerEmail ?? '';
     selectedAddress.text = payload.geolocation?.address ?? '';
     setUnits.text = payload.task?.unit.toString() ?? '';
@@ -657,12 +669,13 @@ class AddTaskController extends GetxController {
         payload.task?.coolantTemperatureIn.toString() ?? '';
     auxCoolantTemperaturesOut.text =
         payload.task?.coolantTemperatureOut.toString() ?? '';
-    inletAirTemp.text = payload.task?.inletAirTemperatureType ?? '';
+    inletAirTemp.text = payload.task?.inletAirTemperatureValue.toString() ?? '';
     inletAirTempRadio.value =
-        payload.task?.inletAirTemperatureValue.toString() ?? 'C';
-    inletAirPressure.text = payload.task?.inletAirPressureType.toString() ?? '';
+        payload.task?.inletAirTemperatureType.toString() ?? 'C';
+    inletAirPressure.text =
+        payload.task?.inletAirPressureValue.toString() ?? '';
     inletAirPressureRadio.value =
-        payload.task?.inletAirPressureValue.toString() ?? 'PSI';
+        payload.task?.inletAirPressureType.toString() ?? 'PSI';
     primaryFuelPressure.text =
         payload.task?.cranKCaseFuelRatio.toString() ?? '';
     actualAirToFuelRatio.text =
@@ -896,7 +909,7 @@ class AddTaskController extends GetxController {
   }
 
   //Page1
-  TextEditingController clientName = TextEditingController();
+  TextEditingController taskName = TextEditingController();
   TextEditingController clientEmail = TextEditingController();
   TextEditingController selectedAddress = TextEditingController();
   RxString selectedAddressLatitude = ''.obs;
@@ -906,6 +919,7 @@ class AddTaskController extends GetxController {
   late Rx<String> taskSelectedDate;
   late Rx<String> taskSelectedTime;
   RxString engineBrandId = ''.obs;
+  RxString engineBrandName = ''.obs;
   TextEditingController nameOfJourneyMan = TextEditingController();
   RxString unitOnlineOnArrival = 'NO'.obs;
   TextEditingController jobScope = TextEditingController();

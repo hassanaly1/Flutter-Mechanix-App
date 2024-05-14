@@ -49,8 +49,8 @@ class HomeScreen extends StatelessWidget {
                     title: 'Reports',
                     icon: Symbols.lab_profile,
                   ),
-                  SmallCard(
-                    onTap: () => sideMenu.changePage(5),
+                  const SmallCard(
+                    // onTap: () => sideMenu.changePage(5),
                     title: 'Customize Units',
                     icon: Symbols.dashboard_customize,
                   ),

@@ -41,8 +41,8 @@ class CustomStepperBody1 extends StatelessWidget {
             child: Column(
               children: [
                 HeadingAndTextfield(
-                  title: 'Client\'s Name',
-                  controller: controller.clientName,
+                  title: 'Task Name',
+                  controller: controller.taskName,
                   // readOnly: isTaskUpdating,
                 ),
                 HeadingAndTextfield(
@@ -119,7 +119,9 @@ class CustomStepperBody1 extends StatelessWidget {
                     ),
                     CustomDropdown(
                       items: universalController.engines,
-                      hintText: 'Select Engine Brand',
+                      hintText: controller.engineBrandName.value != ''
+                          ? controller.engineBrandName.value
+                          : 'Select Engine Brand',
                       onTap: () {
                         debugPrint('Dropdown tapped');
                         universalController.engines.isEmpty
@@ -131,6 +133,7 @@ class CustomStepperBody1 extends StatelessWidget {
                       },
                       onChanged: (value) {
                         controller.engineBrandId.value = value?.id ?? '';
+                        controller.engineBrandName.value = value?.name ?? '';
                       },
                     ),
                   ],

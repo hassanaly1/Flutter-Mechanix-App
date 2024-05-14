@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/data/report_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
@@ -424,7 +426,9 @@ class SinglePartDetail extends StatelessWidget {
 void showConfirmationPopup(
     {required BuildContext context,
     required String customerName,
-    required String customerEmail}) {
+    required String customerEmail,
+    required String token,
+    required String taskId}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
@@ -482,8 +486,31 @@ void showConfirmationPopup(
                           usePrimaryColor: true,
                           buttonText: 'Yes',
                           fontSize: 12.0,
-                          onTap: () {
-                            Get.back();
+                          onTap: () async {
+                            try {
+                              bool success = await ReportService()
+                                  .generateReportById(taskId, token);
+                              if (success) {
+                                print('Report sent successfully');
+                                ToastMessage.showToastMessage(
+                                    message: 'Report has been sent',
+                                    backgroundColor: Colors.green);
+                                // Get.back();
+                              } else {
+                                ToastMessage.showToastMessage(
+                                    message:
+                                        'Something went wrong, please try again',
+                                    backgroundColor: Colors.red);
+                                Get.back();
+                              }
+                            } catch (e) {
+                              print('Error generating report: $e');
+                              ToastMessage.showToastMessage(
+                                  message:
+                                      'Something went wrong, please try again',
+                                  backgroundColor: Colors.green);
+                              Get.back();
+                            }
                           },
                         ),
                         CustomButton(

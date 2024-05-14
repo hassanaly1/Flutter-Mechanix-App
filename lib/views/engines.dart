@@ -424,9 +424,14 @@ class CustomEngineCard extends StatelessWidget {
               textColor: AppColors.lightTextColor,
               fontSize: 12.0),
           CustomTextWidget(
-              text: model.id ?? 'No Id Specified',
-              fontSize: 12.0,
-              textColor: AppColors.lightGreyColor)
+              text:
+                  'Engine Type: ${model.isGenerator == true ? 'Generator' : 'Compressor'}',
+              fontSize: 10.0,
+              textColor: AppColors.lightGreyColor),
+          // CustomTextWidget(
+          //     text: model.id ?? 'No Id Specified',
+          //     fontSize: 12.0,
+          //     textColor: AppColors.lightGreyColor)
         ]),
         trailing: Wrap(
           spacing: 12.0,
@@ -543,9 +548,9 @@ void _showEditPopup(
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomTextWidget(
-                                        text: 'ID: ${model.id}',
-                                        fontSize: 11.0),
+                                    // CustomTextWidget(
+                                    //     text: 'ID: ${model.id}',
+                                    //     fontSize: 11.0),
                                     HeadingAndTextfield(
                                         title: 'Enter Engine Name & Model',
                                         fontSize: 12.0,
