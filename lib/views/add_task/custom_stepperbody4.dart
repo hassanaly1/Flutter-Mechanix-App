@@ -425,7 +425,7 @@ class SinglePartDetail extends StatelessWidget {
 
 void showConfirmationPopup(
     {required BuildContext context,
-    required String customerName,
+    required String taskName,
     required String customerEmail,
     required String token,
     required String taskId}) {
@@ -475,7 +475,7 @@ void showConfirmationPopup(
                       children: [
                         CustomTextWidget(
                             text:
-                                'Do you want to send this report to $customerName at $customerEmail?',
+                                'Do you want to send this report to $taskName at $customerEmail?',
                             fontSize: 14.0,
                             maxLines: 3,
                             textAlign: TextAlign.center,
@@ -490,12 +490,13 @@ void showConfirmationPopup(
                             try {
                               bool success = await ReportService()
                                   .generateReportById(taskId, token);
+                              // isLoading = true;
                               if (success) {
                                 print('Report sent successfully');
                                 ToastMessage.showToastMessage(
                                     message: 'Report has been sent',
                                     backgroundColor: Colors.green);
-                                // Get.back();
+                                Get.back();
                               } else {
                                 ToastMessage.showToastMessage(
                                     message:
@@ -510,7 +511,7 @@ void showConfirmationPopup(
                                       'Something went wrong, please try again',
                                   backgroundColor: Colors.green);
                               Get.back();
-                            }
+                            } finally {}
                           },
                         ),
                         CustomButton(

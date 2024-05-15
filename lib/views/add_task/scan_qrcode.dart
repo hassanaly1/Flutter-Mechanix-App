@@ -140,45 +140,60 @@ void _showDialog(
                   //   child: Image(image: MemoryImage(image!)),
                   // ),
                   QrImageView(data: engineName ?? ''),
-                  CustomButton(
-                    isLoading: false,
-                    usePrimaryColor: true,
-                    buttonText: 'Save QR Code Value',
-                    fontSize: 12.0,
-                    onTap: () async {
-                      debugPrint('Saving QR Code for $engineName');
-                      final result = await EngineService()
-                          .getEngineData(engineName: engineName ?? '');
+                  Obx(
+                    () => CustomButton(
+                      isLoading: controller.isLoading.value,
+                      usePrimaryColor: true,
+                      buttonText: 'Save QR Code Value',
+                      fontSize: 12.0,
+                      onTap: () async {
+                        try {
+                          debugPrint('Saving QR Code for $engineName');
+                          controller.isLoading.value = true;
 
-                      if (result['success']) {
-                        final engineData = result['data'];
-                        final engineId = engineData['_id'];
-                        final engineName = engineData['name'];
+                          final result = await EngineService()
+                              .getEngineData(engineName: engineName ?? '');
 
-                        debugPrint('EngineId: ${engineId.toString()}');
-                        debugPrint('EngineName: ${engineName.toString()}');
+                          if (result['success']) {
+                            final engineData = result['data'];
+                            final engineId = engineData['_id'];
+                            final engineName = engineData['name'];
 
-                        controller.engineBrandName.value = engineName ?? '';
-                        controller.engineBrandId.value = engineId;
+                            debugPrint('EngineId: ${engineId.toString()}');
+                            debugPrint('EngineName: ${engineName.toString()}');
 
-                        ToastMessage.showToastMessage(
-                            message: 'QR Code Scanned Successfully',
-                            backgroundColor: AppColors.blueTextColor);
-                        Get.back();
-                        Get.back();
-                      } else {
-                        final errorMessage = result['message'];
-                        print('Failed to fetch engine data');
-                        print('ErrorData: ${result['data']}');
-                        debugPrint('ErrorMessage: $errorMessage');
+                            controller.engineBrandName.value = engineName ?? '';
+                            controller.engineBrandId.value = engineId;
 
-                        ToastMessage.showToastMessage(
-                            message: errorMessage,
-                            backgroundColor: AppColors.blueTextColor);
-                        Get.back();
-                        Get.back();
-                      }
-                    },
+                            ToastMessage.showToastMessage(
+                                message: 'QR Code Scanned Successfully',
+                                backgroundColor: AppColors.blueTextColor);
+                            Get.back();
+                            Get.back();
+                          } else {
+                            final errorMessage = result['message'];
+                            print('Failed to fetch engine data');
+                            print('ErrorData: ${result['data']}');
+                            debugPrint('ErrorMessage: $errorMessage');
+
+                            ToastMessage.showToastMessage(
+                                message: errorMessage,
+                                backgroundColor: AppColors.blueTextColor);
+                            Get.back();
+                            Get.back();
+                          }
+                        } catch (e) {
+                          debugPrint('An error occurred: $e');
+                          ToastMessage.showToastMessage(
+                              message: 'An error occurred, please try again',
+                              backgroundColor: AppColors.blueTextColor);
+                          Get.back();
+                          Get.back();
+                        } finally {
+                          controller.isLoading.value = false;
+                        }
+                      },
+                    ),
                   ),
                   const Divider(color: Colors.black54),
                 ],

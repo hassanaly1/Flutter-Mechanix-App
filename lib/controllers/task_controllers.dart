@@ -294,7 +294,7 @@ class AddTaskController extends GetxController {
             context: context,
             taskId: taskResponse.taskId ?? '',
             token: _storage.read('token'),
-            customerName: taskName.text.trim(),
+            taskName: taskName.text.trim(),
             customerEmail: clientEmail.text.trim(),
           );
           await controller.getAllTasks();

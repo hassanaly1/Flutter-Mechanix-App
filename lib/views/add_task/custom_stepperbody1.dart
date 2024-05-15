@@ -117,24 +117,26 @@ class CustomStepperBody1 extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       maxLines: 2,
                     ),
-                    CustomDropdown(
-                      items: universalController.engines,
-                      hintText: controller.engineBrandName.value != ''
-                          ? controller.engineBrandName.value
-                          : 'Select Engine Brand',
-                      onTap: () {
-                        debugPrint('Dropdown tapped');
-                        universalController.engines.isEmpty
-                            ? ToastMessage.showToastMessage(
-                                message:
-                                    'Please Add Engines first from the Engine section.',
-                                backgroundColor: Colors.red)
-                            : null;
-                      },
-                      onChanged: (value) {
-                        controller.engineBrandId.value = value?.id ?? '';
-                        controller.engineBrandName.value = value?.name ?? '';
-                      },
+                    Obx(
+                      () => CustomDropdown(
+                        items: universalController.engines,
+                        hintText: controller.engineBrandName.value != ''
+                            ? controller.engineBrandName.value
+                            : 'Select Engine Brand',
+                        onTap: () {
+                          debugPrint('Dropdown tapped');
+                          universalController.engines.isEmpty
+                              ? ToastMessage.showToastMessage(
+                                  message:
+                                      'Please Add Engines first from the Engine section.',
+                                  backgroundColor: Colors.red)
+                              : null;
+                        },
+                        onChanged: (value) {
+                          controller.engineBrandId.value = value?.id ?? '';
+                          controller.engineBrandName.value = value?.name ?? '';
+                        },
+                      ),
                     ),
                   ],
                 ),
