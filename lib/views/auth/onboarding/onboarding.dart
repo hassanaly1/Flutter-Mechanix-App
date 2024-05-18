@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/views/auth/login.dart';
 import 'package:mechanix/views/auth/onboarding/reusable_on_boarding_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -16,7 +17,6 @@ class OnBoardingScreen extends StatefulWidget {
 class _DoctorBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _controller = PageController();
   int currentPageIndex = 0;
-  final _storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _DoctorBoardingScreenState extends State<OnBoardingScreen> {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.ease);
                         } else {
-                          _storage.write('isFirstTime', false);
+                          storage.write('isFirstTime', false);
                           Get.offAll(() => LoginScreen(),
                               transition: Transition.size);
                         }

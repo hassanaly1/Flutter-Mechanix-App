@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/data/report_service.dart';
 import 'package:mechanix/data/task_service.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
 import 'package:mechanix/models/payload.dart';
@@ -23,7 +24,6 @@ class UniversalController extends GetxController {
 
   final TaskService taskService = TaskService();
   final ReportService reportService = ReportService();
-  final _storage = GetStorage();
 
   XFile? userImage;
   RxString userImageURL = ''.obs;
@@ -47,8 +47,8 @@ class UniversalController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    userInfo.value = _storage.read('user_info') ?? {};
-    userImageURL.value = _storage.read('user_info')['profile'];
+    userInfo.value = storage.read('user_info') ?? {};
+    userImageURL.value = storage.read('user_info')['profile'];
     debugPrint('UserImageAtStart: $userImageURL');
     await getAllTasks();
     await getAllReports();
@@ -64,14 +64,14 @@ class UniversalController extends GetxController {
 
   updateUserInfo(Map<String, dynamic> userInfo) {
     this.userInfo.value = userInfo;
-    _storage.write('user_info', userInfo);
+    storage.write('user_info', userInfo);
   }
 
   void _loadNextPage() async {
     debugPrint('Loading Next Page');
     isLoading.value = true;
     List<Payload> nextPageTasks = await taskService.getAllTasks(
-      token: _storage.read('token'),
+      token: storage.read('token'),
       page: currentPage.value,
     );
 
@@ -86,7 +86,7 @@ class UniversalController extends GetxController {
       isTasksAreLoading.value = true;
       List<Payload> fetchedTasks = await taskService.getAllTasks(
         searchString: searchName ?? '',
-        token: _storage.read('token'),
+        token: storage.read('token'),
         page: page ?? currentPage.value,
       );
       if (fetchedTasks.isNotEmpty) {
@@ -113,7 +113,7 @@ class UniversalController extends GetxController {
       isReportsAreLoading.value = true;
       List<ReportModel> fetchedReports = await reportService.getAllReport(
           searchString: searchName ?? '',
-          token: _storage.read('token'),
+          token: storage.read('token'),
           page: currentPage.value,
           date: date);
       if (fetchedReports.isNotEmpty) {
@@ -134,7 +134,7 @@ class UniversalController extends GetxController {
     try {
       bool taskDeleted = await taskService.deleteTaskById(
         taskId: taskId,
-        token: _storage.read('token'),
+        token: storage.read('token'),
       );
 
       if (taskDeleted) {
@@ -163,7 +163,7 @@ class UniversalController extends GetxController {
     try {
       bool reportDeleted = await reportService.deleteReportById(
         reportId: reportId,
-        token: _storage.read('token'),
+        token: storage.read('token'),
       );
       await getAllReports(searchName: '');
       if (reportDeleted) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/data/auth_service.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/user_model.dart';
 import 'package:mechanix/views/auth/change_password.dart';
@@ -28,9 +29,8 @@ class AuthController extends GetxController {
 
   // final UniversalController controller = Get.find();
 
-  final _storage = GetStorage();
   void saveUserInfo(Map<String, dynamic> userInfo) {
-    _storage.write('user_info', userInfo);
+    storage.write('user_info', userInfo);
   }
 
   // void saveUserInfo(Map<String, dynamic> userInfo) {
@@ -130,7 +130,7 @@ class AuthController extends GetxController {
         if (response['status'] == 'success') {
           ToastMessage.showToastMessage(
               message: 'Login Successfully', backgroundColor: Colors.green);
-          _storage.write('token', response['token']);
+          storage.write('token', response['token']);
           // controller.saveUserInfo(response['user']);
           saveUserInfo(response['user']);
           Get.offAll(() => const DashboardScreen(),
@@ -216,7 +216,7 @@ class AuthController extends GetxController {
           String token = response['data'][0]['token'];
 
           debugPrint('TokenReceived: $token');
-          _storage.write('token', token);
+          storage.write('token', token);
           verifyOtpForForgetPassword
               ? Get.offAll(() => ChangePasswordScreen())
               : Get.offAll(() => const DashboardScreen());
@@ -251,7 +251,7 @@ class AuthController extends GetxController {
         Map<String, dynamic> response = await AuthService().changePassword(
             password: passwordController.text.trim(),
             confirmPassword: confirmPasswordController.text.trim(),
-            token: _storage.read('token'));
+            token: storage.read('token'));
 
         if (response['status'] == 'success') {
           ToastMessage.showToastMessage(

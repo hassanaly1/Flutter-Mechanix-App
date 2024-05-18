@@ -1,12 +1,12 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/task_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
@@ -20,7 +20,6 @@ class AddTaskController extends GetxController {
   final UniversalController controller = Get.find();
   final MapController mapController = Get.put(MapController());
 
-  final _storage = GetStorage();
   SideMenuController? sideMenuController;
   TaskService taskService = TaskService();
 
@@ -105,7 +104,7 @@ class AddTaskController extends GetxController {
       //Page1
       name: taskName.text.trim(),
       // name: _storage.read('user_info')['first_name'],
-      userId: _storage.read('user_info')['_id'],
+      userId: storage.read('user_info')['_id'],
       customerEmail: clientEmail.text.trim(),
       unit: int.tryParse(setUnits.text.trim()),
       unitHours: int.tryParse(unitHours.text.trim()),
@@ -275,7 +274,7 @@ class AddTaskController extends GetxController {
       } else {
         isLoading.value = true;
         TaskResponse taskResponse = await taskService.createTask(
-          token: _storage.read('token'),
+          token: storage.read('token'),
           geolocation: geolocation,
           task: newTask,
           turboTemperature: turboTemperature,
@@ -293,7 +292,7 @@ class AddTaskController extends GetxController {
           showConfirmationPopup(
             context: context,
             taskId: taskResponse.taskId ?? '',
-            token: _storage.read('token'),
+            token: storage.read('token'),
             taskName: taskName.text.trim(),
             customerEmail: clientEmail.text.trim(),
           );
@@ -370,7 +369,7 @@ class AddTaskController extends GetxController {
     TaskModel newTask = TaskModel(
       //Page1
       name: taskName.text.trim(),
-      userId: _storage.read('user_info')['_id'],
+      userId: storage.read('user_info')['_id'],
       customerEmail: clientEmail.text.trim(),
       unit: int.tryParse(setUnits.text.trim()),
       unitHours: int.tryParse(unitHours.text.trim()),
@@ -541,7 +540,7 @@ class AddTaskController extends GetxController {
         isLoading.value = true;
         bool taskUpdated = await taskService.updateTaskById(
           taskId: taskId,
-          token: _storage.read('token'),
+          token: storage.read('token'),
           geolocation: geolocation,
           task: newTask,
           turboTemperature: turboTemperature,

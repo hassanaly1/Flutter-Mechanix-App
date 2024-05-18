@@ -5,18 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mechanix/data/api_endpoints.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
 
 class EngineService {
-  final _storage = GetStorage();
-
   Future<bool> addEngine({
     required EngineModel engineModel,
     required Uint8List engineImageInBytes,
   }) async {
     var headers = {
-      'Authorization': 'Bearer ${_storage.read('token')}',
+      'Authorization': 'Bearer ${storage.read('token')}',
       'Content-Type': 'application/json'
     };
 
@@ -27,7 +26,7 @@ class EngineService {
 
     // Add form fields
     request.fields.addAll({
-      'engine_brand[user]': '${_storage.read('user_info')['_id']}',
+      'engine_brand[user]': '${storage.read('user_info')['_id']}',
       'engine_brand[name]': '${engineModel.name}',
       'engine_brand[subname]': '${engineModel.subname}',
       'engine_brand[is_generator]': '${engineModel.isGenerator}',
@@ -222,7 +221,7 @@ class EngineService {
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${_storage.read('token')}',
+          'Authorization': 'Bearer ${storage.read('token')}',
         },
       );
 

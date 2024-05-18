@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/engine_service.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EnginesController extends GetxController {
-  final _storage = GetStorage();
   var isLoading = false.obs;
   var isEnginesAreLoading = false.obs;
   RxBool isQrCodeGenerated = false.obs;
@@ -66,7 +66,7 @@ class EnginesController extends GetxController {
     isLoading.value = true;
     List<EngineModel> nextPageEngines = await engineService.getAllEngines(
       page: _currentPage.value + 1,
-      token: _storage.read('token'),
+      token: storage.read('token'),
     );
 
     fetchedEngines.addAll(nextPageEngines);
@@ -82,7 +82,7 @@ class EnginesController extends GetxController {
       // Call the service method to fetch the engines
       fetchedEngines.value = await engineService.getAllEngines(
         searchString: searchName ?? '',
-        token: _storage.read('token'),
+        token: storage.read('token'),
         page: _currentPage.value,
       );
       universalController.engines = fetchedEngines;
@@ -122,7 +122,7 @@ class EnginesController extends GetxController {
       engineService.updateEngineImage(
           engineImageInBytes: engineImageInBytes,
           engineId: model.id ?? '',
-          token: _storage.read('token'));
+          token: storage.read('token'));
     }
   }
 
@@ -135,7 +135,7 @@ class EnginesController extends GetxController {
       isLoading.value = true;
       try {
         var newEngine = EngineModel(
-          userId: _storage.read('user_info')['_id'],
+          userId: storage.read('user_info')['_id'],
           name: engineName.text.trim(),
           imageUrl: engineImageUrl.value,
           subname: engineSubtitle.text.trim(),
@@ -184,14 +184,14 @@ class EnginesController extends GetxController {
     try {
       var updatedEngineData = EngineModel(
         id: id,
-        userId: _storage.read('user_info')['_id'],
+        userId: storage.read('user_info')['_id'],
         name: engineName.text.trim(),
         subname: engineSubtitle.text.trim(),
         isGenerator: engineType.value == 'Generator',
         isCompressor: engineType.value == 'Compressor',
       );
       bool success = await engineService.updateEngine(
-          engineModel: updatedEngineData, token: _storage.read('token'));
+          engineModel: updatedEngineData, token: storage.read('token'));
       isLoading.value = false;
       if (success) {
         ToastMessage.showToastMessage(
@@ -217,7 +217,7 @@ class EnginesController extends GetxController {
     try {
       var deletedEngineData = EngineModel(
         id: engineModel.id,
-        userId: _storage.read('user_info')['_id'],
+        userId: storage.read('user_info')['_id'],
         name: engineModel.name,
         subname: engineModel.subname,
         isGenerator: engineModel.isGenerator,
@@ -225,7 +225,7 @@ class EnginesController extends GetxController {
       );
       bool success = await engineService.deleteEngine(
         engineModel: deletedEngineData,
-        token: _storage.read('token'),
+        token: storage.read('token'),
       );
       getAllEngines();
       isLoading.value = false;

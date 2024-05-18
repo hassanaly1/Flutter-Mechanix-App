@@ -2,7 +2,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/auth_service.dart';
@@ -10,6 +9,7 @@ import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/views/auth/login.dart';
 
@@ -24,7 +24,6 @@ class ProfileSection extends StatefulWidget {
 class _ProfileSectionState extends State<ProfileSection> {
   final UniversalController universalController = Get.find();
   RxBool isLoading = false.obs;
-  final GetStorage _storage = GetStorage();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final ImagePicker picker = ImagePicker();
@@ -33,7 +32,6 @@ class _ProfileSectionState extends State<ProfileSection> {
 
   @override
   Widget build(BuildContext context) {
-    final storage = GetStorage();
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -145,7 +143,7 @@ class _ProfileSectionState extends State<ProfileSection> {
           firstName: firstNameController.text.trim(),
           lastName: lastNameController.text.trim(),
           // userImageInBytes: universalController.userImageInBytes!,
-          token: _storage.read('token'));
+          token: storage.read('token'));
       isLoading.value = false;
 
       if (success) {
@@ -175,7 +173,7 @@ class _ProfileSectionState extends State<ProfileSection> {
       debugPrint('UserImageInBytes: ${universalController.userImageInBytes}');
 
       UpdateUserImageResult result = await AuthService().updateUserImage(
-        token: _storage.read('token'),
+        token: storage.read('token'),
         engineImageInBytes: universalController.userImageInBytes!,
       );
 

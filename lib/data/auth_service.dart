@@ -7,8 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/api_endpoints.dart';
-
-final GetStorage _storage = GetStorage();
+import 'package:mechanix/helpers/storage_helper.dart';
 
 class AuthService {
   // RegisterUser
@@ -308,7 +307,7 @@ class AuthService {
           Map<String, dynamic> jsonResponse = json.decode(responseString);
           if (jsonResponse['status'] == 'success') {
             Map<String, dynamic> userData = jsonResponse['data'][0]['user'];
-            _storage.write('user_info', userData);
+            storage.write('user_info', userData);
             Get.find<UniversalController>().updateUserInfo(userData);
             isSuccess = true;
             debugPrint('Profile updated successfully');
@@ -370,7 +369,7 @@ class AuthService {
           Map<String, dynamic> jsonResponse = json.decode(responseString);
           if (jsonResponse['status'] == 'success') {
             userData = jsonResponse['data'][0]['user'];
-            _storage.write('user_info', userData);
+            storage.write('user_info', userData);
             Get.find<UniversalController>().updateUserInfo(userData!);
             isSuccess = true;
             debugPrint('Profile updated successfully');
