@@ -1,5 +1,6 @@
 class ApiEndPoints {
   static String baseUrl = 'https://mechanix-api-production.up.railway.app';
+  static String newBaseUrl = 'https://mechanix-api.vercel.app';
 
   //Authentications
   static String registerUserUrl = '/api/auth/register'; //Registration
@@ -20,15 +21,7 @@ class ApiEndPoints {
   static String deleteTaskUrl = '/api/task/deletetask';
 
   //Compressor-tASK
-  static String createCompressorUrl = '/api/compressor/createcompressorbrand';
-  static String getCompressorUrl =
-      '/api/compressor/getcompressorbrandpagination';
-  static String getCompressorBrandById =
-      '/api/compressor/getcompressorbrandbyid';
-  static String updateCompressorUrl = '/api/compressor/updatecompressorbrand';
-  static String deleteCompressorUrl = '/api/compressor/deletecompressorbrand';
-  static String updateCompressorImageUrl =
-      '/api/compressor/updatecompressorprofile';
+  static String createCompressorUrl = '/api/compressor/createcompressor';
 
   //Engine
   static String addEngineUrl = '/api/engine/createenginebrand';

@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/compressor_task_controller.dart';
@@ -11,10 +12,12 @@ import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomCompressorBody1 extends StatelessWidget {
   final bool isTaskUpdating;
+  final SideMenuController sideMenuController;
 
   CustomCompressorBody1({
     super.key,
     required this.isTaskUpdating,
+    required this.sideMenuController,
   });
 
   final UniversalController universalController = Get.find();
@@ -228,7 +231,14 @@ class CustomCompressorBody1 extends StatelessWidget {
               ),
             ),
           ),
-          CustomButton(isLoading: false, buttonText: 'Submit', onTap: () {})
+          Obx(
+            () => CustomButton(
+                isLoading: controller.isLoading.value,
+                buttonText: 'Submit',
+                onTap: () {
+                  controller.addCompressorTask(sideMenuController);
+                }),
+          )
         ],
       ),
     );

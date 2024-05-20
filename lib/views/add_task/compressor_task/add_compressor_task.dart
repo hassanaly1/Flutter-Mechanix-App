@@ -75,7 +75,7 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
                   ),
                 ];
               },
-              body: const BottomPageViewSection()),
+              body: BottomPageViewSection(sideMenuController: widget.sideMenu)),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             // onPressed: () => controller.scrollUp(),
@@ -148,8 +148,11 @@ class TopSection extends StatelessWidget {
 }
 
 class BottomPageViewSection extends StatelessWidget {
+  final SideMenuController sideMenuController;
+
   const BottomPageViewSection({
     super.key,
+    required this.sideMenuController,
   });
 
   @override
@@ -157,7 +160,10 @@ class BottomPageViewSection extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: CustomCompressorBody1(isTaskUpdating: false),
+          child: CustomCompressorBody1(
+            isTaskUpdating: false,
+            sideMenuController: sideMenuController,
+          ),
         ),
       ],
     );

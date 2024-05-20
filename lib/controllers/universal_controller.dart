@@ -49,7 +49,7 @@ class UniversalController extends GetxController {
     userInfo.value = storage.read('user_info') ?? {};
     userImageURL.value = storage.read('user_info')['profile'];
     debugPrint('UserImageAtStart: $userImageURL');
-    await getAllTasks();
+    await getAllGeneratorTasks();
     await getAllReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -79,7 +79,7 @@ class UniversalController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> getAllTasks({String? searchName, int? page}) async {
+  Future<void> getAllGeneratorTasks({String? searchName, int? page}) async {
     debugPrint('Page${page ?? currentPage.value} tasks called.');
     try {
       isTasksAreLoading.value = true;
@@ -137,7 +137,7 @@ class UniversalController extends GetxController {
       );
 
       if (taskDeleted) {
-        await getAllTasks();
+        await getAllGeneratorTasks();
         ToastMessage.showToastMessage(
             message: 'Task Deleted Successfully',
             backgroundColor: Colors.green);

@@ -297,7 +297,7 @@ class AddTaskController extends GetxController {
             taskName: taskName.text.trim(),
             customerEmail: clientEmail.text.trim(),
           );
-          await controller.getAllTasks();
+          await controller.getAllGeneratorTasks();
           sideMenuController.changePage(0);
           Get.delete<AddTaskController>();
           Get.delete<MapController>();
@@ -556,7 +556,7 @@ class AddTaskController extends GetxController {
           ToastMessage.showToastMessage(
               message: 'Task Updated Successfully',
               backgroundColor: AppColors.blueTextColor);
-          controller.getAllTasks();
+          controller.getAllGeneratorTasks();
           Get.back();
           Get.delete<AddTaskController>();
           Get.delete<MapController>();

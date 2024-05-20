@@ -1,5 +1,4 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -15,9 +14,11 @@ import 'package:mechanix/views/update_task.dart';
 
 class ViewAllTasksScreen extends StatelessWidget {
   final SideMenuController sideMenu;
+
   ViewAllTasksScreen({super.key, required this.sideMenu});
 
   final UniversalController controller = Get.find();
+
   // Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
@@ -39,7 +40,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                 horizontal: context.width * 0.05),
             decoration: const BoxDecoration(color: Colors.transparent),
             child: RefreshIndicator(
-              onRefresh: () => controller.getAllTasks(page: 1),
+              onRefresh: () => controller.getAllGeneratorTasks(page: 1),
               color: AppColors.primaryColor,
               backgroundColor: AppColors.secondaryColor,
               triggerMode: RefreshIndicatorTriggerMode.onEdge,
@@ -54,7 +55,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                       hintText: 'Search Task',
                       suffixIcon: const Icon(Icons.search_sharp),
                       onChanged: (value) {
-                        controller.getAllTasks(searchName: value);
+                        controller.getAllGeneratorTasks(searchName: value);
                       },
                     ),
                   ),
@@ -130,26 +131,27 @@ class ViewAllTasksScreen extends StatelessWidget {
     );
   }
 
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: selectedDate.value,
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2101),
-  //   );
-  //   if (picked != null && picked != selectedDate.value) {
-  //     selectedDate.value = picked;
-  //     String formattedStartDate =
-  //         DateFormat('yyyy-MM-dd').format(selectedDate.value);
-  //     print('SelectedDate: $formattedStartDate');
-  //     await controller.getAllTasks(date: formattedStartDate);
-  //   }
-  // }
+// Future<void> _selectDate(BuildContext context) async {
+//   final DateTime? picked = await showDatePicker(
+//     context: context,
+//     initialDate: selectedDate.value,
+//     firstDate: DateTime(2000),
+//     lastDate: DateTime(2101),
+//   );
+//   if (picked != null && picked != selectedDate.value) {
+//     selectedDate.value = picked;
+//     String formattedStartDate =
+//         DateFormat('yyyy-MM-dd').format(selectedDate.value);
+//     print('SelectedDate: $formattedStartDate');
+//     await controller.getAllTasks(date: formattedStartDate);
+//   }
+// }
 }
 
 class CustomTaskCard extends StatelessWidget {
   final Payload model;
   final UniversalController controller;
+
   const CustomTaskCard({
     super.key,
     required this.model,
