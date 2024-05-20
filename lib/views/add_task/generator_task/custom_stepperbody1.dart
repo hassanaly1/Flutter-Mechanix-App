@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -8,12 +8,13 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/dropdown.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/toast.dart';
-import 'package:mechanix/views/add_task/select_location.dart';
+import 'package:mechanix/views/add_task/generator_task/select_location.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody1 extends StatelessWidget {
   final bool isTaskUpdating;
+
   CustomStepperBody1({
     super.key,
     required this.isTaskUpdating,

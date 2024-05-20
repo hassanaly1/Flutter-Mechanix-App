@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/data/engine_service.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';

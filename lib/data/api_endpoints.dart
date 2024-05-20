@@ -1,5 +1,6 @@
 class ApiEndPoints {
   static String baseUrl = 'https://mechanix-api-production.up.railway.app';
+
   //Authentications
   static String registerUserUrl = '/api/auth/register'; //Registration
   static String verifyEmailUrl =
@@ -12,11 +13,22 @@ class ApiEndPoints {
       '/api/auth/changepassword'; //Change Password
   static String updateProfileUrl = '/api/auth/editprofile';
 
-  //Task
+  //Generator-Task
   static String createTaskUrl = '/api/task/createtask';
   static String getAllTaskUrl = '/api/task/getalltasks';
   static String updateTaskUrl = '/api/task/updatetask';
   static String deleteTaskUrl = '/api/task/deletetask';
+
+  //Compressor-tASK
+  static String createCompressorUrl = '/api/compressor/createcompressorbrand';
+  static String getCompressorUrl =
+      '/api/compressor/getcompressorbrandpagination';
+  static String getCompressorBrandById =
+      '/api/compressor/getcompressorbrandbyid';
+  static String updateCompressorUrl = '/api/compressor/updatecompressorbrand';
+  static String deleteCompressorUrl = '/api/compressor/deletecompressorbrand';
+  static String updateCompressorImageUrl =
+      '/api/compressor/updatecompressorprofile';
 
   //Engine
   static String addEngineUrl = '/api/engine/createenginebrand';

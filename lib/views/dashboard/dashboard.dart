@@ -111,6 +111,7 @@ class HomeAppbar extends StatelessWidget {
   });
 
   final DashboardController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     // var currentPage = sideMenu.currentPage;
@@ -240,17 +241,19 @@ class HomeAppbar extends StatelessWidget {
                 child: CustomTextWidget(
                   text: controller.currentPage.value == 0
                       ? 'Service reports made easy'
-                      : controller.currentPage.value == 2
-                          ? 'Add Task'
-                          : controller.currentPage.value == 3
-                              ? 'View Task'
-                              : controller.currentPage.value == 4
-                                  ? 'Reports'
-                                  : controller.currentPage.value == 5
-                                      ? 'Customize Units'
-                                      : controller.currentPage.value == 6
-                                          ? 'Engines'
-                                          : '',
+                      : controller.currentPage.value == 1
+                          ? 'Add Generator Task'
+                          : controller.currentPage.value == 2
+                              ? 'Add Compressor Task'
+                              : controller.currentPage.value == 3
+                                  ? 'View Task'
+                                  : controller.currentPage.value == 4
+                                      ? 'Reports'
+                                      : controller.currentPage.value == 5
+                                          ? 'Customize Units'
+                                          : controller.currentPage.value == 6
+                                              ? 'Engines'
+                                              : '',
                   textColor: Colors.white,
                   fontSize: context.isLandscape ? 20.0 : 18.0,
                   fontWeight: FontWeight.w600,

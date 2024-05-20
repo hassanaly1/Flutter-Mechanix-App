@@ -15,6 +15,7 @@ class HeadingAndTextfield extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+
   const HeadingAndTextfield(
       {super.key,
       required this.title,
@@ -39,7 +40,7 @@ class HeadingAndTextfield extends StatelessWidget {
         children: [
           CustomTextWidget(
             text: title,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             fontSize: fontSize,
             maxLines: 2,
           ),
@@ -71,6 +72,7 @@ class HeadingAndTextfieldInRow extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+
   const HeadingAndTextfieldInRow(
       {super.key,
       required this.title,

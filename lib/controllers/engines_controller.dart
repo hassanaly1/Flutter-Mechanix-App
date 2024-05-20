@@ -2,13 +2,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/data/engine_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
-import 'package:image_picker/image_picker.dart';
 
 class EnginesController extends GetxController {
   var isLoading = false.obs;
@@ -142,13 +141,13 @@ class EnginesController extends GetxController {
           isGenerator: engineType.value == 'Generator',
           isCompressor: engineType.value == 'Compressor',
         );
-        debugPrint('UserId: ${newEngine.userId}');
-        debugPrint('Name: ${newEngine.name}');
-        debugPrint('ImageUrl: ${newEngine.imageUrl}');
-        debugPrint('Image: $engineImageInBytes');
-        debugPrint('Subname: ${newEngine.subname}');
-        debugPrint('IsGenerator: ${newEngine.isGenerator}');
-        debugPrint('IsCompressor: ${newEngine.isCompressor}');
+        // debugPrint('UserId: ${newEngine.userId}');
+        // debugPrint('Name: ${newEngine.name}');
+        // debugPrint('ImageUrl: ${newEngine.imageUrl}');
+        // debugPrint('Image: $engineImageInBytes');
+        // debugPrint('Subname: ${newEngine.subname}');
+        // debugPrint('IsGenerator: ${newEngine.isGenerator}');
+        // debugPrint('IsCompressor: ${newEngine.isCompressor}');
         bool success = await engineService.addEngine(
             engineModel: newEngine, engineImageInBytes: engineImageInBytes);
 
@@ -159,7 +158,7 @@ class EnginesController extends GetxController {
           isLoading.value = false;
           pageController.nextPage(
               duration: const Duration(milliseconds: 300), curve: Curves.ease);
-          getAllEngines();
+          await getAllEngines();
           isQrCodeGenerated.value = true;
           engineType.value = 'Generator';
         } else {

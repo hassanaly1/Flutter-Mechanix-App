@@ -2,7 +2,7 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/data/report_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -11,7 +11,7 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
@@ -19,12 +19,14 @@ class CustomStepperBody4 extends StatelessWidget {
   final bool isTaskUpdating;
   final SideMenuController? sideMenu;
   final Payload? model;
+
   CustomStepperBody4({
     super.key,
     this.sideMenu,
     required this.isTaskUpdating,
     this.model,
   });
+
   final AddTaskController controller = Get.find();
   final GlobalKey<FormState> _partsFormkey = GlobalKey<FormState>();
 
@@ -353,6 +355,7 @@ class CustomStepperBody4 extends StatelessWidget {
 class SinglePartDetail extends StatelessWidget {
   final Part model;
   final int index;
+
   SinglePartDetail({super.key, required this.model, required this.index});
 
   final AddTaskController controller = Get.find();

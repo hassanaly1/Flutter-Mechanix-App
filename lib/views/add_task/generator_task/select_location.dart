@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -9,7 +9,7 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/toast.dart';
 
-import '../../../controllers/googlemap_controller.dart';
+import '../../../../controllers/googlemap_controller.dart';
 
 class SelectLocationScreen extends StatelessWidget {
   final MapController mapController = Get.find();

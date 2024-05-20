@@ -1,13 +1,15 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   final SideMenuController sideMenu;
+
   const HomeScreen({
     super.key,
     required this.sideMenu,
@@ -26,12 +28,10 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               DashboardCard(
-                // onTap: () => pageController.jumpToPage(1),
-                onTap: () => sideMenu.changePage(2),
-                // onTap: () => Get.to(
-                //   () => AddTaskScreen(),
-                //   transition: Transition.size,
-                // ),
+                // onTap: () => sideMenu.changePage(2),
+                onTap: () {
+                  _showTaskPopup(context: context, sideMenu: sideMenu);
+                },
                 title: 'Start New Task',
                 subtitle: 'Equipment Repair',
                 image: 'assets/images/start-task.png',
@@ -41,11 +41,6 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   SmallCard(
                     onTap: () => sideMenu.changePage(4),
-
-                    // onTap: () => Get.to(
-                    //   () => const ReportsScreen(),
-                    //   transition: Transition.zoom,
-                    // ),
                     title: 'Reports',
                     icon: Symbols.lab_profile,
                   ),
@@ -55,26 +50,14 @@ class HomeScreen extends StatelessWidget {
                     icon: Symbols.dashboard_customize,
                   ),
                   SmallCard(
-                    // onTap: () => Get.to(
-                    //   () => EnginesScreen(),
-                    //   transition: Transition.zoom,
-                    // ),
-
                     onTap: () => sideMenu.changePage(6),
-
                     title: 'Engines',
                     icon: Symbols.manufacturing,
                   ),
                 ],
               ),
               DashboardCard(
-                // onTap: () => Get.to(
-                //   () => ViewAllTasksScreen(),
-                //   transition: Transition.size,
-                // ),
-
                 onTap: () => sideMenu.changePage(3),
-
                 title: 'View Tasks',
                 subtitle:
                     'Click here to view all submitted repair forms and their details.',
@@ -92,6 +75,7 @@ class SmallCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback? onTap;
+
   const SmallCard({
     super.key,
     required this.title,
@@ -130,6 +114,7 @@ class DashboardCard extends StatelessWidget {
   final String subtitle;
   final String image;
   final VoidCallback? onTap;
+
   const DashboardCard({
     super.key,
     required this.title,
@@ -174,4 +159,83 @@ class DashboardCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showTaskPopup(
+    {required BuildContext context, required SideMenuController sideMenu}) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'Dismiss',
+    transitionDuration: const Duration(milliseconds: 400),
+    pageBuilder: (context, animation, secondaryAnimation) => Container(),
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return ScaleTransition(
+          scale: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+          child: FadeTransition(
+              opacity: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+              child: AlertDialog(
+                  scrollable: true,
+                  backgroundColor: Colors.transparent,
+                  content: Container(
+                    width: context.width * 0.7,
+                    // height: context.height * 0.3,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: context.height * 0.02),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color.fromRGBO(255, 220, 105, 0.4),
+                          Color.fromRGBO(86, 127, 255, 0.4),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 5.0,
+                            spreadRadius: 5.0),
+                        BoxShadow(
+                            color: Colors.white,
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0)
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomTextWidget(
+                            text:
+                                'Select Task you want to start.\nYou can start only one at a time.',
+                            fontSize: 14.0,
+                            maxLines: 3,
+                            textAlign: TextAlign.center,
+                            fontWeight: FontWeight.w400),
+                        const SizedBox(height: 12.0),
+                        CustomButton(
+                            isLoading: false,
+                            usePrimaryColor: false,
+                            buttonText: 'Start Generator Task',
+                            fontSize: 12.0,
+                            onTap: () {
+                              sideMenu.changePage(1);
+                              Get.back();
+                            }),
+                        CustomButton(
+                            isLoading: false,
+                            usePrimaryColor: false,
+                            buttonText: 'Start Compressor Task',
+                            fontSize: 12.0,
+                            onTap: () {
+                              sideMenu.changePage(2);
+                              Get.back();
+                            }),
+                      ],
+                    ),
+                  ))));
+    },
+  );
 }

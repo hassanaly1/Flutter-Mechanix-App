@@ -1,11 +1,10 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
-import 'package:mechanix/helpers/appcolors.dart';
-import 'package:mechanix/helpers/reusable_container.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/reusable_container.dart';
 
 class SideMenuCard extends StatelessWidget {
   const SideMenuCard({
@@ -64,23 +63,27 @@ class SideMenuCard extends StatelessWidget {
             ],
           ),
           items: [
+            //0
             SideMenuItem(
                 title: 'Home',
                 onTap: (index, _) {
                   sideMenu.changePage(index);
                 },
                 icon: const Icon(CupertinoIcons.home)),
-            SideMenuItem(
-              builder: (context, displayMode) {
-                return const Divider(endIndent: 8, indent: 8);
-              },
-            ),
+            //1
+            // SideMenuItem(
+            //   builder: (context, displayMode) {
+            //     return const Divider(endIndent: 8, indent: 8);
+            //   },
+            // ),
+
             SideMenuExpansionItem(
               title: "Tasks",
               icon: const Icon(Icons.task),
               children: [
                 SideMenuItem(
-                  title: 'Start Task',
+                  //1 GeneratorTask
+                  title: 'Start Generator Task',
                   onTap: (index, _) {
                     sideMenu.changePage(index);
                   },
@@ -88,7 +91,17 @@ class SideMenuCard extends StatelessWidget {
                   tooltipContent: "Start Task",
                 ),
                 SideMenuItem(
-                  title: 'View Task',
+                  //2 CompressorTask
+                  title: 'Start Compressor Task',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "Start Task",
+                ),
+                SideMenuItem(
+                  //3
+                  title: 'View Tasks',
                   onTap: (index, _) {
                     sideMenu.changePage(index);
                   },
@@ -98,6 +111,7 @@ class SideMenuCard extends StatelessWidget {
               ],
             ),
             SideMenuItem(
+              //4
               title: 'Reports',
               onTap: (index, _) {
                 sideMenu.changePage(index);
@@ -120,6 +134,7 @@ class SideMenuCard extends StatelessWidget {
               ),
             ),
             SideMenuItem(
+              //5
               title: 'Customize Units',
               onTap: (index, _) {
                 sideMenu.changePage(index);
@@ -127,6 +142,7 @@ class SideMenuCard extends StatelessWidget {
               icon: const Icon(Symbols.dashboard_customize),
             ),
             SideMenuItem(
+              //6
               title: 'Engines',
               onTap: (index, _) {
                 sideMenu.changePage(index);
@@ -134,6 +150,7 @@ class SideMenuCard extends StatelessWidget {
               icon: const Icon(Symbols.manufacturing),
             ),
             SideMenuItem(
+              //7
               builder: (context, displayMode) {
                 return const Divider(endIndent: 8, indent: 8);
               },
@@ -146,6 +163,7 @@ class SideMenuCard extends StatelessWidget {
             //   icon: const Icon(Symbols.event_repeat_rounded),
             // ),
             SideMenuItem(
+              //8
               title: 'Profile',
               onTap: (index, _) {
                 sideMenu.changePage(index);

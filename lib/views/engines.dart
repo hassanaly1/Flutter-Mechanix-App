@@ -36,68 +36,72 @@ class EnginesScreen extends StatelessWidget {
             sideMenu.changePage(0);
             Get.delete<EnginesController>();
           },
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: context.height * 0.02,
-                    horizontal: context.width * 0.05),
-                decoration: const BoxDecoration(color: Colors.transparent),
-                child: RefreshIndicator(
-                  onRefresh: () => controller.getAllEngines(),
-                  color: AppColors.primaryColor,
-                  backgroundColor: AppColors.secondaryColor,
-                  triggerMode: RefreshIndicatorTriggerMode.onEdge,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: context.isLandscape
-                                ? context.width * 0.08
-                                : 0.0),
-                        child: ReUsableTextField(
-                          controller: controller.searchController,
-                          hintText: 'Search Reports',
-                          suffixIcon: const Icon(Icons.search_sharp),
-                          onChanged: (value) {
-                            controller.getAllEngines(searchName: value);
-                          },
+          child: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: context.height * 0.02,
+                      horizontal: context.width * 0.05),
+                  decoration: const BoxDecoration(color: Colors.transparent),
+                  child: RefreshIndicator(
+                    onRefresh: () => controller.getAllEngines(),
+                    color: AppColors.primaryColor,
+                    backgroundColor: AppColors.secondaryColor,
+                    triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.isLandscape
+                                  ? context.width * 0.08
+                                  : 0.0),
+                          child: ReUsableTextField(
+                            controller: controller.searchController,
+                            hintText: 'Search Reports',
+                            suffixIcon: const Icon(Icons.search_sharp),
+                            onChanged: (value) {
+                              controller.getAllEngines(searchName: value);
+                            },
+                          ),
                         ),
-                      ),
-                      CustomButton(
-                        isLoading: false,
-                        buttonText: '+ Add Engine',
-                        onTap: () => _openAddEngineDialog(
-                            context: context, controller: controller),
-                      ),
-                      //TabBar
-                      const CustomTabBar(
-                          title1: 'Generator', title2: 'Compressor'),
-                      Expanded(
-                        child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            // EnginesTabbarView(controller: controller, engines: universalController.engines.where((engine)=> engine.type == 'Engine').toList(),
-                            EnginesTabbarView(
-                                isGenerator: true,
-                                controller: controller,
-                                engines: universalController.engines
-                                    .where(
-                                        (engine) => engine.isGenerator == true)
-                                    .toList()),
-                            EnginesTabbarView(
-                                isGenerator: false,
-                                controller: controller,
-                                engines: universalController.engines
-                                    .where(
-                                        (engine) => engine.isCompressor == true)
-                                    .toList()),
-                          ],
+                        CustomButton(
+                          isLoading: false,
+                          buttonText: '+ Add Engine',
+                          onTap: () => _openAddEngineDialog(
+                              context: context, controller: controller),
                         ),
-                      )
-                    ],
+                        //TabBar
+                        const CustomTabBar(
+                            title1: 'Generator', title2: 'Compressor'),
+                        Expanded(
+                          child: Obx(
+                            () => TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                EnginesTabbarView(
+                                    isGenerator: true,
+                                    controller: controller,
+                                    engines: universalController.engines
+                                        .where((engine) =>
+                                            engine.isGenerator == true)
+                                        .toList()),
+                                EnginesTabbarView(
+                                    isGenerator: false,
+                                    controller: controller,
+                                    engines: universalController.engines
+                                        .where((engine) =>
+                                            engine.isCompressor == true)
+                                        .toList()),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -134,55 +138,50 @@ class EnginesTabbarView extends StatelessWidget {
                   )),
             )
           : engines.isEmpty
-              ? Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: context.height * 0.15),
-                        Image.asset('assets/images/view-task.png',
-                            height: context.height * 0.15),
-                        CustomTextWidget(
-                          text:
-                              'No ${isGenerator ? 'Generator' : 'Compressor'} found',
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        SizedBox(height: context.height * 0.25),
-                      ],
-                    ),
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: context.height * 0.15),
+                      Image.asset('assets/images/view-task.png',
+                          height: context.height * 0.15),
+                      CustomTextWidget(
+                        text:
+                            'No ${isGenerator ? 'Generator' : 'Compressor'} found',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: context.height * 0.25),
+                    ],
                   ),
                 )
-              : Expanded(
-                  child: ListView.builder(
-                    controller: controller.scrollController,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount:
-                        engines.length + (controller.isLoading.value ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index < engines.length) {
-                        final engine = engines[index];
-                        return CustomEngineCard(
-                          controller: controller,
-                          model: engine,
-                          onTap: () {
-                            // Get.to(
-                            //         () => EngineDetailScreen(
-                            //         model: engine),
-                            //     transition: Transition.size);
-                          },
-                        );
-                      } else if (controller.isLoading.value) {
-                        return const Center(
-                          heightFactor: 3,
-                          child:
-                              SpinKitCircle(color: Colors.black87, size: 40.0),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
+              : ListView.builder(
+                  controller: controller.scrollController,
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount:
+                      engines.length + (controller.isLoading.value ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index < engines.length) {
+                      final engine = engines[index];
+                      return CustomEngineCard(
+                        controller: controller,
+                        model: engine,
+                        onTap: () {
+                          // Get.to(
+                          //         () => EngineDetailScreen(
+                          //         model: engine),
+                          //     transition: Transition.size);
+                        },
+                      );
+                    } else if (controller.isLoading.value) {
+                      return const Center(
+                        heightFactor: 3,
+                        child: SpinKitCircle(color: Colors.black87, size: 40.0),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
     );
   }

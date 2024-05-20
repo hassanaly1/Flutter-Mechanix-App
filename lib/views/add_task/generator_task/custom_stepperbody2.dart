@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
@@ -12,6 +12,7 @@ import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomStepperBody2 extends StatelessWidget {
   final bool isTaskUpdating;
+
   CustomStepperBody2({
     super.key,
     required this.isTaskUpdating,
@@ -924,6 +925,7 @@ class CustomStepperBody2 extends StatelessWidget {
 class NumberWithTextField extends StatelessWidget {
   final String number;
   final TextEditingController? controller;
+
   const NumberWithTextField({super.key, required this.number, this.controller});
 
   @override
@@ -941,6 +943,7 @@ class CheckboxWithTextfield extends StatelessWidget {
   final String heading;
   final TextEditingController? controller;
   final RxBool isSelected;
+
   const CheckboxWithTextfield(
       {super.key,
       required this.heading,
@@ -987,6 +990,7 @@ class TextfieldWithRadioButtons extends StatelessWidget {
   final TextEditingController? textController;
   final RxString? radioController;
   final TextInputType? keyboardType;
+
   const TextfieldWithRadioButtons({
     super.key,
     required this.heading,
@@ -1039,6 +1043,7 @@ class InOutWidget extends StatelessWidget {
   final String heading;
   final TextEditingController? inController;
   final TextEditingController? outController;
+
   const InOutWidget(
       {super.key,
       required this.heading,
@@ -1082,6 +1087,7 @@ class InOutWidget extends StatelessWidget {
 
 class ContainerHeading extends StatelessWidget {
   final String heading;
+
   const ContainerHeading({
     super.key,
     required this.heading,

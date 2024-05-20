@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/data/task_service.dart';
+import 'package:mechanix/data/generator_task_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
 class AddTaskController extends GetxController {
   RxBool isLoading = false.obs;
@@ -26,6 +26,7 @@ class AddTaskController extends GetxController {
   RxBool isTaskUpdating = false.obs;
 
   List<Part> partsList = <Part>[].obs;
+
   @override
   void onInit() {
     selectedAddress.text = mapController.selectedAddress.value;
@@ -273,7 +274,7 @@ class AddTaskController extends GetxController {
             backgroundColor: Colors.red);
       } else {
         isLoading.value = true;
-        TaskResponse taskResponse = await taskService.createTask(
+        GeneratorTaskResponse taskResponse = await taskService.createTask(
           token: storage.read('token'),
           geolocation: geolocation,
           task: newTask,
@@ -927,6 +928,7 @@ class AddTaskController extends GetxController {
   TextEditingController serialNumber = TextEditingController();
   TextEditingController arrangementNumber = TextEditingController();
   RxString oilSamplesTaken = 'NO'.obs;
+
   //-----------------------------------------------------------------------//
 
   //Page2
@@ -934,6 +936,7 @@ class AddTaskController extends GetxController {
   TextEditingController engineLoad = TextEditingController();
   TextEditingController engineRPM = TextEditingController();
   TextEditingController ignitionTiming = TextEditingController();
+
   //Exhaust Gas Sample
   var exhaustGasSampleFound = <String>[].obs; //Checkbox
   TextEditingController leftBankFound = TextEditingController();
@@ -941,6 +944,7 @@ class AddTaskController extends GetxController {
   var exhaustGasSampleAdjusted = <String>[].obs; //Checkbox
   TextEditingController leftBankAdjusted = TextEditingController();
   TextEditingController rightBankAdjusted = TextEditingController();
+
   //Fuel Quality
   TextEditingController btuValue = TextEditingController();
   RxString selectedBtuValue = 'C'.obs; //RadioButton
@@ -986,6 +990,7 @@ class AddTaskController extends GetxController {
   TextEditingController lbTurboInTemp = TextEditingController();
   RxString rbTurboIn = 'C'.obs; //RadioButton
   TextEditingController rbTurboInTemp = TextEditingController();
+
   //
   RxString lbTurboOut = 'C'.obs; //RadioButton
   TextEditingController lbTurboOutTemp = TextEditingController();
@@ -997,6 +1002,7 @@ class AddTaskController extends GetxController {
 
   //BurnTimes
   final List burnTemperatureCtrl = <TextEditingController>[];
+
   // TextEditingController burnTemperature1 = TextEditingController();
   // TextEditingController burnTemperature2 = TextEditingController();
   // TextEditingController burnTemperature3 = TextEditingController();
@@ -1083,6 +1089,7 @@ class AddTaskController extends GetxController {
 
   // Hot Compression Test
   final List hotCompressionTemperatureCtrl = <TextEditingController>[];
+
   // TextEditingController hotCompressionTemperature1 = TextEditingController();
   // TextEditingController hotCompressionTemperature2 = TextEditingController();
   // TextEditingController hotCompressionTemperature3 = TextEditingController();
@@ -1207,191 +1214,191 @@ class AddTaskController extends GetxController {
   TextEditingController partQuantity = TextEditingController();
   TextEditingController partVendor = TextEditingController();
 
-  // @override
-  // void onClose() {
-  //   debugPrint('AddTaskControllerDisposeCalled');
-  //   scrollController.dispose();
-  //   mapController.dispose();
-  //   //Page1
-  //   selectedAddress.dispose();
-  //   setUnits.dispose();
-  //   unitHours.dispose();
-  //   nameOfJourneyMan.dispose();
-  //   unitOnlineOnArrival.value = '';
-  //   jobScope.dispose();
-  //   operationalProblems.dispose();
-  //   modelNumber.dispose();
-  //   serialNumber.dispose();
-  //   arrangementNumber.dispose();
-  //   oilSamplesTaken.value = '';
-  //   //Page2
-  //   engineLoad.dispose();
-  //   engineRPM.dispose();
-  //   ignitionTiming.dispose();
-  //   exhaustGasSampleFound.value = [];
-  //   leftBankFound.dispose();
-  //   rightBankFound.dispose();
-  //   exhaustGasSampleAdjusted.value = [];
-  //   leftBankAdjusted.dispose();
-  //   rightBankAdjusted.dispose();
-  //   btuValue.dispose();
-  //   selectedBtuValue.value = '';
-  //   cylinderExhaustPyrometerTemperature1.dispose();
-  //   cylinderExhaustPyrometerTemperature2.dispose();
-  //   cylinderExhaustPyrometerTemperature3.dispose();
-  //   cylinderExhaustPyrometerTemperature4.dispose();
-  //   cylinderExhaustPyrometerTemperature5.dispose();
-  //   cylinderExhaustPyrometerTemperature6.dispose();
-  //   cylinderExhaustPyrometerTemperature7.dispose();
-  //   cylinderExhaustPyrometerTemperature8.dispose();
-  //   cylinderExhaustPyrometerTemperature9.dispose();
-  //   cylinderExhaustPyrometerTemperature10.dispose();
-  //   cylinderExhaustPyrometerTemperature11.dispose();
-  //   cylinderExhaustPyrometerTemperature12.dispose();
-  //   cylinderExhaustPyrometerTemperature13.dispose();
-  //   cylinderExhaustPyrometerTemperature14.dispose();
-  //   cylinderExhaustPyrometerTemperature15.dispose();
-  //   cylinderExhaustPyrometerTemperature16.dispose();
-  //   lbTurboIn.value = '';
-  //   rbTurboIn.value = '';
-  //   lbTurboOut.value = '';
-  //   rbTurboOut.value = '';
-  //   lbTurboInTemp.dispose();
-  //   rbTurboInTemp.dispose();
-  //   lbTurboOutTemp.dispose();
-  //   rbTurboOutTemp.dispose();
-  //   missFireDetected.value = '';
-  //   burnTemperature1.dispose();
-  //   burnTemperature2.dispose();
-  //   burnTemperature3.dispose();
-  //   burnTemperature4.dispose();
-  //   burnTemperature5.dispose();
-  //   burnTemperature6.dispose();
-  //   burnTemperature7.dispose();
-  //   burnTemperature8.dispose();
-  //   burnTemperature9.dispose();
-  //   burnTemperature10.dispose();
-  //   burnTemperature11.dispose();
-  //   burnTemperature12.dispose();
-  //   burnTemperature13.dispose();
-  //   burnTemperature14.dispose();
-  //   burnTemperature15.dispose();
-  //   burnTemperature16.dispose();
-  //   throttleActuatorPosition.dispose();
-  //   fuelValue.dispose();
-  //   engineOilPressure.dispose();
-  //   oilPressureDifferential.value = '';
-  //   oilPressureDifferentialTextField.dispose();
-  //   oilTemperatureIn.dispose();
-  //   oilTemperatureOut.dispose();
-  //   oilLevelEngine.value = '';
-  //   engineCoolantPressure.dispose();
-  //   engineCoolantPressureRadioValue.value = '';
-  //   jacketWaterLevel.value = '';
-  //   auxiliaryCoolantlevel1.value = '';
-  //   jacketWaterTemperaturesIn.dispose();
-  //   jacketWaterTemperaturesOut.dispose();
-  //   auxCoolantTemperaturesIn.dispose();
-  //   auxCoolantTemperaturesOut.dispose();
-  //   inletAirTemp.dispose();
-  //   inletAirTempRadio.value = '';
-  //   inletAirPressure.dispose();
-  //   inletAirPressureRadio.value = '';
-  //   primaryFuelPressure.dispose();
-  //   actualAirToFuelRatio.dispose();
-  //   crankcasePressure.dispose();
-  //   airFilterRestriction.dispose();
-  //   airFilterRestrictionRadio.value = '';
-  //   hydraulicOil.value = '';
-  //   leaksFound.value = '';
-  //   hasOilLeakage.value = false;
-  //   oilDescription.dispose();
-  //   hasCoolantLeakage.value = false;
-  //   coolantDescription.dispose();
-  //   hasGasLeakage.value = false;
-  //   gasDescription.dispose();
-  //   hasExhaustGasLeakage.value = false;
-  //   exhaustDescription.dispose();
-  //   hasAirLeakage.value = false;
-  //   airDescription.dispose();
-  //   excessiveVibrationAndOddNoises.value = 'no';
-  //   excessiveVibrationAndOddNoisesDescription.dispose();
-  //   problemsWithDriver.value = 'no';
-  //   problemsWithDriverDescription.dispose();
-  //   //Page3
-  //   hotCompressionTemperature1.dispose();
-  //   hotCompressionTemperature2.dispose();
-  //   hotCompressionTemperature3.dispose();
-  //   hotCompressionTemperature4.dispose();
-  //   hotCompressionTemperature5.dispose();
-  //   hotCompressionTemperature6.dispose();
-  //   hotCompressionTemperature7.dispose();
-  //   hotCompressionTemperature8.dispose();
-  //   hotCompressionTemperature9.dispose();
-  //   hotCompressionTemperature10.dispose();
-  //   hotCompressionTemperature11.dispose();
-  //   hotCompressionTemperature12.dispose();
-  //   hotCompressionTemperature13.dispose();
-  //   hotCompressionTemperature14.dispose();
-  //   hotCompressionTemperature15.dispose();
-  //   hotCompressionTemperature16.dispose();
-  //   intakeValueSet.dispose();
-  //   intakeValueSetRadioValue.value = '';
-  //   exhaustValueSet.dispose();
-  //   exhaustValueSetRadioValue.value = '';
-  //   majorValueRecessionDetected.value = '';
-  //   boroscopeRecommended.value = '';
-  //   boroscopeInspectionCompleted.value = '';
-  //   installNewSparkplugs.value = '';
-  //   sparkplugGap.dispose();
-  //   sparkplugExtensionInstalled.value = '';
-  //   newExtensionInstalled.value = '';
-  //   listOfNewExtensionInstalled.dispose();
-  //   sparkplugWireCondition.value = '';
-  //   listOfSparkplugWireCondition.dispose();
-  //   cannonPlugConnectorsTight.value = '';
-  //   listOfTransformerCoilsReplaced.dispose();
-  //   //------------------------
-  //   crankcaseBreatherInspection.value = '';
-  //   newBreatherElementInstalled.value = '';
-  //   checkAllCanonFan.value = '';
-  //   listOfCheckAllCoolerFan.dispose();
-  //   coolantSystemCheck.value = '';
-  //   lubricationSystemCheck.value = '';
-  //   coolingSystemCheck.value = '';
-  //   checkFuelGasFilter.value = '';
-  //   fuelGasFilterFound.value = '';
-  //   airFilterInspection.value = '';
-  //   turboChargerInspection.value = '';
-  //   carburetorInternalCleaningInspection.value = '';
-  //   engineOilFilterChange.value = '';
-  //   engineOilFilterChange2.value = '';
-  //   oilCoolerDrained.value = '';
-  //   hydraulicOilFilterChange.value = '';
-  //   hydraulicOilNew.value = '';
-  //   engineOilSystemPrimed.value = '';
-  //   oilDrainIsolationValvesShutIn.value = '';
-  //   dayTankFiltersInstalledNew.value = '';
-  //   dayTankValvesOpen.value = '';
-  //   //Page4
-  //   oilPressureEngineAndGood.value = '';
-  //   engineOilLevel.value = '';
-  //   jacketWaterCoolantLevel.value = '';
-  //   auxiliaryCoolantLevel2.value = '';
-  //   allTempsAndPressuresStableAndNormalRanges.value = '';
-  //   noisesOrVibrationsDetected.value = '';
-  //   engineExhaustGasCheckedAndAdjustedAtMaxLoad.value = '';
-  //   documentFinalSetPointExhaustGasOxygenOrCOLevels.dispose();
-  //   documentFinalManifoldPressureAndRPM.dispose();
-  //   engineDeficienciesRadio.value = 'no';
-  //   engineDeficienciesTextfield.dispose();
-  //   partsOrderingStatus.value = '';
-  //   partName.dispose();
-  //   partDescription.dispose();
-  //   partQuantity.dispose();
-  //   partVendor.dispose();
-  //   super.onClose();
-  // }
+// @override
+// void onClose() {
+//   debugPrint('AddTaskControllerDisposeCalled');
+//   scrollController.dispose();
+//   mapController.dispose();
+//   //Page1
+//   selectedAddress.dispose();
+//   setUnits.dispose();
+//   unitHours.dispose();
+//   nameOfJourneyMan.dispose();
+//   unitOnlineOnArrival.value = '';
+//   jobScope.dispose();
+//   operationalProblems.dispose();
+//   modelNumber.dispose();
+//   serialNumber.dispose();
+//   arrangementNumber.dispose();
+//   oilSamplesTaken.value = '';
+//   //Page2
+//   engineLoad.dispose();
+//   engineRPM.dispose();
+//   ignitionTiming.dispose();
+//   exhaustGasSampleFound.value = [];
+//   leftBankFound.dispose();
+//   rightBankFound.dispose();
+//   exhaustGasSampleAdjusted.value = [];
+//   leftBankAdjusted.dispose();
+//   rightBankAdjusted.dispose();
+//   btuValue.dispose();
+//   selectedBtuValue.value = '';
+//   cylinderExhaustPyrometerTemperature1.dispose();
+//   cylinderExhaustPyrometerTemperature2.dispose();
+//   cylinderExhaustPyrometerTemperature3.dispose();
+//   cylinderExhaustPyrometerTemperature4.dispose();
+//   cylinderExhaustPyrometerTemperature5.dispose();
+//   cylinderExhaustPyrometerTemperature6.dispose();
+//   cylinderExhaustPyrometerTemperature7.dispose();
+//   cylinderExhaustPyrometerTemperature8.dispose();
+//   cylinderExhaustPyrometerTemperature9.dispose();
+//   cylinderExhaustPyrometerTemperature10.dispose();
+//   cylinderExhaustPyrometerTemperature11.dispose();
+//   cylinderExhaustPyrometerTemperature12.dispose();
+//   cylinderExhaustPyrometerTemperature13.dispose();
+//   cylinderExhaustPyrometerTemperature14.dispose();
+//   cylinderExhaustPyrometerTemperature15.dispose();
+//   cylinderExhaustPyrometerTemperature16.dispose();
+//   lbTurboIn.value = '';
+//   rbTurboIn.value = '';
+//   lbTurboOut.value = '';
+//   rbTurboOut.value = '';
+//   lbTurboInTemp.dispose();
+//   rbTurboInTemp.dispose();
+//   lbTurboOutTemp.dispose();
+//   rbTurboOutTemp.dispose();
+//   missFireDetected.value = '';
+//   burnTemperature1.dispose();
+//   burnTemperature2.dispose();
+//   burnTemperature3.dispose();
+//   burnTemperature4.dispose();
+//   burnTemperature5.dispose();
+//   burnTemperature6.dispose();
+//   burnTemperature7.dispose();
+//   burnTemperature8.dispose();
+//   burnTemperature9.dispose();
+//   burnTemperature10.dispose();
+//   burnTemperature11.dispose();
+//   burnTemperature12.dispose();
+//   burnTemperature13.dispose();
+//   burnTemperature14.dispose();
+//   burnTemperature15.dispose();
+//   burnTemperature16.dispose();
+//   throttleActuatorPosition.dispose();
+//   fuelValue.dispose();
+//   engineOilPressure.dispose();
+//   oilPressureDifferential.value = '';
+//   oilPressureDifferentialTextField.dispose();
+//   oilTemperatureIn.dispose();
+//   oilTemperatureOut.dispose();
+//   oilLevelEngine.value = '';
+//   engineCoolantPressure.dispose();
+//   engineCoolantPressureRadioValue.value = '';
+//   jacketWaterLevel.value = '';
+//   auxiliaryCoolantlevel1.value = '';
+//   jacketWaterTemperaturesIn.dispose();
+//   jacketWaterTemperaturesOut.dispose();
+//   auxCoolantTemperaturesIn.dispose();
+//   auxCoolantTemperaturesOut.dispose();
+//   inletAirTemp.dispose();
+//   inletAirTempRadio.value = '';
+//   inletAirPressure.dispose();
+//   inletAirPressureRadio.value = '';
+//   primaryFuelPressure.dispose();
+//   actualAirToFuelRatio.dispose();
+//   crankcasePressure.dispose();
+//   airFilterRestriction.dispose();
+//   airFilterRestrictionRadio.value = '';
+//   hydraulicOil.value = '';
+//   leaksFound.value = '';
+//   hasOilLeakage.value = false;
+//   oilDescription.dispose();
+//   hasCoolantLeakage.value = false;
+//   coolantDescription.dispose();
+//   hasGasLeakage.value = false;
+//   gasDescription.dispose();
+//   hasExhaustGasLeakage.value = false;
+//   exhaustDescription.dispose();
+//   hasAirLeakage.value = false;
+//   airDescription.dispose();
+//   excessiveVibrationAndOddNoises.value = 'no';
+//   excessiveVibrationAndOddNoisesDescription.dispose();
+//   problemsWithDriver.value = 'no';
+//   problemsWithDriverDescription.dispose();
+//   //Page3
+//   hotCompressionTemperature1.dispose();
+//   hotCompressionTemperature2.dispose();
+//   hotCompressionTemperature3.dispose();
+//   hotCompressionTemperature4.dispose();
+//   hotCompressionTemperature5.dispose();
+//   hotCompressionTemperature6.dispose();
+//   hotCompressionTemperature7.dispose();
+//   hotCompressionTemperature8.dispose();
+//   hotCompressionTemperature9.dispose();
+//   hotCompressionTemperature10.dispose();
+//   hotCompressionTemperature11.dispose();
+//   hotCompressionTemperature12.dispose();
+//   hotCompressionTemperature13.dispose();
+//   hotCompressionTemperature14.dispose();
+//   hotCompressionTemperature15.dispose();
+//   hotCompressionTemperature16.dispose();
+//   intakeValueSet.dispose();
+//   intakeValueSetRadioValue.value = '';
+//   exhaustValueSet.dispose();
+//   exhaustValueSetRadioValue.value = '';
+//   majorValueRecessionDetected.value = '';
+//   boroscopeRecommended.value = '';
+//   boroscopeInspectionCompleted.value = '';
+//   installNewSparkplugs.value = '';
+//   sparkplugGap.dispose();
+//   sparkplugExtensionInstalled.value = '';
+//   newExtensionInstalled.value = '';
+//   listOfNewExtensionInstalled.dispose();
+//   sparkplugWireCondition.value = '';
+//   listOfSparkplugWireCondition.dispose();
+//   cannonPlugConnectorsTight.value = '';
+//   listOfTransformerCoilsReplaced.dispose();
+//   //------------------------
+//   crankcaseBreatherInspection.value = '';
+//   newBreatherElementInstalled.value = '';
+//   checkAllCanonFan.value = '';
+//   listOfCheckAllCoolerFan.dispose();
+//   coolantSystemCheck.value = '';
+//   lubricationSystemCheck.value = '';
+//   coolingSystemCheck.value = '';
+//   checkFuelGasFilter.value = '';
+//   fuelGasFilterFound.value = '';
+//   airFilterInspection.value = '';
+//   turboChargerInspection.value = '';
+//   carburetorInternalCleaningInspection.value = '';
+//   engineOilFilterChange.value = '';
+//   engineOilFilterChange2.value = '';
+//   oilCoolerDrained.value = '';
+//   hydraulicOilFilterChange.value = '';
+//   hydraulicOilNew.value = '';
+//   engineOilSystemPrimed.value = '';
+//   oilDrainIsolationValvesShutIn.value = '';
+//   dayTankFiltersInstalledNew.value = '';
+//   dayTankValvesOpen.value = '';
+//   //Page4
+//   oilPressureEngineAndGood.value = '';
+//   engineOilLevel.value = '';
+//   jacketWaterCoolantLevel.value = '';
+//   auxiliaryCoolantLevel2.value = '';
+//   allTempsAndPressuresStableAndNormalRanges.value = '';
+//   noisesOrVibrationsDetected.value = '';
+//   engineExhaustGasCheckedAndAdjustedAtMaxLoad.value = '';
+//   documentFinalSetPointExhaustGasOxygenOrCOLevels.dispose();
+//   documentFinalManifoldPressureAndRPM.dispose();
+//   engineDeficienciesRadio.value = 'no';
+//   engineDeficienciesTextfield.dispose();
+//   partsOrderingStatus.value = '';
+//   partName.dispose();
+//   partDescription.dispose();
+//   partQuantity.dispose();
+//   partVendor.dispose();
+//   super.onClose();
+// }
 }
 
 //double _previousScrollPosition = 0.0;

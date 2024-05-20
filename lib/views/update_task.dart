@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody1.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody3.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody1.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody3.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
 class UpdateTaskScreen extends StatefulWidget {
   final Payload model;
+
   const UpdateTaskScreen({super.key, required this.model});
 
   @override
@@ -20,6 +21,7 @@ class UpdateTaskScreen extends StatefulWidget {
 
 class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
   late AddTaskController controller;
+
   @override
   void initState() {
     controller = Get.put(AddTaskController());

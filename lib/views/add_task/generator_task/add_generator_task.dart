@@ -1,30 +1,32 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/controllers/generator_task_controllers.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
-import 'package:mechanix/controllers/task_controllers.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody1.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody2.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody3.dart';
-import 'package:mechanix/views/add_task/custom_stepperbody4.dart';
-import 'package:mechanix/views/add_task/scan_qrcode.dart';
-import 'package:mechanix/views/add_task/stepper_header.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody1.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody3.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
+import 'package:mechanix/views/add_task/generator_task/scan_qrcode.dart';
+import 'package:mechanix/views/add_task/generator_task/stepper_header.dart';
 
-class TaskScreen extends StatefulWidget {
+class GeneratorTaskScreen extends StatefulWidget {
   final bool isUpdatingTask;
   final SideMenuController sideMenu;
-  const TaskScreen(
+
+  const GeneratorTaskScreen(
       {super.key, required this.sideMenu, required this.isUpdatingTask});
 
   @override
-  State<TaskScreen> createState() => _TaskScreenState();
+  State<GeneratorTaskScreen> createState() => _GeneratorTaskScreenState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _GeneratorTaskScreenState extends State<GeneratorTaskScreen> {
   late AddTaskController controller;
+
   @override
   void initState() {
     controller = Get.put(AddTaskController());
@@ -174,6 +176,7 @@ class TopSection extends StatelessWidget {
 
 class BottomPageViewSection extends StatelessWidget {
   final SideMenuController sideMenu;
+
   const BottomPageViewSection({
     super.key,
     required this.controller,
