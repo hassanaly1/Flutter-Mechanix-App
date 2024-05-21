@@ -10,13 +10,23 @@ import 'package:mechanix/models/compressor_model.dart';
 
 class CompressorTaskController extends GetxController {
   RxBool isLoading = false.obs;
+  final ScrollController scrollController = ScrollController();
   CompressorTaskService compressorTaskService = CompressorTaskService();
   final UniversalController controller = Get.find();
+
+  void scrollUp() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(0.0,
+          duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+    }
+  }
 
   Future<void> addCompressorTask(SideMenuController? sideMenuController) async {
     var compressorTask = CompressorTaskModel(
       compressorId: '66486afb62fcb4e3463550c0',
       user: storage.read('user_info')['_id'],
+      taskName: taskName.text.trim(),
+      customerEmail: customerEmail.text.trim(),
       make: make.text.trim(),
       model: model.text.trim(),
       crossHeadShoes: crossheadShoes.text.trim(),
@@ -43,19 +53,19 @@ class CompressorTaskController extends GetxController {
       crankstaftEndClearance: crankshaftEndClearance.text.trim(),
       compressorOilPressure: compressorOilPressure.text.trim(),
       valveCaps: [
-        ValveCap(name: '3/8"', type: valueOf3By8.value, size: '3/8"'),
-        ValveCap(name: '7/16"', type: valueOf7By16.value, size: '7/16"'),
-        ValveCap(name: '1/2"', type: valueOf1By2.value, size: '1/2"'),
-        ValveCap(name: '5/8"', type: valueOf5By8.value, size: '5/8"'),
-        ValveCap(name: '3/4"', type: valueOf3By4.value, size: '3/4"'),
-        ValveCap(name: '7/8"', type: valueOf7By8.value, size: '7/8"'),
-        ValveCap(name: '1"', type: valueOf1.value, size: '1"'),
-        ValveCap(name: '1 1/8"', type: valueOf1_1By8.value, size: '1 1/8"'),
-        ValveCap(name: '1 1/4"', type: valueOf1_1By4.value, size: '1 1/4"'),
-        ValveCap(name: '1 3/8"', type: valueOf1_3By8.value, size: '1 3/8"'),
-        ValveCap(name: '1 1/2"', type: valueOf1_1By2.value, size: '1 1/2"'),
-        ValveCap(name: '1 3/4"', type: valueOf1_3By4.value, size: '1 3/4"'),
-        ValveCap(name: '2"', type: valueOf2.value, size: '2"'),
+        ValveCap(name: '3/8', type: valueOf3By8.value, size: '3/8'),
+        ValveCap(name: '7/16', type: valueOf7By16.value, size: '7/16'),
+        ValveCap(name: '1/2', type: valueOf1By2.value, size: '1/2'),
+        ValveCap(name: '5/8', type: valueOf5By8.value, size: '5/8'),
+        ValveCap(name: '3/4', type: valueOf3By4.value, size: '3/4'),
+        ValveCap(name: '7/8', type: valueOf7By8.value, size: '7/8'),
+        ValveCap(name: '1', type: valueOf1.value, size: '1'),
+        ValveCap(name: '1 1/8', type: valueOf1_1By8.value, size: '1 1/8'),
+        ValveCap(name: '1 1/4', type: valueOf1_1By4.value, size: '1 1/4'),
+        ValveCap(name: '1 3/8', type: valueOf1_3By8.value, size: '1 3/8'),
+        ValveCap(name: '1 1/2', type: valueOf1_1By2.value, size: '1 1/2'),
+        ValveCap(name: '1 3/4', type: valueOf1_3By4.value, size: '1 3/4'),
+        ValveCap(name: '2', type: valueOf2.value, size: '2'),
       ],
     );
     try {
@@ -81,7 +91,7 @@ class CompressorTaskController extends GetxController {
           //   taskName: taskName.text.trim(),
           //   customerEmail: clientEmail.text.trim(),
           // );
-          await controller.getAllGeneratorTasks();
+          await controller.getAllCompressorTasks();
           sideMenuController?.changePage(0);
           Get.delete<CompressorTaskController>();
         } else {
@@ -100,9 +110,168 @@ class CompressorTaskController extends GetxController {
     }
   }
 
+  Future<void> updateCompressorTask({required String taskId}) async {
+    var compressorTask = CompressorTaskModel(
+      compressorId: '66486afb62fcb4e3463550c0',
+      user: storage.read('user_info')['_id'],
+      taskName: taskName.text.trim(),
+      customerEmail: customerEmail.text.trim(),
+      make: make.text.trim(),
+      model: model.text.trim(),
+      crossHeadShoes: crossheadShoes.text.trim(),
+      mainBearing: mainBearings.text.trim(),
+      connRodBearings: connRodBearings.text.trim(),
+      crossHeadPinThruBolt: crossHeadPinthruBolt.text.trim(),
+      spacerBarBolts: spacerBarBolts.text.trim(),
+      crossHeadGuideToCrankcase: crossHeadGuideToCrankcase.text.trim(),
+      crossHeadGuideToCyl: crossheadGuideToCyl.text.trim(),
+      rodPackingBolt: rodPackingBolts.text.trim(),
+      pistonNut: pistonNut.text.trim(),
+      crossHeadNut: crossheadNut.text.trim(),
+      connRadBushing: connRodBushing.text.trim(),
+      babbit: babbit.text.trim(),
+      bronze: bronze.text.trim(),
+      castIron: castIron.text.trim(),
+      connRodSideClearance: connRodSideClearance.text.trim(),
+      mainRodSideClearance: mainBearingClearance.text.trim(),
+      pistonEndCleareance: pistonEndClearance.text.trim(),
+      connRoadBearingClearance: connRodBearingClearance.text.trim(),
+      rodPackingSideClearance: rodPackingSideClearance.text.trim(),
+      clearanceBronze: bronze2.text.trim(),
+      teflon: teflon.text.trim(),
+      crankstaftEndClearance: crankshaftEndClearance.text.trim(),
+      compressorOilPressure: compressorOilPressure.text.trim(),
+      valveCaps: [
+        ValveCap(name: '3/8', type: valueOf3By8.value, size: '3/8'),
+        ValveCap(name: '7/16', type: valueOf7By16.value, size: '7/16'),
+        ValveCap(name: '1/2', type: valueOf1By2.value, size: '1/2'),
+        ValveCap(name: '5/8', type: valueOf5By8.value, size: '5/8'),
+        ValveCap(name: '3/4', type: valueOf3By4.value, size: '3/4'),
+        ValveCap(name: '7/8', type: valueOf7By8.value, size: '7/8'),
+        ValveCap(name: '1', type: valueOf1.value, size: '1'),
+        ValveCap(name: '1 1/8', type: valueOf1_1By8.value, size: '1 1/8'),
+        ValveCap(name: '1 1/4', type: valueOf1_1By4.value, size: '1 1/4'),
+        ValveCap(name: '1 3/8', type: valueOf1_3By8.value, size: '1 3/8'),
+        ValveCap(name: '1 1/2', type: valueOf1_1By2.value, size: '1 1/2'),
+        ValveCap(name: '1 3/4', type: valueOf1_3By4.value, size: '1 3/4'),
+        ValveCap(name: '2', type: valueOf2.value, size: '2'),
+      ],
+    );
+    try {
+      debugPrint('Update Compressor Task Called');
+      if (taskName.text.trim() == '') {
+        ToastMessage.showToastMessage(
+            message: 'Please Enter Task Name', backgroundColor: Colors.red);
+      } else {
+        isLoading.value = true;
+        bool taskUpdated = await compressorTaskService.updateTaskById(
+            taskId: taskId,
+            token: storage.read('token'),
+            compressor: compressorTask);
+
+        if (taskUpdated) {
+          ToastMessage.showToastMessage(
+              message: 'Task Updated Successfully',
+              backgroundColor: AppColors.blueTextColor);
+          controller.getAllCompressorTasks(page: 1);
+          Get.back();
+          Get.delete<CompressorTaskController>();
+        } else {
+          ToastMessage.showToastMessage(
+              message: 'Failed to update task, please try again',
+              backgroundColor: Colors.red);
+        }
+      }
+    } catch (error) {
+      // Handle error scenario
+      debugPrint('Error Updating Generator Task: $error');
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void updateControllers(CompressorTaskModel model) {
     taskName.text = model.taskName ?? '';
     customerEmail.text = model.customerEmail ?? '';
+    make.text = model.make ?? '';
+    this.model.text = model.model ?? '';
+    crossheadShoes.text = model.crossHeadShoes ?? '';
+    mainBearings.text = model.mainBearing ?? '';
+    connRodBearings.text = model.connRodBearings ?? '';
+    crossHeadPinthruBolt.text = model.crossHeadPinThruBolt ?? '';
+    spacerBarBolts.text = model.spacerBarBolts ?? '';
+    crossHeadGuideToCrankcase.text = model.crossHeadGuideToCrankcase ?? '';
+    crossheadGuideToCyl.text = model.crossHeadGuideToCyl ?? '';
+    rodPackingBolts.text = model.rodPackingBolt ?? '';
+    pistonNut.text = model.pistonNut ?? '';
+    crossheadNut.text = model.crossHeadNut ?? '';
+    if (model.valveCaps![0].name == '3/8') {
+      valueOf3By8.value = model.valveCaps![0].type ?? 'NF';
+    }
+    if (model.valveCaps![1].name == '7/16') {
+      valueOf7By16.value = model.valveCaps![1].type ?? 'NF';
+    }
+    if (model.valveCaps![2].name == '1/2') {
+      valueOf1By2.value = model.valveCaps![2].type ?? 'NF';
+    }
+    if (model.valveCaps![3].name == '5/8') {
+      valueOf5By8.value = model.valveCaps![3].type ?? 'NF';
+    }
+    if (model.valveCaps![4].name == '3/4') {
+      valueOf3By4.value = model.valveCaps![4].type ?? 'NF';
+    }
+    if (model.valveCaps![5].name == '7/8') {
+      valueOf7By8.value = model.valveCaps![5].type ?? 'NF';
+    }
+    if (model.valveCaps![6].name == '1') {
+      valueOf1.value = model.valveCaps![6].type ?? 'NF';
+    }
+    if (model.valveCaps![7].name == '1 1/8') {
+      valueOf1_1By8.value = model.valveCaps![7].type ?? 'NF';
+    }
+    if (model.valveCaps![8].name == '1 1/4') {
+      valueOf1_1By4.value = model.valveCaps![8].type ?? 'NF';
+    }
+    if (model.valveCaps![9].name == '1 3/8') {
+      valueOf1_3By8.value = model.valveCaps![9].type ?? 'NF';
+    }
+    if (model.valveCaps![10].name == '1 1/2') {
+      valueOf1_1By2.value = model.valveCaps![10].type ?? 'NF';
+    }
+    if (model.valveCaps![11].name == '1 3/4') {
+      valueOf1_3By4.value = model.valveCaps![11].type ?? 'NF';
+    }
+    if (model.valveCaps![12].name == '2') {
+      valueOf2.value = model.valveCaps![12].type ?? 'NF';
+    }
+
+    // valueOf1By2.value = model.valveCaps?[2].type ?? 'NF';
+    // valueOf5By8.value = model.valveCaps?[3].type ?? 'NF';
+    // valueOf3By4.value = model.valveCaps?[4].type ?? 'NF';
+    // valueOf7By8.value = model.valveCaps?[5].type ?? 'NF';
+    // valueOf1.value = model.valveCaps?[6].type ?? 'NF';
+    // valueOf1_1By8.value = model.valveCaps?[7].type ?? 'NF';
+    // valueOf1_1By4.value = model.valveCaps?[8].type ?? 'NF';
+    // valueOf1_3By8.value = model.valveCaps?[9].type ?? 'NF';
+    // valueOf1_1By2.value = model.valveCaps?[10].type ?? 'NF';
+    // valueOf1_3By4.value = model.valveCaps?[11].type ?? 'NF';
+    // valueOf2.value = model.valveCaps?[12].type ?? 'NF';
+    connRodBushing.text = model.connRadBushing ?? '';
+    babbit.text = model.babbit ?? '';
+    bronze.text = model.bronze ?? '';
+    castIron.text = model.castIron ?? '';
+    connRodSideClearance.text = model.connRodSideClearance ?? '';
+    mainBearingClearance.text = model.mainRodSideClearance ?? '';
+    pistonEndClearance.text = model.pistonEndCleareance ?? '';
+    connRodBearingClearance.text = model.connRoadBearingClearance ?? '';
+    rodPackingSideClearance.text = model.rodPackingSideClearance ?? '';
+    bronze2.text = model.clearanceBronze ?? '';
+    teflon.text = model.teflon ?? '';
+    crankshaftEndClearance.text = model.crankstaftEndClearance ?? '';
+    compressorOilPressure.text = model.compressorOilPressure ?? '';
   }
 
   TextEditingController taskName = TextEditingController();

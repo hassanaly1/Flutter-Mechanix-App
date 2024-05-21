@@ -54,7 +54,7 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: NestedScrollView(
-              // controller: controller.scrollController,
+              controller: controller.scrollController,
               // floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
@@ -77,8 +77,7 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
               },
               body: BottomPageViewSection(sideMenuController: widget.sideMenu)),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            // onPressed: () => controller.scrollUp(),
+            onPressed: () => controller.scrollUp(),
             backgroundColor: AppColors.primaryColor,
             mini: true,
             shape: const CircleBorder(),

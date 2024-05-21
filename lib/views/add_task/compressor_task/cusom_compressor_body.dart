@@ -6,6 +6,7 @@ import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
+import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -13,11 +14,13 @@ import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 class CustomCompressorBody1 extends StatelessWidget {
   final bool isTaskUpdating;
   final SideMenuController? sideMenuController;
+  final CompressorTaskModel? model;
 
   CustomCompressorBody1({
     super.key,
     required this.isTaskUpdating,
     this.sideMenuController,
+    this.model,
   });
 
   final UniversalController universalController = Get.find();
@@ -182,16 +185,14 @@ class CustomCompressorBody1 extends StatelessWidget {
                     children: [
                       Flexible(
                           child: HeadingAndTextfield(
-                              title: 'Babbit',
-                              controller: controller.pistonNut)),
+                              title: 'Babbit', controller: controller.babbit)),
                       Flexible(
                           child: HeadingAndTextfield(
-                              title: 'Bronze',
-                              controller: controller.crossheadNut)),
+                              title: 'Bronze', controller: controller.bronze)),
                       Flexible(
                           child: HeadingAndTextfield(
                               title: 'Cast Iron',
-                              controller: controller.crossheadNut)),
+                              controller: controller.castIron)),
                     ],
                   ),
                   HeadingAndTextfield(
@@ -213,12 +214,10 @@ class CustomCompressorBody1 extends StatelessWidget {
                     children: [
                       Flexible(
                           child: HeadingAndTextfield(
-                              title: 'Bronze',
-                              controller: controller.crossheadNut)),
+                              title: 'Bronze', controller: controller.bronze2)),
                       Flexible(
                           child: HeadingAndTextfield(
-                              title: 'Teflon',
-                              controller: controller.crossheadNut)),
+                              title: 'Teflon', controller: controller.teflon)),
                     ],
                   ),
                   HeadingAndTextfield(
@@ -234,9 +233,12 @@ class CustomCompressorBody1 extends StatelessWidget {
           Obx(
             () => CustomButton(
                 isLoading: controller.isLoading.value,
-                buttonText: 'Submit',
+                buttonText: isTaskUpdating ? 'Update' : 'Submit',
                 onTap: () {
-                  controller.addCompressorTask(sideMenuController);
+                  isTaskUpdating
+                      ? controller.updateCompressorTask(
+                          taskId: model?.taskId ?? '')
+                      : controller.addCompressorTask(sideMenuController);
                 }),
           )
         ],

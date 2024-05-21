@@ -76,43 +76,44 @@ class CompressorTaskModel {
     this.compressorOilPressure,
   });
 
-  factory CompressorTaskModel.fromJson(Map<String, dynamic> json) =>
-      CompressorTaskModel(
-        taskId: json["_id"],
-        compressorId: json["compressor"],
-        user: json["user"],
-        taskName: json["name"],
-        customerEmail: json["customer_email"],
-        make: json["make"],
-        model: json["model"],
-        crossHeadShoes: json["cross_head_shoes"],
-        connRodBearings: json["conn_rod_bearings"],
-        spacerBarBolts: json["spacer_bar_bolts"],
-        crossHeadGuideToCyl: json["cross_head_guide_to_Cyl"],
-        pistonNut: json["piston_nut"],
-        mainBearing: json["main_bearing"],
-        crossHeadPinThruBolt: json["cross_head_pin_thru_bolt"],
-        crossHeadGuideToCrankcase: json["cross_head_guide_to_crankcase"],
-        rodPackingBolt: json["rod_packing_bolt"],
-        crossHeadNut: json["cross_head_nut"],
-        valveCaps: json["valve_caps"] == null
-            ? []
-            : List<ValveCap>.from(
-                json["valve_caps"]!.map((x) => ValveCap.fromJson(x))),
-        connRadBushing: json["conn_rad_bushing"],
-        connRodSideClearance: json["conn_rod_side_clearance"],
-        mainRodSideClearance: json["main_rod_side_clearance"],
-        connRoadBearingClearance: json["conn_road_bearing_clearance"],
-        crankstaftEndClearance: json["crankstaft_end_clearance"],
-        babbit: json["babbit"],
-        bronze: json["bronze"],
-        castIron: json["cast_iron"],
-        pistonEndCleareance: json["piston_end_cleareance"],
-        rodPackingSideClearance: json["rod_packing_side_clearance"],
-        clearanceBronze: json["Clearance_bronze"],
-        teflon: json["teflon"],
-        compressorOilPressure: json["compressor_oil_pressure"],
-      );
+  factory CompressorTaskModel.fromJson(Map<String, dynamic> json) {
+    return CompressorTaskModel(
+      taskId: json["_id"],
+      compressorId: json["compressor"],
+      user: json["user"],
+      taskName: json["name"],
+      customerEmail: json["customer_email"],
+      make: json["make"],
+      model: json["model"],
+      crossHeadShoes: json["cross_head_shoes"],
+      connRodBearings: json["conn_rod_bearings"],
+      spacerBarBolts: json["spacer_bar_bolts"],
+      crossHeadGuideToCyl: json["cross_head_guide_to_Cyl"],
+      pistonNut: json["piston_nut"],
+      mainBearing: json["main_bearing"],
+      crossHeadPinThruBolt: json["cross_head_pin_thru_bolt"],
+      crossHeadGuideToCrankcase: json["cross_head_guide_to_crankcase"],
+      rodPackingBolt: json["rod_packing_bolt"],
+      crossHeadNut: json["cross_head_nut"],
+      valveCaps: json["valve_caps"] == null
+          ? []
+          : List<ValveCap>.from(
+              json["valve_caps"]!.map((x) => ValveCap.fromJson(x))).toList(),
+      connRadBushing: json["conn_rad_bushing"],
+      connRodSideClearance: json["conn_rod_side_clearance"],
+      mainRodSideClearance: json["main_rod_side_clearance"],
+      connRoadBearingClearance: json["conn_road_bearing_clearance"],
+      crankstaftEndClearance: json["crankstaft_end_clearance"],
+      babbit: json["babbit"],
+      bronze: json["bronze"],
+      castIron: json["cast_iron"],
+      pistonEndCleareance: json["piston_end_cleareance"],
+      rodPackingSideClearance: json["rod_packing_side_clearance"],
+      clearanceBronze: json["Clearance_bronze"],
+      teflon: json["teflon"],
+      compressorOilPressure: json["compressor_oil_pressure"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         // "_id": taskId ?? '',

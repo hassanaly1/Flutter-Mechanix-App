@@ -143,4 +143,57 @@ class CompressorTaskService {
 
     return isSuccess;
   }
+
+  Future<bool> updateTaskById({
+    required String taskId,
+    required String token,
+    required CompressorTaskModel compressor,
+  }) async {
+    bool isSuccess = false;
+
+    final Uri apiUrl = Uri.parse(
+      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateCompressorByIdUrl}?id=$taskId',
+    );
+
+    final Map<String, dynamic> payload = {"payload": compressor.toJson()};
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    try {
+      final http.Response response = await http.put(
+        apiUrl,
+        headers: headers,
+        body: json.encode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic>? responseData = json.decode(response.body);
+        if (responseData != null) {
+          final String? message = responseData['message'];
+          if (message != null) {
+            debugPrint('Updated task MESSAGE: $message');
+          } else {
+            debugPrint('No message found in the response');
+          }
+        } else {
+          debugPrint('No data found in the response');
+        }
+
+        debugPrint(
+            'Task Updated successfully: ${response.statusCode} ${response.reasonPhrase}');
+        debugPrint('Task Updated Body: ${response.body}');
+        isSuccess = true;
+      } else {
+        debugPrint(
+            'Failed to update task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+        debugPrint('Response Body: ${response.body}');
+      }
+    } catch (error) {
+      debugPrint('Error Updating task: $error');
+    }
+
+    return isSuccess;
+  }
 }

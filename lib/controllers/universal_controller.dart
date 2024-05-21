@@ -46,7 +46,8 @@ class UniversalController extends GetxController {
   TextEditingController searchController = TextEditingController();
 
   //For Pagination
-  ScrollController scrollController = ScrollController();
+  ScrollController scrollControllerForGenerator = ScrollController();
+  ScrollController scrollControllerForCompressor = ScrollController();
   final RxInt currentPage = 1.obs;
 
   @override
@@ -56,14 +57,22 @@ class UniversalController extends GetxController {
     userImageURL.value = storage.read('user_info')['profile'];
     debugPrint('UserImageAtStart: $userImageURL');
 
-    // await getAllGeneratorTasks();
+    await getAllGeneratorTasks();
     await getAllCompressorTasks();
     // await getAllReports();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollControllerForGenerator.addListener(() {
+      if (scrollControllerForGenerator.position.pixels ==
+          scrollControllerForGenerator.position.maxScrollExtent) {
         if (!isLoading.value) {
-          _loadNextPage();
+          _loadNextPageGenerators();
+        }
+      }
+    });
+    scrollControllerForCompressor.addListener(() {
+      if (scrollControllerForCompressor.position.pixels ==
+          scrollControllerForCompressor.position.maxScrollExtent) {
+        if (!isLoading.value) {
+          _loadNextPageCompressors();
         }
       }
     });
@@ -74,7 +83,7 @@ class UniversalController extends GetxController {
     storage.write('user_info', userInfo);
   }
 
-  void _loadNextPage() async {
+  void _loadNextPageGenerators() async {
     debugPrint('Loading Next Page ${currentPage.value} Generator Tasks');
     isLoading.value = true;
     List<Payload> nextPageTasks = await generatorTaskService.getAllTasks(
@@ -83,6 +92,20 @@ class UniversalController extends GetxController {
     );
 
     generatorTasks.addAll(nextPageTasks);
+    currentPage.value++;
+    isLoading.value = false;
+  }
+
+  void _loadNextPageCompressors() async {
+    debugPrint('Loading Next Page ${currentPage.value} Compressor Tasks');
+    isLoading.value = true;
+    List<CompressorTaskModel> nextPageTasks =
+        await compressorTaskService.getAllCompressorTasks(
+      token: storage.read('token'),
+      page: currentPage.value,
+    );
+
+    compressorTasks.addAll(nextPageTasks);
     currentPage.value++;
     isLoading.value = false;
   }
@@ -110,7 +133,7 @@ class UniversalController extends GetxController {
   }
 
   Future<void> getAllCompressorTasks({String? searchName, int? page}) async {
-    debugPrint('Page${page ?? currentPage.value} Compressor tasks called.');
+    debugPrint('Page ${page ?? currentPage.value} Compressor tasks called.');
     try {
       isTasksAreLoading.value = true;
       List<CompressorTaskModel> fetchedCompressorTasks =

@@ -69,7 +69,8 @@ class _UpdateCompressorTaskScreenState
                     child: Column(
                       children: [
                         Expanded(
-                          child: CustomCompressorBody1(isTaskUpdating: false),
+                          child: CustomCompressorBody1(
+                              isTaskUpdating: true, model: widget.model),
                         ),
                       ],
                     )),

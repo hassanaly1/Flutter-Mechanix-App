@@ -101,7 +101,8 @@ class ViewAllTasksScreen extends StatelessWidget {
                                         ),
                                       )
                                     : ListView.builder(
-                                        controller: controller.scrollController,
+                                        controller: controller
+                                            .scrollControllerForGenerator,
                                         shrinkWrap: true,
                                         physics:
                                             const AlwaysScrollableScrollPhysics(),
@@ -175,7 +176,8 @@ class ViewAllTasksScreen extends StatelessWidget {
                                         ),
                                       )
                                     : ListView.builder(
-                                        controller: controller.scrollController,
+                                        controller: controller
+                                            .scrollControllerForCompressor,
                                         shrinkWrap: true,
                                         physics:
                                             const AlwaysScrollableScrollPhysics(),
