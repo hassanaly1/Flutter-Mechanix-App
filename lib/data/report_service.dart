@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mechanix/data/api_endpoints.dart';
 import 'package:http/http.dart' as http;
+import 'package:mechanix/data/api_endpoints.dart';
 import 'package:mechanix/models/report_model.dart';
 
 class ReportService {
@@ -20,11 +20,9 @@ class ReportService {
     );
 
     if (response.statusCode == 200) {
-      debugPrint('Report created successfully');
       debugPrint(
           '${response.body} ${response.statusCode} ${response.reasonPhrase}');
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data);
       return true;
     } else {
       debugPrint(

@@ -13,7 +13,9 @@ import 'package:mechanix/models/report_model.dart';
 
 class ReportsScreen extends StatelessWidget {
   final SideMenuController sideMenu;
+
   ReportsScreen({super.key, required this.sideMenu});
+
   final UniversalController controller = Get.find();
   Rx<DateTime> selectedDate = DateTime.now().obs;
 
@@ -145,6 +147,7 @@ class ReportsScreen extends StatelessWidget {
 class CustomReportCard extends StatelessWidget {
   final ReportModel reportModel;
   final UniversalController controller;
+
   const CustomReportCard({
     super.key,
     required this.reportModel,
@@ -189,7 +192,7 @@ class CustomReportCard extends StatelessWidget {
             ),
             CustomTextWidget(
               text:
-                  'Customer Email: ${controller.tasks.firstWhereOrNull((payload) => reportModel.user == payload.task?.userId)?.task?.customerEmail ?? 'Not Specified'}',
+                  'Customer Email: ${controller.generatorTasks.firstWhereOrNull((payload) => reportModel.user == payload.task?.userId)?.task?.customerEmail ?? 'Not Specified'}',
               fontSize: 10.0,
               fontWeight: FontWeight.w300,
             ),

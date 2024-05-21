@@ -4,14 +4,17 @@
 
 import 'dart:convert';
 
-Compressor compressorFromJson(String str) =>
-    Compressor.fromJson(json.decode(str));
+CompressorTaskModel compressorFromJson(String str) =>
+    CompressorTaskModel.fromJson(json.decode(str));
 
-String compressorToJson(Compressor data) => json.encode(data.toJson());
+String compressorToJson(CompressorTaskModel data) => json.encode(data.toJson());
 
-class Compressor {
-  String? compressor;
+class CompressorTaskModel {
+  String? taskId;
+  String? compressorId;
   String? user;
+  String? taskName;
+  String? customerEmail;
   String? make;
   String? model;
   String? crossHeadShoes;
@@ -39,9 +42,12 @@ class Compressor {
   String? crankstaftEndClearance;
   String? compressorOilPressure;
 
-  Compressor({
-    this.compressor,
+  CompressorTaskModel({
+    this.taskId,
+    this.compressorId,
     this.user,
+    this.taskName,
+    this.customerEmail,
     this.make,
     this.model,
     this.crossHeadShoes,
@@ -70,9 +76,13 @@ class Compressor {
     this.compressorOilPressure,
   });
 
-  factory Compressor.fromJson(Map<String, dynamic> json) => Compressor(
-        compressor: json["compressor"],
+  factory CompressorTaskModel.fromJson(Map<String, dynamic> json) =>
+      CompressorTaskModel(
+        taskId: json["_id"],
+        compressorId: json["compressor"],
         user: json["user"],
+        taskName: json["name"],
+        customerEmail: json["customer_email"],
         make: json["make"],
         model: json["model"],
         crossHeadShoes: json["cross_head_shoes"],
@@ -105,8 +115,11 @@ class Compressor {
       );
 
   Map<String, dynamic> toJson() => {
-        "compressor": compressor ?? '',
+        // "_id": taskId ?? '',
+        "compressor": compressorId ?? '',
         "user": user ?? '',
+        "name": taskName ?? '',
+        "customer_email": customerEmail ?? '',
         "make": make ?? '',
         "model": model ?? '',
         "cross_head_shoes": crossHeadShoes ?? '',

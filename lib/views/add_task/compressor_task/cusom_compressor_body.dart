@@ -12,12 +12,12 @@ import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
 class CustomCompressorBody1 extends StatelessWidget {
   final bool isTaskUpdating;
-  final SideMenuController sideMenuController;
+  final SideMenuController? sideMenuController;
 
   CustomCompressorBody1({
     super.key,
     required this.isTaskUpdating,
-    required this.sideMenuController,
+    this.sideMenuController,
   });
 
   final UniversalController universalController = Get.find();

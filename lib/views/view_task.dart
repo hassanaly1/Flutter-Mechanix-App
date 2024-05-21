@@ -9,8 +9,11 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
+import 'package:mechanix/helpers/tabbar.dart';
+import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/views/update_task.dart';
+import 'package:mechanix/views/update_task/update_compressor_task.dart';
+import 'package:mechanix/views/update_task/update_generator_task.dart';
 
 class ViewAllTasksScreen extends StatelessWidget {
   final SideMenuController sideMenu;
@@ -23,8 +26,6 @@ class ViewAllTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-
     return SafeArea(
       child: PopScope(
         canPop: false,
@@ -32,97 +33,194 @@ class ViewAllTasksScreen extends StatelessWidget {
           sideMenu.changePage(0);
           controller.currentPage.value = 1;
         },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-                vertical: context.height * 0.02,
-                horizontal: context.width * 0.05),
-            decoration: const BoxDecoration(color: Colors.transparent),
-            child: RefreshIndicator(
-              onRefresh: () => controller.getAllGeneratorTasks(page: 1),
-              color: AppColors.primaryColor,
-              backgroundColor: AppColors.secondaryColor,
-              triggerMode: RefreshIndicatorTriggerMode.onEdge,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal:
-                            context.isLandscape ? context.width * 0.08 : 0.0),
-                    child: ReUsableTextField(
-                      controller: controller.searchController,
-                      hintText: 'Search Task',
-                      suffixIcon: const Icon(Icons.search_sharp),
-                      onChanged: (value) {
-                        controller.getAllGeneratorTasks(searchName: value);
-                      },
+        child: DefaultTabController(
+          length: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: context.height * 0.02,
+                  horizontal: context.width * 0.05),
+              decoration: const BoxDecoration(color: Colors.transparent),
+              child: RefreshIndicator(
+                onRefresh: () => controller.getAllGeneratorTasks(page: 1),
+                color: AppColors.primaryColor,
+                backgroundColor: AppColors.secondaryColor,
+                triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              context.isLandscape ? context.width * 0.08 : 0.0),
+                      child: ReUsableTextField(
+                        controller: controller.searchController,
+                        hintText: 'Search Task',
+                        suffixIcon: const Icon(Icons.search_sharp),
+                        onChanged: (value) {
+                          controller.getAllGeneratorTasks(searchName: value);
+                        },
+                      ),
                     ),
-                  ),
-                  Obx(
-                    () => controller.isTasksAreLoading.value
-                        ? const SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            child: Center(
-                                heightFactor: 3,
-                                child: SpinKitCircle(
-                                  color: Colors.black87,
-                                  size: 40.0,
-                                )),
-                          )
-                        : controller.tasks.isEmpty
-                            ? Expanded(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(height: context.height * 0.15),
-                                      Image.asset('assets/images/view-task.png',
-                                          height: context.height * 0.15),
-                                      CustomTextWidget(
-                                        text: 'No Tasks found',
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      SizedBox(height: context.height * 0.4),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Expanded(
-                                child: ListView.builder(
-                                  controller: controller.scrollController,
-                                  shrinkWrap: true,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemCount: controller.tasks.length +
-                                      (controller.isLoading.value ? 1 : 0),
-                                  itemBuilder: (context, index) {
-                                    if (index < controller.tasks.length) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Get.to(() => UpdateTaskScreen(
-                                              model: controller.tasks[index]));
-                                        },
-                                        child: CustomTaskCard(
-                                          model: controller.tasks[index],
-                                          controller: controller,
-                                        ),
-                                      );
-                                    } else if (controller.isLoading.value) {
-                                      return const Center(
+                    const CustomTabBar(
+                        title1: 'Generator', title2: 'Compressor'),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          Obx(
+                            () => controller.isTasksAreLoading.value
+                                ? const SingleChildScrollView(
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    child: Center(
                                         heightFactor: 3,
                                         child: SpinKitCircle(
-                                            color: Colors.black87, size: 40.0),
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                ),
-                              ),
-                  )
-                ],
+                                          color: Colors.black87,
+                                          size: 40.0,
+                                        )),
+                                  )
+                                : controller.generatorTasks.isEmpty
+                                    ? SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                                height: context.height * 0.15),
+                                            Image.asset(
+                                                'assets/images/view-task.png',
+                                                height: context.height * 0.15),
+                                            CustomTextWidget(
+                                              text: 'No Tasks found',
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            SizedBox(
+                                                height: context.height * 0.4),
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        controller: controller.scrollController,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        itemCount:
+                                            controller.generatorTasks.length +
+                                                (controller.isLoading.value
+                                                    ? 1
+                                                    : 0),
+                                        itemBuilder: (context, index) {
+                                          if (index <
+                                              controller
+                                                  .generatorTasks.length) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    UpdateGeneratorTaskScreen(
+                                                        model: controller
+                                                                .generatorTasks[
+                                                            index]));
+                                              },
+                                              child: CustomGeneratorTaskCard(
+                                                model: controller
+                                                    .generatorTasks[index],
+                                                controller: controller,
+                                              ),
+                                            );
+                                          } else if (controller
+                                              .isLoading.value) {
+                                            return const Center(
+                                              heightFactor: 3,
+                                              child: SpinKitCircle(
+                                                  color: Colors.black87,
+                                                  size: 40.0),
+                                            );
+                                          } else {
+                                            return Container();
+                                          }
+                                        },
+                                      ),
+                          ),
+                          Obx(
+                            () => controller.isTasksAreLoading.value
+                                ? const SingleChildScrollView(
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    child: Center(
+                                        heightFactor: 3,
+                                        child: SpinKitCircle(
+                                          color: Colors.black87,
+                                          size: 40.0,
+                                        )),
+                                  )
+                                : controller.compressorTasks.isEmpty
+                                    ? SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                                height: context.height * 0.15),
+                                            Image.asset(
+                                                'assets/images/view-task.png',
+                                                height: context.height * 0.15),
+                                            CustomTextWidget(
+                                              text: 'No Tasks found',
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            SizedBox(
+                                                height: context.height * 0.4),
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        controller: controller.scrollController,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        itemCount:
+                                            controller.compressorTasks.length +
+                                                (controller.isLoading.value
+                                                    ? 1
+                                                    : 0),
+                                        itemBuilder: (context, index) {
+                                          if (index <
+                                              controller
+                                                  .compressorTasks.length) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    UpdateCompressorTaskScreen(
+                                                        model: controller
+                                                                .compressorTasks[
+                                                            index]));
+                                              },
+                                              child: CustomCompressorTaskCard(
+                                                model: controller
+                                                    .compressorTasks[index],
+                                                controller: controller,
+                                              ),
+                                            );
+                                          } else if (controller
+                                              .isLoading.value) {
+                                            return const Center(
+                                              heightFactor: 3,
+                                              child: SpinKitCircle(
+                                                  color: Colors.black87,
+                                                  size: 40.0),
+                                            );
+                                          } else {
+                                            return Container();
+                                          }
+                                        },
+                                      ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -148,11 +246,11 @@ class ViewAllTasksScreen extends StatelessWidget {
 // }
 }
 
-class CustomTaskCard extends StatelessWidget {
+class CustomGeneratorTaskCard extends StatelessWidget {
   final Payload model;
   final UniversalController controller;
 
-  const CustomTaskCard({
+  const CustomGeneratorTaskCard({
     super.key,
     required this.model,
     required this.controller,
@@ -259,10 +357,88 @@ class CustomTaskCard extends StatelessWidget {
   }
 }
 
+class CustomCompressorTaskCard extends StatelessWidget {
+  final CompressorTaskModel model;
+  final UniversalController controller;
+
+  const CustomCompressorTaskCard({
+    super.key,
+    required this.model,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReUsableContainer(
+      color: Colors.white30,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    CustomTextWidget(
+                      text: 'Model: ${model.model ?? 'Not Assigned'}',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    CustomTextWidget(
+                      text: 'Make: ${model.make ?? 'Not Assigned'}',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
+                    _showDeletePopup(
+                        context: context, controller: controller, model: model);
+                  },
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                )
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                Image.asset(
+                  'assets/images/construction-worker.png',
+                  height: 30.0,
+                  color: AppColors.blueTextColor,
+                ),
+                const SizedBox(width: 4.0),
+                Flexible(
+                  child: CustomTextWidget(
+                    text: model.taskName ?? 'Not Assigned',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            CustomTextWidget(
+              text: 'Customer Email: ${model.customerEmail ?? 'Not Assigned'}',
+              fontSize: 12.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void _showDeletePopup(
     {required BuildContext context,
     required UniversalController controller,
-    required Payload model}) {
+    required dynamic model}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
@@ -318,8 +494,18 @@ void _showDeletePopup(
                         Obx(
                           () => InkWell(
                               onTap: () {
-                                controller.deleteTask(
-                                    taskId: model.task?.taskId);
+                                if (model.runtimeType == Payload) {
+                                  print('GeneratorTaskDeleteCalled');
+                                  controller.deleteGeneratorTask(
+                                      taskId: model.task?.taskId);
+                                } else if (model.runtimeType ==
+                                    CompressorTaskModel) {
+                                  print('CompressorTaskDeleteCalled');
+                                  controller.deleteCompressorTask(
+                                      taskId: model.taskId ?? '');
+                                } else {
+                                  return;
+                                }
                               },
                               child: ReUsableContainer(
                                 verticalPadding: context.height * 0.01,

@@ -4,10 +4,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mechanix/data/compressor_task_service.dart';
 import 'package:mechanix/data/generator_task_service.dart';
 import 'package:mechanix/data/report_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/models/engine_model.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/report_model.dart';
@@ -16,12 +18,16 @@ class UniversalController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isTasksAreLoading = false.obs;
   RxBool isReportsAreLoading = false.obs;
-  List<Payload> tasks = <Payload>[].obs;
+
+  // Tasks
+  List<Payload> generatorTasks = <Payload>[].obs;
+  List<CompressorTaskModel> compressorTasks = <CompressorTaskModel>[].obs;
 
   List<ReportModel> reports = <ReportModel>[].obs;
   List<EngineModel> engines = <EngineModel>[].obs;
 
-  final TaskService taskService = TaskService();
+  final GeneratorTaskService generatorTaskService = GeneratorTaskService();
+  final CompressorTaskService compressorTaskService = CompressorTaskService();
   final ReportService reportService = ReportService();
 
   XFile? userImage;
@@ -49,8 +55,10 @@ class UniversalController extends GetxController {
     userInfo.value = storage.read('user_info') ?? {};
     userImageURL.value = storage.read('user_info')['profile'];
     debugPrint('UserImageAtStart: $userImageURL');
-    await getAllGeneratorTasks();
-    await getAllReports();
+
+    // await getAllGeneratorTasks();
+    await getAllCompressorTasks();
+    // await getAllReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -67,35 +75,58 @@ class UniversalController extends GetxController {
   }
 
   void _loadNextPage() async {
-    debugPrint('Loading Next Page');
+    debugPrint('Loading Next Page ${currentPage.value} Generator Tasks');
     isLoading.value = true;
-    List<Payload> nextPageTasks = await taskService.getAllTasks(
+    List<Payload> nextPageTasks = await generatorTaskService.getAllTasks(
       token: storage.read('token'),
       page: currentPage.value,
     );
 
-    tasks.addAll(nextPageTasks);
+    generatorTasks.addAll(nextPageTasks);
     currentPage.value++;
     isLoading.value = false;
   }
 
   Future<void> getAllGeneratorTasks({String? searchName, int? page}) async {
-    debugPrint('Page${page ?? currentPage.value} tasks called.');
+    debugPrint('Page${page ?? currentPage.value} Generator tasks called.');
     try {
       isTasksAreLoading.value = true;
-      List<Payload> fetchedTasks = await taskService.getAllTasks(
+      List<Payload> fetchedTasks = await generatorTaskService.getAllTasks(
         searchString: searchName ?? '',
         token: storage.read('token'),
         page: page ?? currentPage.value,
       );
       if (fetchedTasks.isNotEmpty) {
-        debugPrint('TasksCount: ${fetchedTasks.length}');
-        tasks = fetchedTasks;
+        debugPrint('GeneratorTasksCount: ${fetchedTasks.length}');
+        generatorTasks = fetchedTasks;
       } else {
-        tasks = [];
+        generatorTasks = [];
       }
     } catch (e) {
-      debugPrint('Error fetching tasks: $e');
+      debugPrint('Error fetching Generator Tasks: $e');
+    } finally {
+      isTasksAreLoading.value = false;
+    }
+  }
+
+  Future<void> getAllCompressorTasks({String? searchName, int? page}) async {
+    debugPrint('Page${page ?? currentPage.value} Compressor tasks called.');
+    try {
+      isTasksAreLoading.value = true;
+      List<CompressorTaskModel> fetchedCompressorTasks =
+          await compressorTaskService.getAllCompressorTasks(
+        searchString: searchName ?? '',
+        token: storage.read('token'),
+        page: page ?? currentPage.value,
+      );
+      if (fetchedCompressorTasks.isNotEmpty) {
+        debugPrint('CompressorTasksCount: ${fetchedCompressorTasks.length}');
+        compressorTasks = fetchedCompressorTasks;
+      } else {
+        compressorTasks = [];
+      }
+    } catch (e) {
+      debugPrint('Error fetching compressorTasks: $e');
     } finally {
       isTasksAreLoading.value = false;
     }
@@ -128,16 +159,45 @@ class UniversalController extends GetxController {
     }
   }
 
-  Future<void> deleteTask({taskId}) async {
+  Future<void> deleteGeneratorTask({taskId}) async {
     isLoading.value = true;
     try {
-      bool taskDeleted = await taskService.deleteTaskById(
+      bool taskDeleted = await generatorTaskService.deleteTaskById(
         taskId: taskId,
         token: storage.read('token'),
       );
 
       if (taskDeleted) {
         await getAllGeneratorTasks();
+        ToastMessage.showToastMessage(
+            message: 'Task Deleted Successfully',
+            backgroundColor: Colors.green);
+        Get.back();
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Failed to delete task, please try again',
+            backgroundColor: Colors.red);
+      }
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+      debugPrint('Error deleting task: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> deleteCompressorTask({taskId}) async {
+    isLoading.value = true;
+    try {
+      bool taskDeleted = await compressorTaskService.deleteTaskById(
+        taskId: taskId,
+        token: storage.read('token'),
+      );
+
+      if (taskDeleted) {
+        await getAllCompressorTasks(page: 1);
         ToastMessage.showToastMessage(
             message: 'Task Deleted Successfully',
             backgroundColor: Colors.green);

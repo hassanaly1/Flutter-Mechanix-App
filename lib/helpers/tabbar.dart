@@ -5,6 +5,7 @@ import 'package:mechanix/helpers/appcolors.dart';
 class CustomTabBar extends StatelessWidget {
   final String title1;
   final String title2;
+
   const CustomTabBar({
     super.key,
     required this.title1,
@@ -14,7 +15,7 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 50,
       width: Get.width,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -27,7 +28,7 @@ class CustomTabBar extends StatelessWidget {
           color: AppColors.secondaryColor,
         ),
         labelStyle: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'poppins'),
+            fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'poppins'),
         labelColor: Colors.white,
         unselectedLabelColor: AppColors.primaryColor,
         indicatorSize: TabBarIndicatorSize.tab,

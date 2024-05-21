@@ -38,7 +38,6 @@ class EnginesController extends GetxController {
 
   @override
   onInit() {
-    debugPrint('EnginesController Initialized');
     getAllEngines();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -61,7 +60,7 @@ class EnginesController extends GetxController {
   }
 
   void _loadNextPage() async {
-    debugPrint('Loading Next Page');
+    debugPrint('Loading Next Page ${_currentPage.value} Engines');
     isLoading.value = true;
     List<EngineModel> nextPageEngines = await engineService.getAllEngines(
       page: _currentPage.value + 1,
@@ -74,7 +73,6 @@ class EnginesController extends GetxController {
   }
 
   Future<void> getAllEngines({String? searchName}) async {
-    debugPrint('GetAllEnginesFunctionCalled');
     try {
       isEnginesAreLoading.value = true;
       _currentPage.value = 1;
@@ -102,22 +100,19 @@ class EnginesController extends GetxController {
       engineImage = image;
       engineImageUrl.value = image.path;
       engineImageInBytes = (await engineImage?.readAsBytes())!;
-      debugPrint(engineImageUrl.value);
-      debugPrint('Image Picked');
+
       update();
     }
   }
 
   // Function to update an image
   Future<void> updateImage(EngineModel model) async {
-    debugPrint('Update Image Called');
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       engineImage = image;
       engineImageUrl.value = image.path;
       engineImageInBytes = (await engineImage?.readAsBytes())!;
-      debugPrint(engineImageInBytes.lengthInBytes.toString());
       engineService.updateEngineImage(
           engineImageInBytes: engineImageInBytes,
           engineId: model.id ?? '',
@@ -168,7 +163,6 @@ class EnginesController extends GetxController {
           isLoading.value = false;
         }
       } catch (e) {
-        debugPrint(e.toString());
         ToastMessage.showToastMessage(
             message: 'Something went wrong, please try again',
             backgroundColor: Colors.red);
@@ -178,7 +172,6 @@ class EnginesController extends GetxController {
   }
 
   Future<void> updateEngine({required String id}) async {
-    debugPrint('UpdateEngineFunctionCalled');
     isLoading.value = true;
     try {
       var updatedEngineData = EngineModel(

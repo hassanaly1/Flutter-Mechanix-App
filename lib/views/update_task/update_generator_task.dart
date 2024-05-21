@@ -10,16 +10,17 @@ import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart'
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody3.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
-class UpdateTaskScreen extends StatefulWidget {
+class UpdateGeneratorTaskScreen extends StatefulWidget {
   final Payload model;
 
-  const UpdateTaskScreen({super.key, required this.model});
+  const UpdateGeneratorTaskScreen({super.key, required this.model});
 
   @override
-  State<UpdateTaskScreen> createState() => _UpdateTaskScreenState();
+  State<UpdateGeneratorTaskScreen> createState() =>
+      _UpdateGeneratorTaskScreenState();
 }
 
-class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+class _UpdateGeneratorTaskScreenState extends State<UpdateGeneratorTaskScreen> {
   late AddTaskController controller;
 
   @override

@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapController extends GetxController {
@@ -58,19 +59,19 @@ class MapController extends GetxController {
   }
 
   Future<void> _updateAddress(LatLng position) async {
-    debugPrint('Updating address for position: $position');
+    // debugPrint('Updating address for position: $position');
     String? newAddress =
         await getAddressFromCoordinates(position.latitude, position.longitude);
     if (newAddress != null) {
-      debugPrint('New address found: $newAddress');
-      debugPrint('New address Latitude: ${position.latitude}');
-      debugPrint('New address Longitude: ${position.longitude}');
+      // debugPrint('New address found: $newAddress');
+      // debugPrint('New address Latitude: ${position.latitude}');
+      // debugPrint('New address Longitude: ${position.longitude}');
 
       selectedAddress.value = newAddress;
       selectedAddressLatitude.value = position.latitude.toString();
       selectedAddressLongitude.value = position.longitude.toString();
     } else {
-      debugPrint('Address not found for position: $position');
+      // debugPrint('Address not found for position: $position');
       selectedAddress.value = 'Address not found';
       selectedAddressLatitude.value = '';
       selectedAddressLongitude.value = '';

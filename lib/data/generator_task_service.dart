@@ -15,7 +15,7 @@ class GeneratorTaskResponse {
       {required this.success, required this.message, this.taskId});
 }
 
-class TaskService {
+class GeneratorTaskService {
   Future<GeneratorTaskResponse> createTask({
     required String token,
     required Geolocation geolocation,
@@ -116,22 +116,22 @@ class TaskService {
             if (tasksDataList.isNotEmpty) {
               tasks.addAll(tasksDataList.map((data) => Payload.fromJson(data)));
             } else {
-              debugPrint('No tasks found');
+              debugPrint('No Generator tasks found');
               return [];
             }
           }
 
           return tasks;
         } else {
-          debugPrint('No tasks found in the request response');
+          debugPrint('No Generator tasks found in the request response');
           return [];
         }
       } else {
-        debugPrint('Failed to get tasks: ${response.reasonPhrase}');
+        debugPrint('Failed to get Generator tasks: ${response.reasonPhrase}');
         return [];
       }
     } catch (e) {
-      debugPrint('Error getting tasks: $e');
+      debugPrint('Error getting Generator tasks: $e');
       return [];
     }
   }

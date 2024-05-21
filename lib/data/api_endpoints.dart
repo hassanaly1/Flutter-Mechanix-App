@@ -22,6 +22,8 @@ class ApiEndPoints {
 
   //Compressor-tASK
   static String createCompressorUrl = '/api/compressor/createcompressor';
+  static String getAllCompressorUrl = '/api/compressor/getCompressor';
+  static String deleteCompressorByIdUrl = '/api/compressor/deleteCompressor';
 
   //Engine
   static String addEngineUrl = '/api/engine/createenginebrand';

@@ -17,7 +17,7 @@ class CompressorTaskResponse {
 class CompressorTaskService {
   Future<CompressorTaskResponse> createTask({
     required String token,
-    required Compressor compressor,
+    required CompressorTaskModel compressor,
   }) async {
     final Uri apiUrl =
         Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createCompressorUrl);
@@ -55,5 +55,92 @@ class CompressorTaskService {
       return CompressorTaskResponse(
           success: false, message: 'Error creating task');
     }
+  }
+
+  Future<List<CompressorTaskModel>> getAllCompressorTasks(
+      {String? searchString, required String token, required int page}) async {
+    String apiUrl =
+        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getAllCompressorUrl}?page=$page';
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        // body: jsonEncode({
+        //   'search': {
+        //     "name": searchString,
+        //   }
+        // }),
+      );
+      debugPrint(
+          'getAllCompressorTasksResponse: ${response.statusCode} ${response.reasonPhrase}');
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        if (jsonData['data'] != null) {
+          final data = jsonData['data'];
+          final List<CompressorTaskModel> compressors = [];
+          // Compressor payload = Compressor.fromJson(data[0]);
+          // print(payload);
+          // Convert the map to a List<Compressor>
+          compressors.addAll(data
+              .map<CompressorTaskModel>(
+                  (data) => CompressorTaskModel.fromJson(data))
+              .toList());
+          return compressors;
+        } else {
+          debugPrint('No Compressor tasks found in the response.body');
+          return [];
+        }
+      } else {
+        debugPrint('Failed to get Compressor tasks: ${response.reasonPhrase}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error getting Compressor tasks: $e');
+      return [];
+    }
+  }
+
+  Future<bool> deleteTaskById({
+    required String taskId,
+    required String token,
+  }) async {
+    bool isSuccess = false;
+    debugPrint('Deleting Compressor task with ID: $taskId');
+    final Uri apiUrl = Uri.parse(
+      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.deleteCompressorByIdUrl}?id=$taskId',
+    );
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final http.Response response = await http.delete(
+        apiUrl,
+        headers: headers,
+      );
+      debugPrint(
+          'DeleteCompressorTaskResponse: ${response.reasonPhrase}  ${response.statusCode}');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final String message = responseData['message'];
+        final Map<String, dynamic> data = responseData['data'];
+        print('Deleted Compressor Task details: $message | $data');
+        isSuccess = true;
+      } else {
+        print(
+            'Failed to delete Compressor task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+        print('Response Body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error deleting Compressor task: $error');
+    }
+
+    return isSuccess;
   }
 }

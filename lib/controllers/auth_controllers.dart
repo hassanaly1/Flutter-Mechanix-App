@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
@@ -15,6 +14,7 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
   RxBool showPassword = false.obs;
   RxBool showConfirmPassword = false.obs;
+
   // TextEditingController nameController = TextEditingController();
   TextEditingController fNameController = TextEditingController();
   TextEditingController lNameController = TextEditingController();
@@ -66,7 +66,6 @@ class AuthController extends GetxController {
                 email: emailController.text.trim(),
               ));
         } else {
-          debugPrint(response['message']);
           ToastMessage.showToastMessage(
               message: response['message'], backgroundColor: Colors.red);
         }

@@ -13,9 +13,9 @@ class CompressorTaskController extends GetxController {
   CompressorTaskService compressorTaskService = CompressorTaskService();
   final UniversalController controller = Get.find();
 
-  Future<void> addCompressorTask(SideMenuController sideMenuController) async {
-    var compressorTask = Compressor(
-      compressor: '66486afb62fcb4e3463550c0',
+  Future<void> addCompressorTask(SideMenuController? sideMenuController) async {
+    var compressorTask = CompressorTaskModel(
+      compressorId: '66486afb62fcb4e3463550c0',
       user: storage.read('user_info')['_id'],
       make: make.text.trim(),
       model: model.text.trim(),
@@ -59,7 +59,7 @@ class CompressorTaskController extends GetxController {
       ],
     );
     try {
-      debugPrint('Add Task Called');
+      debugPrint('Add Generator Task Called');
       if (taskName.text.trim() == '' && customerEmail.text.trim() == '') {
         ToastMessage.showToastMessage(
             message: 'Please Enter Client Name and Email',
@@ -82,7 +82,7 @@ class CompressorTaskController extends GetxController {
           //   customerEmail: clientEmail.text.trim(),
           // );
           await controller.getAllGeneratorTasks();
-          sideMenuController.changePage(0);
+          sideMenuController?.changePage(0);
           Get.delete<CompressorTaskController>();
         } else {
           ToastMessage.showToastMessage(
@@ -91,13 +91,18 @@ class CompressorTaskController extends GetxController {
         }
       }
     } catch (error) {
-      debugPrint('Error adding task: $error');
+      debugPrint('Error adding Generator task: $error');
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
           backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void updateControllers(CompressorTaskModel model) {
+    taskName.text = model.taskName ?? '';
+    customerEmail.text = model.customerEmail ?? '';
   }
 
   TextEditingController taskName = TextEditingController();
