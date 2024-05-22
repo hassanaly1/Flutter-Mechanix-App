@@ -23,16 +23,21 @@ class CustomRadioButton extends StatelessWidget {
         const SizedBox(height: 6.0),
         CustomTextWidget(
           text: heading,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           maxLines: 2,
         ),
         Obx(
-          () => Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          () => Wrap(
+            crossAxisAlignment: WrapCrossAlignment.start,
             children: options.map((option) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Row(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  alignment: WrapAlignment.center,
+                  runSpacing: 4.0,
                   children: [
                     Radio(
                       visualDensity: VisualDensity.compact,

@@ -70,20 +70,13 @@ class SideMenuCard extends StatelessWidget {
                   sideMenu.changePage(index);
                 },
                 icon: const Icon(CupertinoIcons.home)),
-            //1
-            // SideMenuItem(
-            //   builder: (context, displayMode) {
-            //     return const Divider(endIndent: 8, indent: 8);
-            //   },
-            // ),
-
             SideMenuExpansionItem(
               title: "Tasks",
               icon: const Icon(Icons.task),
               children: [
                 SideMenuItem(
                   //1 GeneratorTask
-                  title: 'Start Generator Task',
+                  title: 'Generator Task',
                   onTap: (index, _) {
                     sideMenu.changePage(index);
                   },
@@ -92,12 +85,48 @@ class SideMenuCard extends StatelessWidget {
                 ),
                 SideMenuItem(
                   //2 CompressorTask
-                  title: 'Start Compressor Task',
+                  title: 'Compressor Task',
                   onTap: (index, _) {
                     sideMenu.changePage(index);
                   },
                   icon: const Icon(FontAwesomeIcons.plus),
                   tooltipContent: "Start Task",
+                ),
+                SideMenuItem(
+                  //2 CompressorTask
+                  title: 'OverHaul Report V8',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "OverHaul Report V8",
+                ),
+                SideMenuItem(
+                  //2 CompressorTask
+                  title: 'OverHaul Report V12',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "OverHaul Report V12",
+                ),
+                SideMenuItem(
+                  //2 CompressorTask
+                  title: 'OverHaul Report V16',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "OverHaul Report V16",
+                ),
+                SideMenuItem(
+                  //2 CompressorTask
+                  title: 'OverHaul Assembly Report',
+                  onTap: (index, _) {
+                    sideMenu.changePage(index);
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "OverHaul Assembly Report",
                 ),
                 SideMenuItem(
                   //3

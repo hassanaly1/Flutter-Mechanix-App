@@ -7,7 +7,6 @@ class DashboardController extends GetxController {
   late TabController tabController;
 
   final SideMenuController sideMenu = Get.put(SideMenuController());
-
   RxInt currentPage = 0.obs;
 
   @override

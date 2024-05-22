@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     debugPrint('DashboardScreenOnInitCalled');
     controller.tabController = TabController(
       initialIndex: 0,
-      length: 9,
+      length: 13,
       vsync: this,
     );
   }
@@ -246,14 +246,29 @@ class HomeAppbar extends StatelessWidget {
                           : controller.currentPage.value == 2
                               ? 'Add Compressor Task'
                               : controller.currentPage.value == 3
-                                  ? 'View Task'
+                                  ? 'Add V8 Report'
                                   : controller.currentPage.value == 4
-                                      ? 'Reports'
+                                      ? 'Add V12 Report'
                                       : controller.currentPage.value == 5
-                                          ? 'Customize Units'
+                                          ? 'Add V16 Report'
                                           : controller.currentPage.value == 6
-                                              ? 'Engines'
-                                              : '',
+                                              ? 'Add Assembly Report'
+                                              : controller.currentPage.value ==
+                                                      7
+                                                  ? 'View Task'
+                                                  : controller.currentPage
+                                                              .value ==
+                                                          8
+                                                      ? 'Reports'
+                                                      : controller.currentPage
+                                                                  .value ==
+                                                              9
+                                                          ? 'Customize Units'
+                                                          : controller.currentPage
+                                                                      .value ==
+                                                                  10
+                                                              ? 'Engines'
+                                                              : '',
                   textColor: Colors.white,
                   fontSize: context.isLandscape ? 20.0 : 18.0,
                   fontWeight: FontWeight.w600,

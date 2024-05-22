@@ -204,36 +204,76 @@ void _showTaskPopup(
                             spreadRadius: 0.0)
                       ],
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomTextWidget(
-                            text:
-                                'Select Task you want to start.\nYou can start only one at a time.',
-                            fontSize: 14.0,
-                            maxLines: 3,
-                            textAlign: TextAlign.center,
-                            fontWeight: FontWeight.w400),
-                        const SizedBox(height: 12.0),
-                        CustomButton(
-                            isLoading: false,
-                            usePrimaryColor: false,
-                            buttonText: 'Start Generator Task',
-                            fontSize: 12.0,
-                            onTap: () {
-                              sideMenu.changePage(1);
-                              Get.back();
-                            }),
-                        CustomButton(
-                            isLoading: false,
-                            usePrimaryColor: false,
-                            buttonText: 'Start Compressor Task',
-                            fontSize: 12.0,
-                            onTap: () {
-                              sideMenu.changePage(2);
-                              Get.back();
-                            }),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomTextWidget(
+                              text:
+                                  'Select Task you want to start.\nYou can start only one at a time.',
+                              fontSize: 14.0,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                              fontWeight: FontWeight.w500),
+                          const SizedBox(height: 12.0),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText: 'Start Generator Task',
+                              fontSize: 12.0,
+                              onTap: () {
+                                sideMenu.changePage(1);
+                                Get.back();
+                              }),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText: 'Start Compressor Task',
+                              fontSize: 12.0,
+                              onTap: () {
+                                sideMenu.changePage(2);
+                                Get.back();
+                              }),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText: 'Start OverHaul Report V8',
+                              fontSize: 12.0,
+                              onTap: () {
+                                // sideMenu.changePage(3);
+                                Get.back();
+                              }),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText: 'Start OverHaul Report V12',
+                              fontSize: 12.0,
+                              onTap: () {
+                                // sideMenu.changePage(4);
+                                Get.back();
+                              }),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText: 'Start OverHaul Report V16',
+                              fontSize: 12.0,
+                              onTap: () {
+                                // sideMenu.changePage(5);
+                                Get.back();
+                              }),
+                          CustomButton(
+                              isLoading: false,
+                              usePrimaryColor: true,
+                              buttonText:
+                                  'Start OverHaul Report Assembly L7042GL C-14871',
+                              fontSize: 12.0,
+                              onTap: () {
+                                // sideMenu.changePage(6);
+                                Get.back();
+                              }),
+                        ],
+                      ),
                     ),
                   ))));
     },
