@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mechanix/data/api_endpoints.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
+import 'package:mechanix/services/api_endpoints.dart';
 
 class GeneratorTaskResponse {
   final bool success;

@@ -2,11 +2,11 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/data/compressor_task_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/compressor_model.dart';
+import 'package:mechanix/services/compressor_task_service.dart';
 
 class CompressorTaskController extends GetxController {
   RxBool isLoading = false.obs;

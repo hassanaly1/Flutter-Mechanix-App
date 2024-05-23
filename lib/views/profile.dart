@@ -1,20 +1,20 @@
-
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/services/auth_service.dart';
 import 'package:mechanix/views/auth/login.dart';
 
 class ProfileSection extends StatefulWidget {
   final SideMenuController sideMenu;
+
   const ProfileSection({super.key, required this.sideMenu});
 
   @override
@@ -27,6 +27,7 @@ class _ProfileSectionState extends State<ProfileSection> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final ImagePicker picker = ImagePicker();
+
   // XFile? userImage;
   // Uint8List? userImageInBytes;
 

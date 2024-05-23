@@ -1,7 +1,8 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/compressor_task_controller.dart';
+import 'package:mechanix/controllers/report_v8_controller.dart';
+import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
@@ -9,21 +10,35 @@ import 'package:mechanix/views/add_task/engine_overhawl_report_v8/cusom_v8_body.
 
 class AddV8ReportScreen extends StatefulWidget {
   final bool isUpdatingTask;
+  final String reportType;
   final SideMenuController sideMenu;
 
   const AddV8ReportScreen(
-      {super.key, required this.sideMenu, required this.isUpdatingTask});
+      {super.key,
+      required this.sideMenu,
+      required this.isUpdatingTask,
+      required this.reportType});
 
   @override
   State<AddV8ReportScreen> createState() => _CompressorTaskScreenState();
 }
 
 class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
-  late CompressorTaskController controller;
+  late ReportV8Controller controller;
+  late UniversalController universalController;
 
   @override
   void initState() {
-    controller = Get.put(CompressorTaskController());
+    universalController = Get.find();
+    widget.reportType == 'V8'
+        ? universalController.numberOfControllers.value = 8
+        : widget.reportType == 'V12'
+            ? universalController.numberOfControllers.value = 12
+            : widget.reportType == 'V16'
+                ? universalController.numberOfControllers.value = 16
+                : null;
+    debugPrint('ControllersValue: ${universalController.numberOfControllers}');
+
     super.initState();
   }
 
@@ -35,13 +50,13 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final CompressorTaskController controller = Get.find();
+    controller = Get.put(ReportV8Controller());
     return SafeArea(
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
-        Get.delete<CompressorTaskController>();
+        Get.delete<ReportV8Controller>();
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -54,7 +69,7 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: NestedScrollView(
-              controller: controller.scrollController,
+              // controller: controller.scrollController,
               // floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
@@ -68,8 +83,8 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
                     forceMaterialTransparency: false,
                     flexibleSpace: ListView(
                       physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        TopSection(controller: controller),
+                      children: const [
+                        TopSection(),
                       ],
                     ),
                   ),
@@ -77,7 +92,8 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
               },
               body: BottomPageViewSection(sideMenuController: widget.sideMenu)),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => controller.scrollUp(),
+            // onPressed: () => controller.scrollUp(),
+            onPressed: () {},
             backgroundColor: AppColors.primaryColor,
             mini: true,
             shape: const CircleBorder(),
@@ -90,12 +106,7 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
 }
 
 class TopSection extends StatelessWidget {
-  const TopSection({
-    super.key,
-    required this.controller,
-  });
-
-  final CompressorTaskController controller;
+  const TopSection({super.key});
 
   @override
   Widget build(BuildContext context) {

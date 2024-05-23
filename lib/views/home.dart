@@ -241,7 +241,7 @@ void _showTaskPopup(
                               buttonText: 'Start OverHaul Report V8',
                               fontSize: 12.0,
                               onTap: () {
-                                // sideMenu.changePage(3);
+                                sideMenu.changePage(3);
                                 Get.back();
                               }),
                           CustomButton(
@@ -250,7 +250,7 @@ void _showTaskPopup(
                               buttonText: 'Start OverHaul Report V12',
                               fontSize: 12.0,
                               onTap: () {
-                                // sideMenu.changePage(4);
+                                sideMenu.changePage(4);
                                 Get.back();
                               }),
                           CustomButton(
@@ -259,7 +259,7 @@ void _showTaskPopup(
                               buttonText: 'Start OverHaul Report V16',
                               fontSize: 12.0,
                               onTap: () {
-                                // sideMenu.changePage(5);
+                                sideMenu.changePage(5);
                                 Get.back();
                               }),
                           CustomButton(
@@ -269,7 +269,7 @@ void _showTaskPopup(
                                   'Start OverHaul Report Assembly L7042GL C-14871',
                               fontSize: 12.0,
                               onTap: () {
-                                // sideMenu.changePage(6);
+                                sideMenu.changePage(6);
                                 Get.back();
                               }),
                         ],

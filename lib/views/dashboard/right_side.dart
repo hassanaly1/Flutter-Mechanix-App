@@ -1,7 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:mechanix/views/add_task/compressor_task/add_compressor_task.dart';
-import 'package:mechanix/views/add_task/engine_overhawl_report_v12/add_v12_report.dart';
 import 'package:mechanix/views/add_task/engine_overhawl_report_v8/add_v8_report.dart';
 import 'package:mechanix/views/add_task/generator_task/add_generator_task.dart';
 import 'package:mechanix/views/engines.dart';
@@ -11,7 +10,6 @@ import 'package:mechanix/views/reports.dart';
 import 'package:mechanix/views/view_task.dart';
 
 import '../add_task/engine_overhawl_report_assembly/add_assembly_report.dart';
-import '../add_task/engine_overhawl_report_v16/add_v16_report.dart';
 
 class RightSideWidget extends StatelessWidget {
   const RightSideWidget({
@@ -40,11 +38,14 @@ class RightSideWidget extends StatelessWidget {
           // 1
           CompressorTaskScreen(sideMenu: sideMenu, isUpdatingTask: false),
           // 2
-          AddV8ReportScreen(sideMenu: sideMenu, isUpdatingTask: false),
+          AddV8ReportScreen(
+              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V8'),
           // 3
-          AddV12ReportScreen(sideMenu: sideMenu, isUpdatingTask: false),
+          AddV8ReportScreen(
+              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V12'),
           // 4
-          AddV16ReportScreen(sideMenu: sideMenu, isUpdatingTask: false),
+          AddV8ReportScreen(
+              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V16'),
           // 5
           AddAssemblyReportScreen(sideMenu: sideMenu, isUpdatingTask: false),
           // 6

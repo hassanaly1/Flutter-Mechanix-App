@@ -924,15 +924,17 @@ class CustomStepperBody2 extends StatelessWidget {
 
 class NumberWithTextField extends StatelessWidget {
   final String number;
+  final String? hintText;
   final TextEditingController? controller;
 
-  const NumberWithTextField({super.key, required this.number, this.controller});
+  const NumberWithTextField(
+      {super.key, required this.number, this.controller, this.hintText});
 
   @override
   Widget build(BuildContext context) {
     return HeadingAndTextfieldInRow(
       title: number,
-      hintText: 'Temperature',
+      hintText: hintText ?? 'Temperature',
       controller: controller,
       keyboardType: TextInputType.number,
     );

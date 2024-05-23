@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/data/auth_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/user_model.dart';
+import 'package:mechanix/services/auth_service.dart';
 import 'package:mechanix/views/auth/change_password.dart';
 import 'package:mechanix/views/auth/login.dart';
 import 'package:mechanix/views/auth/otp.dart';

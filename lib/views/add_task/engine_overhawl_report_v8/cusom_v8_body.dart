@@ -47,6 +47,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
   @override
   Widget build(BuildContext context) {
     final ReportV8Controller controller = Get.find();
+    final UniversalController universalController = Get.find();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
       decoration: BoxDecoration(
@@ -193,7 +194,12 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                   const ContainerHeading(heading: 'Indicate Which Ones'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.engineBlocIndicateWhichOneCtrl,
+                  ),
                 ],
               ),
             ),
@@ -238,7 +244,13 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                   const ContainerHeading(heading: 'Indicate Which Ones'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers:
+                        controller.engineCrankshaftIndicateWhichOneCtrl,
+                  ),
                   CustomTextWidget(
                     text: 'End Play:',
                     fontWeight: FontWeight.w500,
@@ -350,35 +362,57 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.connectingRods,
                     heading: 'Connecting Rods',
                   ),
                   const ContainerHeading(heading: 'Indicate Which Ones'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.connectingRodsIndicateWhichOneCtrl,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.connectingRodsBearingsReplaced,
                     heading: 'Connecting rod bearings replaced?',
                   ),
-                  ReUsableTextField(hintText: 'If not indicate why?'),
+                  ReUsableTextField(
+                    hintText: 'If not indicate why?',
+                    controller:
+                        controller.connectingRodsBearingsIfNotIndicateWhy,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.rodBearingCapsTorqued,
                     heading: 'Rod bearing caps torqued?',
                   ),
-                  ReUsableTextField(hintText: 'Specs'),
+                  ReUsableTextField(
+                    hintText: 'Specs',
+                    controller: controller.rodBearingCapsTorquedSpecs,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption:
+                        controller.connectingRodSideClearanceChecked,
                     heading: 'Connecting rod side clearance checked?',
                   ),
-                  ReUsableTextField(hintText: 'Specs'),
+                  ReUsableTextField(
+                    hintText: 'Specs',
+                    controller:
+                        controller.connectingRodSideClearanceCheckedSpecs,
+                  ),
                   const ContainerHeading(heading: 'Actual Readings'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.actualReadingsCtrl,
+                  ),
                 ],
               ),
             ),
@@ -400,22 +434,32 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.pistonPins,
                     heading: 'Piston Pins',
                   ),
                   const ContainerHeading(heading: 'Indicate New Pins'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.pistonPinsIndicateNewPinsCtrl,
+                  ),
                   CustomRadioButton(
                     options: const ['NEW', 'CUSTOMERS RECONDITIONED (CR)'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.pistons,
                     heading: 'Pistons',
                   ),
                   const ContainerHeading(heading: 'Indicate New Pistons'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.indicateNewPistonsCtrl,
+                  ),
                 ],
               ),
             ),
@@ -431,36 +475,25 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ContainerHeading(heading: 'Ring Clearances in Liners'),
-                  Row(
-                    children: [
-                      CustomTextWidget(text: '1'),
-                      const SizedBox(width: 6.0),
-                      Flexible(child: ReUsableTextField(hintText: '# 1')),
-                      Flexible(child: ReUsableTextField(hintText: '# 2')),
-                      Flexible(child: ReUsableTextField(hintText: '# 3')),
-                      Flexible(child: ReUsableTextField(hintText: '# 4')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomTextWidget(text: '2'),
-                      const SizedBox(width: 4.0),
-                      Flexible(child: ReUsableTextField(hintText: '# 1')),
-                      Flexible(child: ReUsableTextField(hintText: '# 2')),
-                      Flexible(child: ReUsableTextField(hintText: '# 3')),
-                      Flexible(child: ReUsableTextField(hintText: '# 4')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomTextWidget(text: '3'),
-                      const SizedBox(width: 4.0),
-                      Flexible(child: ReUsableTextField(hintText: '# 1')),
-                      Flexible(child: ReUsableTextField(hintText: '# 2')),
-                      Flexible(child: ReUsableTextField(hintText: '# 3')),
-                      Flexible(child: ReUsableTextField(hintText: '# 4')),
-                    ],
-                  )
+                  for (int i = 0;
+                      i < controller.ringClearanceInLinersCtrl.length;
+                      i++)
+                    Row(
+                      children: [
+                        for (int j = 0;
+                            j < controller.ringClearanceInLinersCtrl[i].length;
+                            j++)
+                          Expanded(
+                            child: Row(
+                              children: [
+                                const SizedBox(width: 4.0),
+                                Flexible(
+                                    child: ReUsableTextField(hintText: '# 1')),
+                              ],
+                            ),
+                          ),
+                      ],
+                    )
                 ],
               ),
             ),
@@ -527,16 +560,21 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.cylinderLiners,
                     heading: 'Cylinder Liners',
                   ),
                   const ContainerHeading(heading: 'Indicate New Liners'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.indicateNewCylinderLinersCtrl,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.linerORingsReplaced,
                     heading: 'Liner O Rings Replaced',
                   ),
                 ],
@@ -560,19 +598,27 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.cylinderHeads1,
                     heading: 'Cylinder Heads',
                   ),
                   const ContainerHeading(heading: 'Indicate Cylinder Heads'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.indicateCylinderHeadsCtrl,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.cylinderHeads2,
                     heading: 'Cylinder Heads',
                   ),
-                  ReUsableTextField(hintText: 'Specs')
+                  ReUsableTextField(
+                    hintText: 'Specs',
+                    controller: controller.cylinderHeadsSpecs,
+                  )
                 ],
               ),
             ),
@@ -594,20 +640,28 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.rocketShaftAssemblies,
                     heading: 'Rocker Shaft Assemblies',
                   ),
                   const ContainerHeading(
                       heading: 'Indicate Rocker Shaft Assemblies'),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields(),
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.indicateRocketShaftAssembliesCtrl,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.rocketShaftTorqued,
                     heading: 'Rocker Assembly torqued?',
                   ),
-                  ReUsableTextField(hintText: 'Specs')
+                  ReUsableTextField(
+                    hintText: 'Specs',
+                    controller: controller.rocketShaftTorquedSpecs,
+                  )
                 ],
               ),
             ),
@@ -629,7 +683,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.pushRods,
                     heading: 'Push Rods',
                   ),
                 ],
@@ -653,29 +707,40 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.camshaft,
                     heading: 'Camshaft',
                   ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.camshaftBearingsReplaced,
                     heading: 'Camshaft bearings replaced?',
                   ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.camshaftBearingsTorqued,
                     heading: 'Camshaft bearings torqued?',
                   ),
-                  ReUsableTextField(hintText: 'Specs'),
+                  ReUsableTextField(
+                    hintText: 'Specs',
+                    controller: controller.camshaftBearingsTorquedSpecs,
+                  ),
                   CustomRadioButton(
                     options: const ['YES', 'NO'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.camshaftEndPlayChecked,
                     heading: 'Camshaft end play checked?',
                   ),
                   Row(
                     children: [
-                      Flexible(child: ReUsableTextField(hintText: 'Specs')),
-                      Flexible(child: ReUsableTextField(hintText: 'Actual')),
+                      Flexible(
+                          child: ReUsableTextField(
+                        hintText: 'Specs',
+                        controller: controller.camshaftEndPlayCheckedSpecs,
+                      )),
+                      Flexible(
+                          child: ReUsableTextField(
+                        hintText: 'Actual',
+                        controller: controller.camshaftEndPlayCheckedActual,
+                      )),
                     ],
                   ),
                 ],
@@ -699,7 +764,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                       'CUSTOMERS RECONDITIONED',
                       'CUSTOMER RE-USED (CRU)'
                     ],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.camFollowers,
                     heading: 'Cam Followers',
                   ),
                 ],
@@ -718,7 +783,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                 children: [
                   CustomRadioButton(
                     options: const ['Adjustable', 'Non Adjustable'],
-                    selectedOption: 'C'.obs,
+                    selectedOption: controller.bridges,
                     heading: 'Bridges',
                   ),
                   ReUsableTextField(hintText: 'Setting')
@@ -741,9 +806,18 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                     fontWeight: FontWeight.w500,
                     maxLines: 2,
                   ),
-                  ReUsableTextField(hintText: 'Intake'),
-                  ReUsableTextField(hintText: 'Exhaust'),
-                  ReUsableTextField(hintText: 'Injector'),
+                  ReUsableTextField(
+                    hintText: 'Intake',
+                    controller: controller.valvesIntake,
+                  ),
+                  ReUsableTextField(
+                    hintText: 'Exhaust',
+                    controller: controller.valvesExhaust,
+                  ),
+                  ReUsableTextField(
+                    hintText: 'Injector',
+                    controller: controller.valvesInjector,
+                  ),
                 ],
               ),
             ),
@@ -765,14 +839,19 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
                   ),
 
                   ///todo: Assigning Controllers Remaining
-                  const DynamicTextFields()
+                  DynamicTextFields(
+                    hintText: '',
+                    numberOfControllers:
+                        universalController.numberOfControllers.value,
+                    controllers: controller.injectorTrimCodesCtrl,
+                  ),
                 ],
               ),
             ),
           ),
 
           ///Engine Assembly Report Cont
-          buildEngineAssemblyReportSection(),
+          buildEngineAssemblyReportSection(controller),
           CustomTextWidget(
               maxLines: 3,
               text: 'Was the main bearing cap torque checked and verified?'),
@@ -870,22 +949,38 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
 }
 
 class DynamicTextFields extends StatelessWidget {
-  const DynamicTextFields({super.key});
+  final List<TextEditingController> controllers;
+  final int numberOfControllers;
+  final String? hintText;
+
+  const DynamicTextFields(
+      {super.key,
+      this.hintText,
+      required this.numberOfControllers,
+      required this.controllers});
 
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];
 
     // Generate rows dynamically
-    for (int i = 0; i < 8; i += 2) {
+    for (int i = 0; i < numberOfControllers; i += 2) {
       rows.add(
         Row(
           children: [
             Flexible(
-              child: NumberWithTextField(number: '${i + 1}'),
+              child: NumberWithTextField(
+                number: '${i + 1}',
+                hintText: controllers[i].text.toString() ?? '',
+                controller: controllers[i],
+              ),
             ),
             Flexible(
-              child: NumberWithTextField(number: '${i + 2}'),
+              child: NumberWithTextField(
+                number: '${i + 2}',
+                hintText: controllers[i + 1].text.toString() ?? '',
+                controller: controllers[i + 1],
+              ),
             ),
           ],
         ),
@@ -899,7 +994,7 @@ class DynamicTextFields extends StatelessWidget {
   }
 }
 
-Widget buildEngineAssemblyReportSection() {
+Widget buildEngineAssemblyReportSection(ReportV8Controller controller) {
   const radioOptions = [
     'NEW',
     'EXCHANGE',
@@ -925,6 +1020,25 @@ Widget buildEngineAssemblyReportSection() {
     'Fuel Pump'
   ];
 
+  var controllers = [
+    controller.oilPump,
+    controller.oilWaterPump,
+    controller.auxWaterPump,
+    controller.starter,
+    controller.waterGate,
+    controller.trubo,
+    controller.oilFilters,
+    controller.airFilters,
+    controller.airBelts,
+    controller.accessoryDrive,
+    controller.interCooler,
+    controller.fuelInjectors,
+    controller.bridges2,
+    controller.scavengePump,
+    controller.fuelFilters,
+    controller.fuelPump,
+  ];
+
   return ReUsableContainer(
     showBackgroundShadow: false,
     color: Colors.grey.shade300,
@@ -935,7 +1049,7 @@ Widget buildEngineAssemblyReportSection() {
         children: headings
             .map((heading) => CustomRadioButton(
                   options: radioOptions,
-                  selectedOption: 'C'.obs,
+                  selectedOption: controllers[0],
                   heading: heading,
                 ))
             .toList(),

@@ -4,20 +4,22 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mechanix/data/compressor_task_service.dart';
-import 'package:mechanix/data/generator_task_service.dart';
-import 'package:mechanix/data/report_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/models/engine_model.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/report_model.dart';
+import 'package:mechanix/services/compressor_task_service.dart';
+import 'package:mechanix/services/generator_task_service.dart';
+import 'package:mechanix/services/report_service.dart';
 
 class UniversalController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isTasksAreLoading = false.obs;
   RxBool isReportsAreLoading = false.obs;
+
+  RxInt numberOfControllers = 0.obs;
 
   // Tasks
   List<Payload> generatorTasks = <Payload>[].obs;

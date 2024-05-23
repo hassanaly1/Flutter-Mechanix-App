@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/data/api_endpoints.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
+import 'package:mechanix/services/api_endpoints.dart';
 
 class AuthService {
   // RegisterUser

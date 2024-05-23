@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/data/generator_task_service.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/task_model.dart';
+import 'package:mechanix/services/generator_task_service.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
 class AddTaskController extends GetxController {
@@ -50,8 +50,8 @@ class AddTaskController extends GetxController {
     super.onInit();
   }
 
-  Future<void> addTask(BuildContext context,
-      SideMenuController sideMenuController) async {
+  Future<void> addTask(
+      BuildContext context, SideMenuController sideMenuController) async {
     //Geolocation
     Geolocation geolocation = Geolocation(
       address: selectedAddress.text.trim(),
@@ -61,7 +61,7 @@ class AddTaskController extends GetxController {
     //CylinderExhaustPyrometer
     List<Temperatures> cylinderExhaustPyrometer = [];
     for (TextEditingController controller
-    in cylinderExhaustPyrometerTemperatureCtrl) {
+        in cylinderExhaustPyrometerTemperatureCtrl) {
       cylinderExhaustPyrometer.add(
         Temperatures(
           forCylinder: true,
@@ -136,11 +136,11 @@ class AddTaskController extends GetxController {
       btuType: selectedBtuValue.value,
       isMisfiresDetected: missFireDetected.value,
       throttleActuatorPosition:
-      int.tryParse(throttleActuatorPosition.text.trim()),
+          int.tryParse(throttleActuatorPosition.text.trim()),
       throttleActuatorFuelValue: int.tryParse(fuelValue.text.trim()),
       engineOilPressurePsi: int.tryParse(engineOilPressure.text.trim()),
       oilPressureDifferentialFilter:
-      int.tryParse(oilPressureDifferentialTextField.text.trim()),
+          int.tryParse(oilPressureDifferentialTextField.text.trim()),
       engineOilPressureDifferentialFilterNa: oilPressureDifferential.value,
       oilTemperatureIn: int.tryParse(oilTemperatureIn.text.trim()),
       oilTemperatureOut: int.tryParse(oilTemperatureOut.text.trim()),
@@ -150,12 +150,12 @@ class AddTaskController extends GetxController {
       jacketWaterLevel: jacketWaterLevel.value,
       auxiliaryCoolant: auxiliaryCoolantlevel1.value,
       jacketWaterTemperatureIn:
-      int.tryParse(jacketWaterTemperaturesIn.text.trim()),
+          int.tryParse(jacketWaterTemperaturesIn.text.trim()),
       jacketWaterTemperatureOut:
-      int.tryParse(jacketWaterTemperaturesOut.text.trim()),
+          int.tryParse(jacketWaterTemperaturesOut.text.trim()),
       coolantTemperatureIn: int.tryParse(auxCoolantTemperaturesIn.text.trim()),
       coolantTemperatureOut:
-      int.tryParse(auxCoolantTemperaturesOut.text.trim()),
+          int.tryParse(auxCoolantTemperaturesOut.text.trim()),
       inletAirTemperatureValue: int.tryParse(inletAirTemp.text.trim()),
       inletAirTemperatureType: inletAirTempRadio.value,
       inletAirPressureValue: int.tryParse(inletAirPressure.text.trim()),
@@ -169,7 +169,7 @@ class AddTaskController extends GetxController {
       isLeakageFound: isLeakageFound.value,
       isExcessiveVibration: excessiveVibrationAndOddNoises.value,
       excessiveVibrationDescription:
-      excessiveVibrationAndOddNoisesDescription.text.trim(),
+          excessiveVibrationAndOddNoisesDescription.text.trim(),
       isInDrivingProblem: problemsWithDriver.value,
       drivingProblemDescription: problemsWithDriverDescription.text.trim(),
 
@@ -218,14 +218,14 @@ class AddTaskController extends GetxController {
       jacketWaterCoolantLevel: jacketWaterCoolantLevel.value,
       auxiliaryCoolantLevel: auxiliaryCoolantLevel2.value,
       temperaturePressureChecks:
-      allTempsAndPressuresStableAndNormalRanges.value,
+          allTempsAndPressuresStableAndNormalRanges.value,
       nOiseVibrationDetected: noisesOrVibrationsDetected.value,
       engineExhaustGasAdjusted:
-      engineExhaustGasCheckedAndAdjustedAtMaxLoad.value,
+          engineExhaustGasCheckedAndAdjustedAtMaxLoad.value,
       documentFinalSetPoints:
-      documentFinalSetPointExhaustGasOxygenOrCOLevels.text.trim(),
+          documentFinalSetPointExhaustGasOxygenOrCOLevels.text.trim(),
       documentFinalManifoldPressure:
-      documentFinalManifoldPressureAndRPM.text.trim(),
+          documentFinalManifoldPressureAndRPM.text.trim(),
       engineDeficienciesRepairedFuture: engineDeficienciesRadio.value,
       engineDeficienciesDescribed: engineDeficienciesTextfield.text.trim(),
       partRepairedOrder: partsOrderingStatus.value,
@@ -327,7 +327,7 @@ class AddTaskController extends GetxController {
     //CylinderExhaustPyrometer
     List<Temperatures> cylinderExhaustPyrometer = [];
     for (TextEditingController controller
-    in cylinderExhaustPyrometerTemperatureCtrl) {
+        in cylinderExhaustPyrometerTemperatureCtrl) {
       cylinderExhaustPyrometer.add(
         Temperatures(
           forCylinder: true,
@@ -401,11 +401,11 @@ class AddTaskController extends GetxController {
       btuType: selectedBtuValue.value,
       isMisfiresDetected: missFireDetected.value,
       throttleActuatorPosition:
-      int.tryParse(throttleActuatorPosition.text.trim()),
+          int.tryParse(throttleActuatorPosition.text.trim()),
       throttleActuatorFuelValue: int.tryParse(fuelValue.text.trim()),
       engineOilPressurePsi: int.tryParse(engineOilPressure.text.trim()),
       oilPressureDifferentialFilter:
-      int.tryParse(oilPressureDifferentialTextField.text.trim()),
+          int.tryParse(oilPressureDifferentialTextField.text.trim()),
       engineOilPressureDifferentialFilterNa: oilPressureDifferential.value,
       oilTemperatureIn: int.tryParse(oilTemperatureIn.text.trim()),
       oilTemperatureOut: int.tryParse(oilTemperatureOut.text.trim()),
@@ -415,12 +415,12 @@ class AddTaskController extends GetxController {
       jacketWaterLevel: jacketWaterLevel.value,
       auxiliaryCoolant: auxiliaryCoolantlevel1.value,
       jacketWaterTemperatureIn:
-      int.tryParse(jacketWaterTemperaturesIn.text.trim()),
+          int.tryParse(jacketWaterTemperaturesIn.text.trim()),
       jacketWaterTemperatureOut:
-      int.tryParse(jacketWaterTemperaturesOut.text.trim()),
+          int.tryParse(jacketWaterTemperaturesOut.text.trim()),
       coolantTemperatureIn: int.tryParse(auxCoolantTemperaturesIn.text.trim()),
       coolantTemperatureOut:
-      int.tryParse(auxCoolantTemperaturesOut.text.trim()),
+          int.tryParse(auxCoolantTemperaturesOut.text.trim()),
       inletAirTemperatureValue: int.tryParse(inletAirTemp.text.trim()),
       inletAirTemperatureType: inletAirTempRadio.value,
       inletAirPressureValue: int.tryParse(inletAirPressure.text.trim()),
@@ -434,7 +434,7 @@ class AddTaskController extends GetxController {
       isLeakageFound: isLeakageFound.value,
       isExcessiveVibration: excessiveVibrationAndOddNoises.value,
       excessiveVibrationDescription:
-      excessiveVibrationAndOddNoisesDescription.text.trim(),
+          excessiveVibrationAndOddNoisesDescription.text.trim(),
       isInDrivingProblem: problemsWithDriver.value,
       drivingProblemDescription: problemsWithDriverDescription.text.trim(),
 
@@ -483,14 +483,14 @@ class AddTaskController extends GetxController {
       jacketWaterCoolantLevel: jacketWaterCoolantLevel.value,
       auxiliaryCoolantLevel: auxiliaryCoolantLevel2.value,
       temperaturePressureChecks:
-      allTempsAndPressuresStableAndNormalRanges.value,
+          allTempsAndPressuresStableAndNormalRanges.value,
       nOiseVibrationDetected: noisesOrVibrationsDetected.value,
       engineExhaustGasAdjusted:
-      engineExhaustGasCheckedAndAdjustedAtMaxLoad.value,
+          engineExhaustGasCheckedAndAdjustedAtMaxLoad.value,
       documentFinalSetPoints:
-      documentFinalSetPointExhaustGasOxygenOrCOLevels.text.trim(),
+          documentFinalSetPointExhaustGasOxygenOrCOLevels.text.trim(),
       documentFinalManifoldPressure:
-      documentFinalManifoldPressureAndRPM.text.trim(),
+          documentFinalManifoldPressureAndRPM.text.trim(),
       engineDeficienciesRepairedFuture: engineDeficienciesRadio.value,
       engineDeficienciesDescribed: engineDeficienciesTextfield.text.trim(),
       partRepairedOrder: partsOrderingStatus.value,
@@ -893,8 +893,7 @@ class AddTaskController extends GetxController {
     );
     if (pickedTime != null) {
       String formattedTime =
-          '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute
-          .toString().padLeft(2, '0')}';
+          '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}';
       taskSelectedTime.value =
           formattedTime; // Assign the formatted time to Rx variable
     }
@@ -949,7 +948,7 @@ class AddTaskController extends GetxController {
   RxString selectedBtuValue = 'C'.obs; //RadioButton
   //Cylinder Exhaust Pyrometer
   final List cylinderExhaustPyrometerTemperatureCtrl =
-  <TextEditingController>[];
+      <TextEditingController>[];
 
   // TextEditingController cylinderExhaustPyrometerTemperature1 =
   //     TextEditingController();
@@ -1027,7 +1026,7 @@ class AddTaskController extends GetxController {
   TextEditingController engineOilPressure = TextEditingController();
   RxString oilPressureDifferential = 'NA'.obs; //RadioButton
   TextEditingController oilPressureDifferentialTextField =
-  TextEditingController();
+      TextEditingController();
   TextEditingController oilTemperatureIn = TextEditingController();
   TextEditingController oilTemperatureOut = TextEditingController();
   RxString oilLevelEngine = 'LOW'.obs; //RadioButton
@@ -1076,7 +1075,7 @@ class AddTaskController extends GetxController {
   //Excessive vibration & odd noises
   RxString excessiveVibrationAndOddNoises = 'NO'.obs; //RadioButton
   TextEditingController excessiveVibrationAndOddNoisesDescription =
-  TextEditingController();
+      TextEditingController();
 
   //Problems with Driver
   RxString problemsWithDriver = 'NO'.obs; //RadioButton
@@ -1127,7 +1126,7 @@ class AddTaskController extends GetxController {
   //Connections
   RxString cannonPlugConnectorsTight = 'NO'.obs; //RadioButton
   TextEditingController listOfTransformerCoilsReplaced =
-  TextEditingController();
+      TextEditingController();
 
   //Crankcase
   RxString crankcaseBreatherInspection = 'NA'.obs; //RadioButton
@@ -1196,9 +1195,9 @@ class AddTaskController extends GetxController {
   RxString engineExhaustGasCheckedAndAdjustedAtMaxLoad =
       'YES'.obs; //RadioButton
   TextEditingController documentFinalSetPointExhaustGasOxygenOrCOLevels =
-  TextEditingController();
+      TextEditingController();
   TextEditingController documentFinalManifoldPressureAndRPM =
-  TextEditingController();
+      TextEditingController();
 
   //   Engine Deficiencies for Future Repairs
   RxString engineDeficienciesRadio = 'NO'.obs; //RadioButton
