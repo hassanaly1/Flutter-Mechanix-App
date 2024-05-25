@@ -34,7 +34,7 @@ class ViewAllTasksScreen extends StatelessWidget {
           controller.currentPage.value = 1;
         },
         child: DefaultTabController(
-          length: 2,
+          length: 3,
           child: Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: Container(
@@ -63,7 +63,10 @@ class ViewAllTasksScreen extends StatelessWidget {
                       ),
                     ),
                     const CustomTabBar(
-                        title1: 'Generator', title2: 'Compressor'),
+                      title1: 'Generator',
+                      title2: 'Compressor',
+                      title3: 'OverHaul Reports',
+                    ),
                     Expanded(
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -217,7 +220,82 @@ class ViewAllTasksScreen extends StatelessWidget {
                                           }
                                         },
                                       ),
-                          )
+                          ),
+                          Obx(
+                            () => controller.isTasksAreLoading.value
+                                ? const SingleChildScrollView(
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    child: Center(
+                                        heightFactor: 3,
+                                        child: SpinKitCircle(
+                                          color: Colors.black87,
+                                          size: 40.0,
+                                        )),
+                                  )
+                                : controller.compressorTasks.isEmpty
+                                    ? SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                                height: context.height * 0.15),
+                                            Image.asset(
+                                                'assets/images/view-task.png',
+                                                height: context.height * 0.15),
+                                            CustomTextWidget(
+                                              text: 'No Tasks found',
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            SizedBox(
+                                                height: context.height * 0.4),
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        controller: controller
+                                            .scrollControllerForCompressor,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        itemCount:
+                                            controller.compressorTasks.length +
+                                                (controller.isLoading.value
+                                                    ? 1
+                                                    : 0),
+                                        itemBuilder: (context, index) {
+                                          if (index <
+                                              controller
+                                                  .compressorTasks.length) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    UpdateCompressorTaskScreen(
+                                                        model: controller
+                                                                .compressorTasks[
+                                                            index]));
+                                              },
+                                              child: CustomCompressorTaskCard(
+                                                model: controller
+                                                    .compressorTasks[index],
+                                                controller: controller,
+                                              ),
+                                            );
+                                          } else if (controller
+                                              .isLoading.value) {
+                                            return const Center(
+                                              heightFactor: 3,
+                                              child: SpinKitCircle(
+                                                  color: Colors.black87,
+                                                  size: 40.0),
+                                            );
+                                          } else {
+                                            return Container();
+                                          }
+                                        },
+                                      ),
+                          ),
                         ],
                       ),
                     ),

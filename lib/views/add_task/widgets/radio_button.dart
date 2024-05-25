@@ -6,7 +6,7 @@ import 'package:mechanix/helpers/custom_text.dart';
 class CustomRadioButton extends StatelessWidget {
   final String heading;
   final List<String> options;
-  final RxString selectedOption;
+  final Rx<String?> selectedOption;
 
   const CustomRadioButton({
     super.key,

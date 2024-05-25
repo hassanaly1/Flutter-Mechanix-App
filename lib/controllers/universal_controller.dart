@@ -8,6 +8,7 @@ import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/models/engine_model.dart';
+import 'package:mechanix/models/overhaul_report_model.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/report_model.dart';
 import 'package:mechanix/services/compressor_task_service.dart';
@@ -24,6 +25,7 @@ class UniversalController extends GetxController {
   // Tasks
   List<Payload> generatorTasks = <Payload>[].obs;
   List<CompressorTaskModel> compressorTasks = <CompressorTaskModel>[].obs;
+  List<OverHaulReport> overhaulReports = <OverHaulReport>[].obs;
 
   List<ReportModel> reports = <ReportModel>[].obs;
   List<EngineModel> engines = <EngineModel>[].obs;

@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 
 class CustomTabBar extends StatelessWidget {
-  final String title1;
-  final String title2;
+  final String? title1;
+  final String? title2;
+  final String? title3;
 
   const CustomTabBar({
     super.key,
-    required this.title1,
-    required this.title2,
+    this.title1,
+    this.title2,
+    this.title3,
   });
 
   @override
@@ -28,13 +30,16 @@ class CustomTabBar extends StatelessWidget {
           color: AppColors.secondaryColor,
         ),
         labelStyle: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'poppins'),
+            fontSize: 14, fontWeight: FontWeight.w400, fontFamily: 'poppins'),
         labelColor: Colors.white,
         unselectedLabelColor: AppColors.primaryColor,
         indicatorSize: TabBarIndicatorSize.tab,
+        isScrollable: true,
+        tabAlignment: TabAlignment.center,
         tabs: [
           Tab(text: title1),
           Tab(text: title2),
+          if (title3 != null) Tab(text: title3),
         ],
       ),
     );

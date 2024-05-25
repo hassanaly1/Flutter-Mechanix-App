@@ -65,7 +65,6 @@ class GeneratorTaskService {
       } else {
         debugPrint(
             'Failed to create task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
-        debugPrint('Response Body: ${response.body}');
         return GeneratorTaskResponse(
             success: false, message: 'Failed to create task');
       }

@@ -53,15 +53,13 @@ class RightSideWidget extends StatelessWidget {
           // 7
           ReportsScreen(sideMenu: sideMenu),
           // 8
-          const SizedBox.shrink(),
-          // 9
           EnginesScreen(sideMenu: sideMenu),
-          // 10
+          // 9
           const SizedBox.shrink(),
-          //Drawer // 11
+          //Drawer // 10
           // RenewalSubscriptions(sideMenu: sideMenu),
+          // 11
           ProfileSection(sideMenu: sideMenu),
-          // 12
         ],
       ),
     );

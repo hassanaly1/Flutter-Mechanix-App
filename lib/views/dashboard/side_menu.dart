@@ -128,16 +128,16 @@ class SideMenuCard extends StatelessWidget {
                   icon: const Icon(FontAwesomeIcons.plus),
                   tooltipContent: "OverHaul Assembly Report",
                 ),
-                SideMenuItem(
-                  //3
-                  title: 'View Tasks',
-                  onTap: (index, _) {
-                    sideMenu.changePage(index);
-                  },
-                  icon: const Icon(FontAwesomeIcons.listCheck),
-                  tooltipContent: "View Task",
-                )
               ],
+            ),
+            SideMenuItem(
+              //3
+              title: 'View Tasks',
+              onTap: (index, _) {
+                sideMenu.changePage(index);
+              },
+              icon: const Icon(FontAwesomeIcons.listCheck),
+              tooltipContent: "View Task",
             ),
             SideMenuItem(
               //4
@@ -162,14 +162,14 @@ class SideMenuCard extends StatelessWidget {
                     )),
               ),
             ),
-            SideMenuItem(
-              //5
-              title: 'Customize Units',
-              onTap: (index, _) {
-                sideMenu.changePage(index);
-              },
-              icon: const Icon(Symbols.dashboard_customize),
-            ),
+            // SideMenuItem(
+            //   //5
+            //   title: 'Customize Units',
+            //   onTap: (index, _) {
+            //     sideMenu.changePage(index);
+            //   },
+            //   icon: const Icon(Symbols.dashboard_customize),
+            // ),
             SideMenuItem(
               //6
               title: 'Engines',

@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     debugPrint('DashboardScreenOnInitCalled');
     controller.tabController = TabController(
       initialIndex: 0,
-      length: 13,
+      length: 12,
       vsync: this,
     );
   }
@@ -229,7 +229,7 @@ class HomeAppbar extends StatelessWidget {
                               //   ),
                               // ),
                               ProfileAvatar(
-                                onTap: () => sideMenu.changePage(8),
+                                onTap: () => sideMenu.changePage(11),
                               ),
                             ],
                           )),
@@ -263,12 +263,8 @@ class HomeAppbar extends StatelessWidget {
                                                       : controller.currentPage
                                                                   .value ==
                                                               9
-                                                          ? 'Customize Units'
-                                                          : controller.currentPage
-                                                                      .value ==
-                                                                  10
-                                                              ? 'Engines'
-                                                              : '',
+                                                          ? 'Engines'
+                                                          : '',
                   textColor: Colors.white,
                   fontSize: context.isLandscape ? 20.0 : 18.0,
                   fontWeight: FontWeight.w600,

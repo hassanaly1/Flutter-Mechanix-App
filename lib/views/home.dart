@@ -40,24 +40,24 @@ class HomeScreen extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   SmallCard(
-                    onTap: () => sideMenu.changePage(4),
+                    onTap: () => sideMenu.changePage(8),
                     title: 'Reports',
                     icon: Symbols.lab_profile,
                   ),
-                  const SmallCard(
-                    // onTap: () => sideMenu.changePage(5),
-                    title: 'Customize Units',
-                    icon: Symbols.dashboard_customize,
-                  ),
+                  // const SmallCard(
+                  //   // onTap: () => sideMenu.changePage(5),
+                  //   title: 'Customize Units',
+                  //   icon: Symbols.dashboard_customize,
+                  // ),
                   SmallCard(
-                    onTap: () => sideMenu.changePage(6),
+                    onTap: () => sideMenu.changePage(9),
                     title: 'Engines',
                     icon: Symbols.manufacturing,
                   ),
                 ],
               ),
               DashboardCard(
-                onTap: () => sideMenu.changePage(3),
+                onTap: () => sideMenu.changePage(7),
                 title: 'View Tasks',
                 subtitle:
                     'Click here to view all submitted repair forms and their details.',
