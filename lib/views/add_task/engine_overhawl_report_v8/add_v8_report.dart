@@ -36,7 +36,7 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
             ? universalController.numberOfControllers.value = 12
             : widget.reportType == 'V16'
                 ? universalController.numberOfControllers.value = 16
-                : null;
+                : universalController.numberOfControllers.value = 12;
     debugPrint('ControllersValue: ${universalController.numberOfControllers}');
 
     super.initState();
@@ -57,6 +57,7 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
         Get.delete<ReportV8Controller>();
+        universalController.numberOfControllers.value = 0;
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -83,8 +84,8 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
                     forceMaterialTransparency: false,
                     flexibleSpace: ListView(
                       physics: const NeverScrollableScrollPhysics(),
-                      children: const [
-                        TopSection(),
+                      children: [
+                        TopSection(reportType: widget.reportType),
                       ],
                     ),
                   ),
@@ -106,7 +107,9 @@ class _CompressorTaskScreenState extends State<AddV8ReportScreen> {
 }
 
 class TopSection extends StatelessWidget {
-  const TopSection({super.key});
+  final String reportType;
+
+  const TopSection({super.key, required this.reportType});
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +134,7 @@ class TopSection extends StatelessWidget {
                             color: Colors.transparent)),
                     Expanded(
                       child: CustomTextWidget(
-                        text: 'Engine OverHaul V8 Report',
+                        text: 'Engine OverHaul $reportType Report',
                         fontSize: 16.0,
                         maxLines: 2,
                         textAlign: TextAlign.center,

@@ -48,4 +48,49 @@ class OverhaulReportServices {
           success: false, message: 'Error creating task');
     }
   }
+
+  getAllTasks(
+      {String? searchString, required String token, required int page}) async {
+    debugPrint('GetAllOverhawlTasksCalled');
+    String apiUrl =
+        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getOverhaulReportUrl}';
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        // body: jsonEncode({
+        //   'search': {
+        //     "name": searchString,
+        //   }
+        // }),
+      );
+
+      print(
+          'Overhawl tasks response: ${response.statusCode} ${response.reasonPhrase}');
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        if (jsonData['data'] != null) {
+          final data = jsonData['data'];
+          // final List<OverHaulReport> tasks = [];
+          // Payload payload = Payload.fromJson(tasksDataList[0]);
+          // print(payload);
+
+          return data;
+        } else {
+          debugPrint('No Overhawl tasks found in the request response');
+          return [];
+        }
+      } else {
+        debugPrint('Failed to get Overhawl tasks: ${response.reasonPhrase}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error getting Overhawl tasks: $e');
+      return [];
+    }
+  }
 }

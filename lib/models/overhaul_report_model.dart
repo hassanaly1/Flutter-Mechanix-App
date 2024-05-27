@@ -1,26 +1,127 @@
 // To parse this JSON data, do
 // final overHaulReport = overHaulReportFromJson(jsonString);
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OverHaulReport {
-  CustomerEngineInfo? customerEngineInfo;
-  EngineAssembly? engineAssembly;
-  EngineAssemblyReportCont? engineAssemblyReportCont;
-  GearTrain? gearTrain;
-  EngineAssemblyPartsExchangeCatalog? engineAssemblyPartsExchangeCatalog;
-  String? type;
+  final String type;
+  late CustomerEngineInfo customerEngineInfo;
+  late EngineAssembly engineAssembly;
+  late EngineAssemblyReportCont engineAssemblyReportCont;
+  late GearTrain gearTrain;
+  late EngineAssemblyPartsExchangeCatalog engineAssemblyPartsExchangeCatalog;
 
-  OverHaulReport({
-    this.customerEngineInfo,
-    this.engineAssembly,
-    this.engineAssemblyReportCont,
-    this.gearTrain,
-    this.engineAssemblyPartsExchangeCatalog,
-    this.type,
-  });
+  OverHaulReport({required this.type}) {
+    int count = type == 'V8'
+        ? 8
+        : type == 'V12'
+            ? 12
+            : type == 'V16'
+                ? 16
+                : 12;
+    // : 'L7042GL C-14871';
+    customerEngineInfo = CustomerEngineInfo();
+    engineAssembly = EngineAssembly(count: count);
+    engineAssemblyReportCont = EngineAssemblyReportCont(count: count);
+    gearTrain = GearTrain();
+    engineAssemblyPartsExchangeCatalog = EngineAssemblyPartsExchangeCatalog();
+  }
+
+  String finalToJson() {
+    return jsonEncode({
+      'customer_engine_info': customerEngineInfo.toJson(),
+      'engine_assembly': engineAssembly.toJson(),
+      'engine_assembly_report_cont': engineAssemblyReportCont.toJson(),
+      'engine_assembly_parts_exchange_catalog':
+          engineAssemblyPartsExchangeCatalog.toJson(),
+      "type": type,
+      "gear_train": gearTrain.toJson()
+    });
+  }
+
+  static List<OverHaulReport> fromJsonList(List<dynamic> jsonList) {
+    List<OverHaulReport> list = [];
+    for (var json in jsonList) {
+      OverHaulReport overHaulReport = OverHaulReport(type: json['type']);
+      overHaulReport.customerEngineInfo.fromJson(json['customer_engine_info']);
+      // overHaulReport.engineAssembly.fromJson(json);
+      // overHaulReport.engineAssemblyReportCont.fromJson(json);
+      // overHaulReport.gearTrain.fromJson(json);
+      // overHaulReport.engineAssemblyPartsExchangeCatalog.fromJson(json);
+      list.add(overHaulReport);
+    }
+    // customerEngineInfo.fromJson(json)
+    // return jsonList
+    //     .map((json) => OverHaulReport(type: json['type']))
+    //     .toList();
+    return list;
+  }
 }
+
+// String? id;
+// CustomerEngineInfo? customerEngineInfo;
+// EngineAssembly? engineAssembly;
+// EngineAssemblyReportCont? engineAssemblyReportCont;
+// GearTrain? gearTrain;
+// EngineAssemblyPartsExchangeCatalog? engineAssemblyPartsExchangeCatalog;
+// String? type;
+//
+// OverHaulReport({
+//   this.id,
+//   this.customerEngineInfo,
+//   this.engineAssembly,
+//   this.engineAssemblyReportCont,
+//   this.gearTrain,
+//   this.engineAssemblyPartsExchangeCatalog,
+//   this.type,
+// });
+//
+// // factory OverHaulReport.fromJson(Map<String, dynamic> json) {
+// //   return OverHaulReport(
+// //     id: json['_id'],
+// //     customerEngineInfo: json['customer_engine_info'] != null
+// //         ? CustomerEngineInfo.fromJson(json['customer_engine_info'])
+// //         : null,
+// //     engineAssembly: json['engine_assembly'] != null
+// //         ? EngineAssembly.fromJson(json['engine_assembly'])
+// //         : null,
+// //     engineAssemblyReportCont: json['engine_assembly_report_cont'] != null
+// //         ? EngineAssemblyReportCont.fromJson(
+// //             json['engine_assembly_report_cont'])
+// //         : null,
+// //     gearTrain: json['gear_train'] != null
+// //         ? GearTrain.fromJson(json['gear_train'])
+// //         : null,
+// //     engineAssemblyPartsExchangeCatalog:
+// //         json['engine_assembly_parts_exchange_catalog'] != null
+// //             ? EngineAssemblyPartsExchangeCatalog.fromJson(
+// //                 json['engine_assembly_parts_exchange_catalog'])
+// //             : null,
+// //     type: json['type'],
+// //   );
+// // }
+//
+// fromJson(Map<String, dynamic> json) {
+//   customerEngineInfo = json['customer_engine_info'] != null
+//       ? CustomerEngineInfo().fromJson(json['customer_engine_info'])
+//       : null;
+// }
+//
+// String finalToJson() {
+//   return jsonEncode({
+//     'customer_engine_info': customerEngineInfo?.toJson(),
+//     'engine_assembly': engineAssembly?.toJson(),
+//     'engine_assembly_report_cont': engineAssemblyReportCont?.toJson(),
+//     'engine_assembly_parts_exchange_catalog':
+//         engineAssemblyPartsExchangeCatalog?.toJson(),
+//     "type": type,
+//     "gear_train": gearTrain?.toJson()
+//   });
+// }
+// }
 
 class CustomerEngineInfo {
   final customer = TextEditingController(),
@@ -38,25 +139,25 @@ class CustomerEngineInfo {
       mechanic2 = TextEditingController();
   DateTime? date;
 
-  void fromJson(Map<String, dynamic> json) {
-    customer.text = json["customer"].toString();
-    workorder.text = json["workorder"].toString();
-    location.text = json["location"].toString();
-    lsd.text = json["lsd"].toString();
-    unit.text = json["unit"].toString();
-    unitHours.text = json["unitHours"].toString();
-    // json["date"] == null ? null : DateTime.parse(json["date"]);
-    engineMake.text = json["engineMake"];
-    engineModel.text = json["engineModel"];
-    engineSerial.text = json["engineSerial"];
-    engineArrangement.text = json["engineArrangement"];
-    customerContact.text = json["customerContact"];
-    mechanic1.text = json["mechanic1"];
-    mechanic2.text = json["mechanic2"];
+  fromJson(Map<String, dynamic> json) {
+    customer.text = json["customer"] ?? '';
+    workorder.text = json["workorder"] ?? '';
+    location.text = json["location"] ?? '';
+    // lsd.text = json["lsd"];
+    // unit.text = json["unit"];
+    // unitHours.text = json["unit_hours"];
+    // // json["date"] == null ? null : DateTime.parse(json["date"]);
+    // engineMake.text = json["engine_make"];
+    // engineModel.text = json["engine_model"];
+    // engineSerial.text = json["engine_serial"];
+    // engineArrangement.text = json["engine_arrangement"];
+    // customerContact.text = json["customer_contact"];
+    // mechanic1.text = json["mechanic1"];
+    // mechanic2.text = json["mechanic2"];
     // List<String>.from(json["mechanic"]!.map((x) => x))
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "customer": customer.text.trim(),
         "workorder": workorder.text.trim(),
         "location": location.text.trim(),
@@ -102,7 +203,36 @@ class EngineAssembly {
   final List<TextEditingController> engineAssemblyReportIndicateWhichOne = [],
       engineReportIndicateWhichOne = [];
 
-  Map<String, dynamic> toMap() => {
+  fromJson(Map<String, dynamic> json) {
+    engineBlocks.value = json["engine_blocks"] ?? '';
+    lineBorePerformed.value = json["line_bore_performed"] ?? '';
+    magCheckedForCracks.value = json["mag_checked_for_cracks"] ?? '';
+    linerFitsRepaired.value = json["liner_fits_repaired"] ?? '';
+    lineBorePerformedCompany.text = json["line_bore_performed_company"] ?? '';
+    engineCrankshaft.value = json["engine_crankshaft"] ?? '';
+    magCheckedCompany.text = json["mag_checked_company"] ?? '';
+    linerFitsRepairedCompany.text = json["liner_fits_repaired_company"] ?? '';
+    plastiGuageReadingsOneMainBearingSpec.text =
+        json["plasti_guage_readings_one_main_bearing_spec"] ?? '';
+    plastiGuageReadingsOneMainBearingActual.text =
+        json["plasti_guage_readings_one_main_bearing_actual"] ?? '';
+    endPlaySpec.text = json["end_play_spec"] ?? '';
+    endPlayActual.text = json["end_play_actual"] ?? '';
+
+    engineAssemblyReportIndicateWhichOne.clear();
+    for (var x in List<String>.from(
+        json["engine_assembly_report_indicate_which_one"] ?? [])) {
+      engineAssemblyReportIndicateWhichOne.add(TextEditingController(text: x));
+    }
+
+    engineReportIndicateWhichOne.clear();
+    for (var x
+        in List<String>.from(json["engine_report_indicate_which_one"] ?? [])) {
+      engineReportIndicateWhichOne.add(TextEditingController(text: x));
+    }
+  }
+
+  Map<String, dynamic> toJson() => {
         "engine_blocks": engineBlocks.value,
         "line_bore_performed": lineBorePerformed.value,
         "line_bore_performed_company": lineBorePerformedCompany.text.trim(),
@@ -122,39 +252,12 @@ class EngineAssembly {
         "end_play_spec": endPlaySpec.text.trim(),
         "end_play_actual": endPlayActual.text.trim(),
       };
-
-// factory EngineAssembly.fromJson(Map<String, dynamic> json) => EngineAssembly(
-//       engineBlocks: json["engine_blocks"],
-//       lineBorePerformed: json["line_bore_performed"],
-//       company: json["company"],
-//       magCheckedForCracks: json["mag_checked_for_cracks"],
-//       linerFitsRepaired: json["liner_fits_repaired"],
-//       engineAssemblyReportIndicateWhichOne:
-//           json["engine_assembly_report_indicate_which_one"] == null
-//               ? []
-//               : List<String>.from(
-//                   json["engine_assembly_report_indicate_which_one"]!
-//                       .map((x) => x)),
-//       engineCrankshaft: json["engine_crankshaft"],
-//       plastiGuageReadingsOneMainBearingSpec:
-//           json["plasti_guage_readings_one_main_bearing_spec"],
-//       plastiGuageReadingsOneMainBearingActual:
-//           json["plasti_guage_readings_one_main_bearing_actual"],
-//       engineReportIndicateWhichOne:
-//           json["engine_report_indicate_which_one"] == null
-//               ? []
-//               : List<String>.from(
-//                   json["engine_report_indicate_which_one"]!.map((x) => x)),
-//       endPlaySpec: json["end_play_spec"],
-//       endPlayActual: json["end_play_actual"],
-//     );
 }
 
 class EngineAssemblyReportCont {
   final int count;
 
   EngineAssemblyReportCont({required this.count}) {
-    print('--------------------------object-------------------');
     for (int i = 0; i < count; i++) {
       connectingRodsIndicateWhichOne.add(TextEditingController());
       actualReading.add(TextEditingController());
@@ -233,7 +336,7 @@ class EngineAssemblyReportCont {
   final List<List<TextEditingController>> ringClearancesInLiners = [],
       ringClearancesInPistons = [];
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "main_bearings_replaced": mainBearingsReplaced.value,
         "reason_if_main_bearings_not_replaced":
             reasonIfMainBearingsNotReplaced.text.trim(),
@@ -279,7 +382,7 @@ class EngineAssemblyReportCont {
         "ring_clearances_in_liners": List<List<String>>.from(
             ringClearancesInLiners
                 .map((x) => x.map((e) => e.text.trim()).toList())),
-        "ring_clearances_in_pistons": List<List<String>>.from(
+        "ring_clearances_pistons": List<List<String>>.from(
             ringClearancesInPistons
                 .map((x) => x.map((e) => e.text.trim()).toList())),
         "cylinder_liners": cylinderLiners.value,
@@ -316,100 +419,119 @@ class EngineAssemblyReportCont {
             List<String>.from(injectorTrimCodes.map((x) => x.text.trim())),
       };
 
-  void fromJson(Map<String, dynamic> json) {
-    mainBearingsReplaced.value = json["main_bearings_replaced"];
+  fromJson(Map<String, dynamic> json) {
+    mainBearingsReplaced.value = json["main_bearings_replaced"] ?? '';
     reasonIfMainBearingsNotReplaced.text =
-        json["reason_if_main_bearings_not_replaced"];
-    numbersOfUpperShell.text = json["numbers_of_upper_shell"];
-    numbersOfLowerShell.text = json["numbers_of_lower_shell"];
-    mainBearingTorqued.value = json["main_bearing_torqued"];
-    mainBearingTorquedSpec.text = json["main_bearing_torqued_spec"];
-    thrustBearingsReplaced.value = json["thrust_bearings_replaced"];
-    crossTiesTorqued.value = json["cross_ties_torqued"];
-    crossTiesTorquedSpec.text = json["cross_ties_torqued_spec"];
-    counterWeightsTorqued.value = json["counter_weights_torqued"];
-    counterWeightsTorquedSpec.text = json["counter_weights_torqued_spec"];
+        json["reason_if_main_bearings_not_replaced"] ?? '';
+    numbersOfUpperShell.text = json["numbers_of_upper_shell"] ?? '';
+    numbersOfLowerShell.text = json["numbers_of_lower_shell"] ?? '';
+    mainBearingTorqued.value = json["main_bearing_torqued"] ?? '';
+    mainBearingTorquedSpec.text = json["main_bearing_torqued_spec"] ?? '';
+    thrustBearingsReplaced.value = json["thrust_bearings_replaced"] ?? '';
+    crossTiesTorqued.value = json["cross_ties_torqued"] ?? '';
+    crossTiesTorquedSpec.text = json["cross_ties_torqued_spec"] ?? '';
+    counterWeightsTorqued.value = json["counter_weights_torqued"] ?? '';
+    counterWeightsTorquedSpec.text = json["counter_weights_torqued_spec"] ?? '';
     vibrationDampenerReplacedTorqued.value =
-        json["vibration_dampener_replaced_torqued"];
-    frontAndRearSealsReplaced.value = json["front_and_rear_seals_replaced"];
+        json["vibration_dampener_replaced_torqued"] ?? '';
+    frontAndRearSealsReplaced.value =
+        json["front_and_rear_seals_replaced"] ?? '';
     frontAndRearSealsReplacedDescFront.text =
-        json["front_and_rear_seals_replaced_desc_front"];
+        json["front_and_rear_seals_replaced_desc_front"] ?? '';
     frontAndRearSealsReplacedDescRear.text =
-        json["front_and_rear_seals_replaced_desc_rear"];
-    connectingRods.value = json["connecting_rods"];
-    // connectionRodsIndicateWhichOne.addAll(
-    //     json["connecting_rods_indicate_which_one"] == null
-    //         ? []
-    //         : List<TextEditingController>.from(
-    //             json["connecting_rods_indicate_which_one"]!
-    //                 .map((x) => TextEditingController())));
+        json["front_and_rear_seals_replaced_desc_rear"] ?? '';
+    connectingRods.value = json["connecting_rods"] ?? '';
+    connectingRodsIndicateWhichOne.addAll(
+        json["connecting_rods_indicate_which_one"] == null
+            ? []
+            : List<TextEditingController>.from(
+                json["connecting_rods_indicate_which_one"]!
+                    .map((x) => TextEditingController())));
     connectingRodBearingsReplaced.value =
-        json["connecting_rod_bearings_replaced"];
+        json["connecting_rod_bearings_replaced"] ?? '';
     reasonIfNotConnectingRodBearingsReplaced.text =
-        json["reason_if_not_connecting_rod_bearings_replaced"];
-    rodBearingCapsTorqued.value = json["rod_bearing_caps_torqued"];
-    rodBearingCapsTorquedSpec.text = json["rod_bearing_caps_torqued_spec"];
+        json["reason_if_not_connecting_rod_bearings_replaced"] ?? '';
+    rodBearingCapsTorqued.value = json["rod_bearing_caps_torqued"] ?? '';
+    rodBearingCapsTorquedSpec.text =
+        json["rod_bearing_caps_torqued_spec"] ?? '';
     connectingRodSideClearanceChecked.value =
-        json["connecting_rod_side_clearance_checked"];
+        json["connecting_rod_side_clearance_checked"] ?? '';
     connectingRodSideClearanceCheckedSpec.text =
-        json["connecting_rod_side_clearance_checked_spec"];
-    // actualReading: json["actual_reading"] == null
-    // ? []
-    //     : List<String>.from(json["actual_reading"]!.map((x) => x)),
-    pistonPins.value = json["piston_pins"];
-    // indicateNewPistons: json["indicate_new_pistons"] == null
-    // ? []
-    //     : List<String>.from(json["indicate_new_pistons"]!.map((x) => x)),
-    pistons.value = json["pistons"];
-    // indicateNewPins: json["indicate_new_pins"] == null
-    // ? []
-    //     : List<String>.from(json["indicate_new_pins"]!.map((x) => x)),
-    linerPacks.value = json["liner_packs"];
-    // ringClearancesLinear: json["ring_clearances_in_liners"] == null
-    // ? []
-    //     : List<RingClearances>.from(json["ring_clearances_in_liners"]!
-    //     .map((x) => RingClearances.fromJson(x))),
-    // ringClearancesPistons: json["ring_clearances_in_pistons"] == null
-    // ? []
-    //     : List<RingClearances>.from(json["ring_clearances_in_pistons"]!
-    //     .map((x) => RingClearances.fromJson(x))),
-    cylinderLiners.value = json["cylinder_liners"];
-    // indicateNewLiners: json["indicate_new_liners"] == null
-    // ? []
-    //     : List<String>.from(json["indicate_new_liners"]!.map((x) => x)),
-    linerORingsReplaced.value = json["liner_o_rings_replaced"];
-    cylinderHeads.value = json["cylinder_heads"];
-    cylinderHeadsBool.value = json["cylinder_heads_bool"];
-    // indicateCylinderHeads: json["indicate_cylinder_heads"] == null
-    // ? []
-    //     : List<String>.from(json["indicate_cylinder_heads"]!.map((x) => x)),
-    cylinderHeadSpec.text = json["cylinder_head_spec"];
-    rockerShaftAssemblies.value = json["rocker_shaft_assemblies"];
-    // rockerShaftAssembliesIndicateWhichOne:
-    // json["rocker_shaft_assemblies_indicate_which_one"] == null
-    // ? []
-    //     : List<String>.from(
-    // json["rocker_shaft_assemblies_indicate_which_one"]!
-    //     .map((x) => x)),
-    rockerShaftAssembliesBool.value = json["rocker_shaft_assemblies_bool"];
-    rockerShaftAssembliesSpec.text = json["rocker_shaft_assemblies_spec"];
-    pushRods.value = json["push_rods"];
-    camshaft.value = json["camshaft"];
-    camshaftBearingReplaced.value = json["camshaft_bearing_replaced"];
-    camshaftBearingTorqued.value = json["camshaft_bearing_torqued"];
-    camshaftBearingTorquedSpec.text = json["camshaft_bearing_torqued_spec"];
-    camshaftEndPlayChecked.value = json["camshaft_end_play_checked"];
-    camshaftEndPlayCheckedSpec.text = json["camshaft_end_play_checked_spec"];
-    camshaftEndPlayCheckActual.text = json["camshaft_end_play_check_actual"];
-    camFollowers.value = json["cam_followers"];
-    bridges.value = json["bridges"];
-    bridgesSettings.text = json["bridges_settings"];
-    valveIntake.text = json["valve_intake"];
-    valveExhaust.text = json["valve_exhaust"];
-    valveInjector.text = json["valve_injector"];
-    // injectorTrimCodes: json["injector_trim_codes"] == null
-    // ? []
-    //     : List<String>.from(json["injector_trim_codes"]!.map((x) => x)),
+        json["connecting_rod_side_clearance_checked_spec"] ?? '';
+    actualReading.addAll(json['actual_reading'] == null
+        ? []
+        : List<TextEditingController>.from(
+            json['actual_reading']!.map((x) => TextEditingController())));
+    pistonPins.value = json["piston_pins"] ?? '';
+    indicateNewPistons.addAll(json['indicate_new_pistons'] == null
+        ? []
+        : List<TextEditingController>.from(
+            json['indicate_new_pistons']!.map((x) => TextEditingController())));
+    pistons.value = json["pistons"] ?? '';
+    indicateNewPins.addAll(json['indicate_new_pins'] == null
+        ? []
+        : List<TextEditingController>.from(
+            json['indicate_new_pins']!.map((x) => TextEditingController())));
+    linerPacks.value = json["liner_packs"] ?? '';
+    ringClearancesInLiners.addAll(_test(json['ring_clearances_in_liners']));
+    ringClearancesInPistons.addAll(_test(json['ring_clearances_pistons']));
+    cylinderLiners.value = json["cylinder_liners"] ?? '';
+    indicateNewLiners.addAll(json['indicate_new_liners'] == null
+        ? []
+        : List<TextEditingController>.from(
+            json['indicate_new_liners']!.map((x) => TextEditingController())));
+    linerORingsReplaced.value = json["liner_o_rings_replaced"] ?? '';
+    cylinderHeads.value = json["cylinder_heads"] ?? '';
+    cylinderHeadsBool.value = json["cylinder_heads_bool"] ?? '';
+    indicateCylinderHeads.addAll(json['indicate_cylinder_heads'] == null
+        ? []
+        : List<TextEditingController>.from(json['indicate_cylinder_heads']!
+            .map((x) => TextEditingController())));
+    cylinderHeadSpec.text = json["cylinder_head_spec"] ?? '';
+    rockerShaftAssemblies.value = json["rocker_shaft_assemblies"] ?? '';
+    rockerShaftAssembliesIndicateWhichOne.addAll(
+        json['rocker_shaft_assemblies_indicate_which_one'] == null
+            ? []
+            : List<TextEditingController>.from(
+                json['rocker_shaft_assemblies_indicate_which_one']!
+                    .map((x) => TextEditingController())));
+    rockerShaftAssembliesBool.value =
+        json["rocker_shaft_assemblies_bool"] ?? '';
+    rockerShaftAssembliesSpec.text = json["rocker_shaft_assemblies_spec"] ?? '';
+    pushRods.value = json["push_rods"] ?? '';
+    camshaft.value = json["camshaft"] ?? '';
+    camshaftBearingReplaced.value = json["camshaft_bearing_replaced"] ?? '';
+    camshaftBearingTorqued.value = json["camshaft_bearing_torqued"] ?? '';
+    camshaftBearingTorquedSpec.text =
+        json["camshaft_bearing_torqued_spec"] ?? '';
+    camshaftEndPlayChecked.value = json["camshaft_end_play_checked"] ?? '';
+    camshaftEndPlayCheckedSpec.text =
+        json["camshaft_end_play_checked_spec"] ?? '';
+    camshaftEndPlayCheckActual.text =
+        json["camshaft_end_play_check_actual"] ?? '';
+    camFollowers.value = json["cam_followers"] ?? '';
+    bridges.value = json["bridges"] ?? '';
+    bridgesSettings.text = json["bridges_settings"] ?? '';
+    valveIntake.text = json["valve_intake"] ?? '';
+    valveExhaust.text = json["valve_exhaust"] ?? '';
+    valveInjector.text = json["valve_injector"] ?? '';
+    injectorTrimCodes.addAll(json['injector_trim_codes'] == null
+        ? []
+        : List<TextEditingController>.from(
+            json['injector_trim_codes']!.map((x) => TextEditingController())));
+  }
+
+  List<List<TextEditingController>> _test(dynamic data) {
+    List<List<TextEditingController>> test = [];
+    for (dynamic d in data) {
+      List<String> temp = d.cast<String>();
+      List<TextEditingController> temp2 = [];
+      for (dynamic t in temp) {
+        temp2.add(TextEditingController(text: t));
+      }
+      test.add(temp2);
+    }
+    return test;
   }
 }
 
@@ -429,7 +551,7 @@ class GearTrain {
   final betweenEachMatingGearsBacklash = TextEditingController();
   final spindleTorqueBacklash = TextEditingController();
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "gear": gear.value,
         "cam_gear": camGear.value,
         "accessory_gear": accessoryGear.value,
@@ -447,22 +569,22 @@ class GearTrain {
         "spindle_torque_backlash": spindleTorqueBacklash.text
       };
 
-  void fromJson(Map<String, dynamic> json) {
-    gear.value = json["gear"];
-    camGear.value = json["cam_gear"];
-    accessoryGear.value = json["accessory_gear"];
-    idlerGear.value = json["ideal_gear"];
-    indicateBacklash.value = json["indicate_backlash"];
-    betweenEachMatingGears.value = json["between_each_mating_gears"];
-    spindleTorque.value = json["spindle_torque"];
-    gearBacklash.text = json["gear_backlash"];
-    camGearBacklash.text = json["cam_gear_backlash"];
-    accessoryGearBacklash.text = json["accessory_gear_backlash"];
-    idlerGearBacklash.text = json["ideal_gear_backlash"];
-    indicateBacklashBacklash.text = json["indicate_backlash_backlash"];
+  fromJson(Map<String, dynamic> json) {
+    gear.value = json["gear"] ?? '';
+    camGear.value = json["cam_gear"] ?? '';
+    accessoryGear.value = json["accessory_gear"] ?? '';
+    idlerGear.value = json["ideal_gear"] ?? '';
+    indicateBacklash.value = json["indicate_backlash"] ?? '';
+    betweenEachMatingGears.value = json["between_each_mating_gears"] ?? '';
+    spindleTorque.value = json["spindle_torque"] ?? '';
+    gearBacklash.text = json["gear_backlash"] ?? '';
+    camGearBacklash.text = json["cam_gear_backlash"] ?? '';
+    accessoryGearBacklash.text = json["accessory_gear_backlash"] ?? '';
+    idlerGearBacklash.text = json["ideal_gear_backlash"] ?? '';
+    indicateBacklashBacklash.text = json["indicate_backlash_backlash"] ?? '';
     betweenEachMatingGearsBacklash.text =
-        json["between_each_mating_gears_backlash"];
-    spindleTorqueBacklash.text = json["spindle_torque_backlash"];
+        json["between_each_mating_gears_backlash"] ?? '';
+    spindleTorqueBacklash.text = json["spindle_torque_backlash"] ?? '';
   }
 }
 
@@ -511,7 +633,7 @@ class EngineAssemblyPartsExchangeCatalog {
       mechanic2CrankShaftEndPlay = TextEditingController(),
       comments = TextEditingController();
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         'oil_pump': oilPump.value,
         'oil_water_pump': oilWaterPump.value,
         'aux_water_pump': auxWaterPump.value,
@@ -560,58 +682,54 @@ class EngineAssemblyPartsExchangeCatalog {
         'comments': comments.text.trim(),
       };
 
-  void fromJson(Map<String, dynamic> json) {
-    oilPump.value = json['oil_pump'] as String?;
-    oilWaterPump.value = json['oil_water_pump'] as String?;
-    auxWaterPump.value = json['aux_water_pump'] as String?;
-    starter.value = json['starter'] as String?;
-    waterGate.value = json['water_gate'] as String?;
-    trubo.value = json['trubo'] as String?;
-    oilFilters.value = json['oil_filters'] as String?;
-    airFilters.value = json['air_filters'] as String?;
-    airBelts.value = json['air_belts'] as String?;
-    accessoryDrive.value = json['accessory_drive'] as String?;
-    interCooler.value = json['inter_cooler'] as String?;
-    fuelInjectors.value = json['fuel_injectors'] as String?;
-    bridges.value = json['bridges'] as String?;
-    scavengePump.value = json['scavenge_pump'] as String?;
-    fuelFilters.value = json['fuel_filters'] as String?;
-    fuelPump.value = json['fuel_pump'] as String?;
-    preLubePump.value = json['pre_lube_pump'] as String?;
-    preLubeMotor.value = json['pre_lube_motor'] as String?;
-    carburetors.value = json['carburetors'] as String?;
-    fuelRegulators.value = json['fuel_regulators'] as String?;
-    preChamber.value = json['pre_chamber'] as String?;
-    regulators.value = json['regulators'] as String?;
-    governor.value = json['governor'] as String?;
-    governorLinkages.value = json['governor_linkages'] as String?;
-    preChamberCup.value = json['pre_chamber_cup'] as String?;
-    sparkPlugs.value = json['spark_plugs'] as String?;
-    sparkPlugCarriers.value = json['spark_plug_carriers'] as String?;
-    magneto.value = json['magneto'] as String?;
-    coils.value = json['coils'] as String?;
-    extension.value = json['extension'] as String?;
-    ignitionHarness.value = json['ignition_harness'] as String?;
-    mechanic1MainBearingCap.text =
-        json['mechanic1_main_bearing_cap'] as String? ?? '';
-    mechanic2MainBearingCap.text =
-        json['mechanic2_main_bearing_cap'] as String? ?? '';
+  fromJson(Map<String, dynamic> json) {
+    oilPump.value = json['oil_pump'] ?? '';
+    oilWaterPump.value = json['oil_water_pump'] ?? '';
+    auxWaterPump.value = json['aux_water_pump'] ?? '';
+    starter.value = json['starter'] ?? '';
+    waterGate.value = json['water_gate'] ?? '';
+    trubo.value = json['trubo'] ?? '';
+    oilFilters.value = json['oil_filters'] ?? '';
+    airFilters.value = json['air_filters'] ?? '';
+    airBelts.value = json['air_belts'] ?? '';
+    accessoryDrive.value = json['accessory_drive'] ?? '';
+    interCooler.value = json['inter_cooler'] ?? '';
+    fuelInjectors.value = json['fuel_injectors'] ?? '';
+    bridges.value = json['bridges'] ?? '';
+    scavengePump.value = json['scavenge_pump'] ?? '';
+    fuelFilters.value = json['fuel_filters'] ?? '';
+    fuelPump.value = json['fuel_pump'] ?? '';
+    preLubePump.value = json['pre_lube_pump'] ?? '';
+    preLubeMotor.value = json['pre_lube_motor'] ?? '';
+    carburetors.value = json['carburetors'] ?? '';
+    fuelRegulators.value = json['fuel_regulators'] ?? '';
+    preChamber.value = json['pre_chamber'] ?? '';
+    regulators.value = json['regulators'] ?? '';
+    governor.value = json['governor'] ?? '';
+    governorLinkages.value = json['governor_linkages'] ?? '';
+    preChamberCup.value = json['pre_chamber_cup'] ?? '';
+    sparkPlugs.value = json['spark_plugs'] ?? '';
+    sparkPlugCarriers.value = json['spark_plug_carriers'] ?? '';
+    magneto.value = json['magneto'] ?? '';
+    coils.value = json['coils'] ?? '';
+    extension.value = json['extension'] ?? '';
+    ignitionHarness.value = json['ignition_harness'] ?? '';
+    mechanic1MainBearingCap.text = json['mechanic1_main_bearing_cap'] ?? '';
+    mechanic2MainBearingCap.text = json['mechanic2_main_bearing_cap'] ?? '';
     mechanic1ConnectingRodTorqued.text =
-        json['mechanic1_connecting_rod_torqued'] as String? ?? '';
+        json['mechanic1_connecting_rod_torqued'] ?? '';
     mechanic2ConnectingRodTorqued.text =
-        json['mechanic2_connecting_rod_torqued'] as String? ?? '';
+        json['mechanic2_connecting_rod_torqued'] ?? '';
     mechanic1ConnectingRodSide.text =
-        json['mechanic1_connecting_rod_side'] as String? ?? '';
+        json['mechanic1_connecting_rod_side'] ?? '';
     mechanic2ConnectingRodSide.text =
-        json['mechanic2_connecting_rod_side'] as String? ?? '';
-    mechanic1AllInternalPlugs.text =
-        json['mechanic1_all_internal_plugs'] as String? ?? '';
-    mechanic2AllInternalPlugs.text =
-        json['mechanic2_all_internal_plugs'] as String? ?? '';
+        json['mechanic2_connecting_rod_side'] ?? '';
+    mechanic1AllInternalPlugs.text = json['mechanic1_all_internal_plugs'] ?? '';
+    mechanic2AllInternalPlugs.text = json['mechanic2_all_internal_plugs'] ?? '';
     mechanic1CrankShaftEndPlay.text =
-        json['mechanic1_crank_shaft_end_play'] as String? ?? '';
+        json['mechanic1_crank_shaft_end_play'] ?? '';
     mechanic2CrankShaftEndPlay.text =
-        json['mechanic2_crank_shaft_end_play'] as String? ?? '';
-    comments.text = json['comments'] as String? ?? '';
+        json['mechanic2_crank_shaft_end_play'] ?? '';
+    comments.text = json['comments'] ?? '';
   }
 }

@@ -170,66 +170,72 @@ class GearTrain extends StatelessWidget {
             const ContainerHeading(heading: 'Gear Train'),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.gear,
+              selectedOption: controller.overHaulReport.gearTrain.gear,
               heading: 'Gear',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.gearBacklash,
+              controller: controller.overHaulReport.gearTrain.gearBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.camGear,
+              selectedOption: controller.overHaulReport.gearTrain.camGear,
               heading: 'Cam Gear (s)',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.camGearBacklash,
+              controller: controller.overHaulReport.gearTrain.camGearBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.accessoryGear,
+              selectedOption: controller.overHaulReport.gearTrain.accessoryGear,
               heading: 'Accessory Gear (s)',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.accessoryGearBacklash,
+              controller:
+                  controller.overHaulReport.gearTrain.accessoryGearBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.idlerGear,
+              selectedOption: controller.overHaulReport.gearTrain.idlerGear,
               heading: 'Idler Gear (s)',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.idlerGearBacklash,
+              controller: controller.overHaulReport.gearTrain.idlerGearBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.indicateBacklash,
+              selectedOption:
+                  controller.overHaulReport.gearTrain.indicateBacklash,
               heading: 'Indicate Backlash',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.indicateBacklashBacklash,
+              controller:
+                  controller.overHaulReport.gearTrain.indicateBacklashBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.betweenEachMatingGears,
+              selectedOption:
+                  controller.overHaulReport.gearTrain.betweenEachMatingGears,
               heading: 'Between each Mating gears',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.betweenEachMatingGearsBacklash,
+              controller: controller
+                  .overHaulReport.gearTrain.betweenEachMatingGearsBacklash,
             ),
             CustomRadioButton(
               options: const ['NEW', 'RE-USED'],
-              selectedOption: controller.gearTrain.spindleTorque,
+              selectedOption: controller.overHaulReport.gearTrain.spindleTorque,
               heading: 'Spindle Torque',
             ),
             ReUsableTextField(
               hintText: 'Back Lash',
-              controller: controller.gearTrain.spindleTorqueBacklash,
+              controller:
+                  controller.overHaulReport.gearTrain.spindleTorqueBacklash,
             ),
           ],
         ),

@@ -9,8 +9,6 @@ import 'package:mechanix/views/profile.dart';
 import 'package:mechanix/views/reports.dart';
 import 'package:mechanix/views/view_task.dart';
 
-import '../add_task/engine_overhawl_report_assembly/add_assembly_report.dart';
-
 class RightSideWidget extends StatelessWidget {
   const RightSideWidget({
     super.key,
@@ -47,7 +45,10 @@ class RightSideWidget extends StatelessWidget {
           AddV8ReportScreen(
               sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V16'),
           // 5
-          AddAssemblyReportScreen(sideMenu: sideMenu, isUpdatingTask: false),
+          AddV8ReportScreen(
+              sideMenu: sideMenu,
+              isUpdatingTask: false,
+              reportType: 'L7042GL C-14871'),
           // 6
           ViewAllTasksScreen(sideMenu: sideMenu),
           // 7

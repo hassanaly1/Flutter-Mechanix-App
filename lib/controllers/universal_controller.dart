@@ -13,6 +13,7 @@ import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/models/report_model.dart';
 import 'package:mechanix/services/compressor_task_service.dart';
 import 'package:mechanix/services/generator_task_service.dart';
+import 'package:mechanix/services/overhaul_report_service.dart';
 import 'package:mechanix/services/report_service.dart';
 
 class UniversalController extends GetxController {
@@ -25,13 +26,14 @@ class UniversalController extends GetxController {
   // Tasks
   List<Payload> generatorTasks = <Payload>[].obs;
   List<CompressorTaskModel> compressorTasks = <CompressorTaskModel>[].obs;
-  List<OverHaulReport> overhaulReports = <OverHaulReport>[].obs;
+  List<OverHaulReport> overhaulReportsTasks = <OverHaulReport>[].obs;
 
   List<ReportModel> reports = <ReportModel>[].obs;
   List<EngineModel> engines = <EngineModel>[].obs;
 
   final GeneratorTaskService generatorTaskService = GeneratorTaskService();
   final CompressorTaskService compressorTaskService = CompressorTaskService();
+  OverhaulReportServices overhaulReportServices = OverhaulReportServices();
   final ReportService reportService = ReportService();
 
   XFile? userImage;
@@ -54,15 +56,30 @@ class UniversalController extends GetxController {
   ScrollController scrollControllerForCompressor = ScrollController();
   final RxInt currentPage = 1.obs;
 
+  final customerEngineInfo = CustomerEngineInfo();
+  late EngineAssembly engineAssembly;
+  late EngineAssemblyReportCont engineAssemblyReportCont;
+  final engineAssemblyPartsExchangeCatalog =
+      EngineAssemblyPartsExchangeCatalog();
+  final gearTrain = GearTrain();
+
   @override
   void onInit() async {
     super.onInit();
     userInfo.value = storage.read('user_info') ?? {};
     userImageURL.value = storage.read('user_info')['profile'];
     debugPrint('UserImageAtStart: $userImageURL');
+    engineAssembly = EngineAssembly(count: numberOfControllers.value);
+    engineAssemblyReportCont =
+        EngineAssemblyReportCont(count: numberOfControllers.value);
+    // await getAllGeneratorTasks();
+    // await getAllCompressorTasks();
+    var result = await getAllOverhaulTasks();
+    for (var element in result) {
+      print(element.customerEngineInfo.customer.text.trim());
+    }
+    // print(result[1].finalToJson());
 
-    await getAllGeneratorTasks();
-    await getAllCompressorTasks();
     // await getAllReports();
     scrollControllerForGenerator.addListener(() {
       if (scrollControllerForGenerator.position.pixels ==
@@ -157,6 +174,25 @@ class UniversalController extends GetxController {
     } finally {
       isTasksAreLoading.value = false;
     }
+  }
+
+  Future<List<OverHaulReport>> getAllOverhaulTasks(
+      {String? searchName, int? page}) async {
+    debugPrint('Page ${page ?? currentPage.value} Overhaul tasks called.');
+    try {
+      isTasksAreLoading.value = true;
+      List<dynamic> data = await overhaulReportServices.getAllTasks(
+        searchString: searchName ?? '',
+        token: storage.read('token'),
+        page: page ?? currentPage.value,
+      );
+      return OverHaulReport.fromJsonList(data);
+    } catch (e) {
+      debugPrint('Error fetching OverhawlTasks: $e');
+    } finally {
+      isTasksAreLoading.value = false;
+    }
+    return [];
   }
 
   Future<void> getAllReports({String? searchName, String? date}) async {

@@ -29,7 +29,7 @@ class ApiEndPoints {
   //OverHaul Reports
   static String createOverhaulReportUrl =
       '/api/engineoverhual/createengineoverhual';
-  static String getOverhaulReportUrl = '/api/report/getreportlistpagniation';
+  static String getOverhaulReportUrl = '/api/engineoverhual/getengineoverhual';
   static String getOverhaulReportByIdUrl = '/api/report/getreportbyid';
   static String deleteOverhaulReportUrl = '/api/report/deletereportbyid';
 
