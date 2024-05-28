@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Mechanix',
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -35,9 +34,6 @@ class MyApp extends StatelessWidget {
           : storage.read('token') != null
               ? const DashboardScreen()
               : LoginScreen(),
-      // initialBinding: BindingsBuilder(() {
-      //   Get.put(UniversalController());
-      // }),
     );
   }
 }
