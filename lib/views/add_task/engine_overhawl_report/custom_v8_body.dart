@@ -7,7 +7,7 @@ import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/models/compressor_model.dart';
-import 'package:mechanix/views/add_task/engine_overhawl_report_v8/reusable_widgets.dart';
+import 'package:mechanix/views/add_task/engine_overhawl_report/reusable_widgets.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 
@@ -29,11 +29,11 @@ class CustomV8Body1 extends StatefulWidget {
 
 class _CustomV8Body1State extends State<CustomV8Body1> {
   final UniversalController universalController = Get.find();
-  late ReportV8Controller controller;
+  late OverhaulReportController controller;
 
   @override
   void initState() {
-    controller = Get.put(ReportV8Controller());
+    controller = Get.find<OverhaulReportController>();
     super.initState();
   }
 
@@ -45,7 +45,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
 
   @override
   Widget build(BuildContext context) {
-    final ReportV8Controller controller = Get.find();
+    final OverhaulReportController controller = Get.find();
     final UniversalController universalController = Get.find();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
@@ -56,94 +56,106 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
           topRight: Radius.circular(32.0),
         ),
       ),
-      child: ListView(
-        children: [
-          ///Submit
-          Obx(
-            () => CustomButton(
-                isLoading: controller.isLoading.value,
-                buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
-                onTap: () async {
-                  await controller
-                      .addOverhaulReportTask(widget.sideMenuController);
-                }),
-          ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: Obx(
+          () => CustomButton(
+              isLoading: controller.isLoading.value,
+              buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
+              onTap: () async {
+                widget.isTaskUpdating
+                    ? await controller.updateOverhaulReportTask()
+                    : await controller
+                        .addOverhaulReportTask(widget.sideMenuController);
+              }),
+        ),
+        body: ListView(
+          children: [
+            ///Submit
 
-          /// General Info
-          GeneralInfo(controller: controller),
+            /// General Info
+            GeneralInfo(controller: controller),
 
-          /// Engine Block
-          EngineBlock(
-              controller: controller, universalController: universalController),
+            /// Engine Block
+            EngineBlock(
+                controller: controller,
+                universalController: universalController),
 
-          /// Engine Assembly Report
-          EngineAssemblyReport(controller: controller),
+            /// Engine Assembly Report
+            EngineAssemblyReport(controller: controller),
 
-          /// Connecting Rods
-          ConnectingRods(
-              controller: controller, universalController: universalController),
+            /// Connecting Rods
+            ConnectingRods(
+                controller: controller,
+                universalController: universalController),
 
-          /// Piston Pins
-          PistonPins(
-              controller: controller, universalController: universalController),
+            /// Piston Pins
+            PistonPins(
+                controller: controller,
+                universalController: universalController),
 
-          /// Ring Clearances in Liners
-          RingClearancesInLiners(controller: controller),
+            /// Ring Clearances in Liners
+            RingClearancesInLiners(controller: controller),
 
-          /// Ring Clearances in Pistons
-          RingClearancesInPistons(controller: controller),
+            /// Ring Clearances in Pistons
+            RingClearancesInPistons(controller: controller),
 
-          /// Cylinder Liners
-          CylinderLiners(
-              controller: controller, universalController: universalController),
+            /// Cylinder Liners
+            CylinderLiners(
+                controller: controller,
+                universalController: universalController),
 
-          /// Cylinder Heads
-          CylinderHeads(
-              controller: controller, universalController: universalController),
+            /// Cylinder Heads
+            CylinderHeads(
+                controller: controller,
+                universalController: universalController),
 
-          /// Rocker Shaft Assemblies
-          RockerShaftAssemblies(
-              controller: controller, universalController: universalController),
+            /// Rocker Shaft Assemblies
+            RockerShaftAssemblies(
+                controller: controller,
+                universalController: universalController),
 
-          /// Push Rods
-          PushRods(controller: controller),
+            /// Push Rods
+            PushRods(controller: controller),
 
-          /// Camshaft
-          Camshaft(controller: controller),
+            /// Camshaft
+            Camshaft(controller: controller),
 
-          /// Cam Followers
-          CamFollowers(controller: controller),
+            /// Cam Followers
+            CamFollowers(controller: controller),
 
-          /// Bridges
-          Bridges(controller: controller),
+            /// Bridges
+            Bridges(controller: controller),
 
-          /// Valves
-          Valves(controller: controller),
+            /// Valves
+            Valves(controller: controller),
 
-          /// Injector Trim Codes
-          InjectorTrimCodes(
-              universalController: universalController, controller: controller),
+            /// Injector Trim Codes
+            InjectorTrimCodes(
+                universalController: universalController,
+                controller: controller),
 
-          ///Gear Train
-          GearTrain(controller: controller),
+            ///Gear Train
+            GearTrain(controller: controller),
 
-          ///Engine Assembly Report Cont
-          buildEngineAssemblyReportSection(controller),
+            ///Engine Assembly Report Cont
+            buildEngineAssemblyReportSection(controller),
 
-          ///Mechanics Questions
-          MechanicsQuestionare(controller: controller),
+            ///Mechanics Questions
+            MechanicsQuestionare(controller: controller),
 
-          // ///Submit
-          // Obx(
-          //   () => CustomButton(
-          //       isLoading: controller.isLoading.value,
-          //       buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
-          //       onTap: () async {
-          //         await controller
-          //             .addOverhaulReportTask(widget.sideMenuController);
-          //       }),
-          // )
-        ],
+            // ///Submit
+            // Obx(
+            //   () => CustomButton(
+            //       isLoading: controller.isLoading.value,
+            //       buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
+            //       onTap: () async {
+            //         await controller
+            //             .addOverhaulReportTask(widget.sideMenuController);
+            //       }),
+            // )
+          ],
+        ),
       ),
     );
   }
@@ -155,7 +167,7 @@ class GearTrain extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {

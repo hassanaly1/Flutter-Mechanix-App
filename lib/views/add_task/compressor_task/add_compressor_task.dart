@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/compressor_task_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/views/add_task/compressor_task/cusom_compressor_body.dart';
-import 'package:mechanix/views/add_task/generator_task/scan_qrcode.dart';
 
 class CompressorTaskScreen extends StatefulWidget {
   final bool isUpdatingTask;
@@ -111,31 +111,15 @@ class TopSection extends StatelessWidget {
               width: context.width,
               child: ReUsableContainer(
                 color: AppColors.primaryColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const IconButton(
-                        onPressed: null,
-                        icon: Icon(Icons.qr_code_scanner_rounded,
-                            color: Colors.transparent)),
-                    // Expanded(
-                    //   child: CustomTextWidget(
-                    //     text: controller.engineBrandName.value == ''
-                    //         ? 'CAT 3600 SERVICE'
-                    //         : controller.engineBrandName.value,
-                    //     fontSize: 16.0,
-                    //     maxLines: 2,
-                    //     textAlign: TextAlign.center,
-                    //     fontWeight: FontWeight.w600,
-                    //   ),
-                    // ),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(() => const ScanQrCodeScreen(),
-                              transition: Transition.rightToLeft);
-                        },
-                        icon: const Icon(Icons.qr_code_scanner_rounded))
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: CustomTextWidget(
+                    text: 'Compressor Task',
+                    fontSize: 16.0,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

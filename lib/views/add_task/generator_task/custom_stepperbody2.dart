@@ -926,9 +926,14 @@ class NumberWithTextField extends StatelessWidget {
   final String number;
   final String? hintText;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
 
   const NumberWithTextField(
-      {super.key, required this.number, this.controller, this.hintText});
+      {super.key,
+      required this.number,
+      this.controller,
+      this.hintText,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
@@ -936,7 +941,7 @@ class NumberWithTextField extends StatelessWidget {
       title: number,
       hintText: hintText ?? 'Temperature',
       controller: controller,
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType ?? TextInputType.number,
     );
   }
 }

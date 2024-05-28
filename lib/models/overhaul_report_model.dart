@@ -6,15 +6,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class OverHaulReport {
+class OverHaulReportModel {
   final String type;
+  late String? taskId;
   late CustomerEngineInfo customerEngineInfo;
   late EngineAssembly engineAssembly;
   late EngineAssemblyReportCont engineAssemblyReportCont;
   late GearTrain gearTrain;
   late EngineAssemblyPartsExchangeCatalog engineAssemblyPartsExchangeCatalog;
 
-  OverHaulReport({required this.type}) {
+  OverHaulReportModel({required this.type}) {
     int count = type == 'V8'
         ? 8
         : type == 'V12'
@@ -26,6 +27,7 @@ class OverHaulReport {
     customerEngineInfo = CustomerEngineInfo();
     engineAssembly = EngineAssembly(count: count);
     engineAssemblyReportCont = EngineAssemblyReportCont(count: count);
+    taskId = engineAssemblyReportCont.id.value;
     gearTrain = GearTrain();
     engineAssemblyPartsExchangeCatalog = EngineAssemblyPartsExchangeCatalog();
   }
@@ -42,88 +44,44 @@ class OverHaulReport {
     });
   }
 
-  static List<OverHaulReport> fromJsonList(List<dynamic> jsonList) {
-    List<OverHaulReport> list = [];
+  static List<OverHaulReportModel> fromJsonList(List<dynamic> jsonList) {
+    List<OverHaulReportModel> list = [];
     for (var json in jsonList) {
-      OverHaulReport overHaulReport = OverHaulReport(type: json['type']);
-      overHaulReport.customerEngineInfo.fromJson(json['customer_engine_info']);
-      // overHaulReport.engineAssembly.fromJson(json);
-      // overHaulReport.engineAssemblyReportCont.fromJson(json);
-      // overHaulReport.gearTrain.fromJson(json);
-      // overHaulReport.engineAssemblyPartsExchangeCatalog.fromJson(json);
+      OverHaulReportModel overHaulReport = OverHaulReportModel(
+          type: json['engine_assembly_report_cont']['type']);
+      overHaulReport.customerEngineInfo.fromJson(
+        json['customer_engine_info'] ?? {},
+      );
+      overHaulReport.engineAssembly.fromJson(
+        json['engine_assembly'] ?? {},
+      );
+      overHaulReport.engineAssemblyReportCont.fromJson(
+        json['engine_assembly_report_cont'] ?? {},
+      );
+      overHaulReport.gearTrain.fromJson(
+        json['gear_train'] ?? {},
+      );
+
+      overHaulReport.engineAssemblyPartsExchangeCatalog.fromJson(
+        json['engine_assembly_parts_exchange_catalog'] ?? {},
+      );
+      // overHaulReport.customerEngineInfo.fromJson(
+      //   json['customer_engine_info'] ?? {},
+      // );
+      // overHaulReport.engineAssembly.fromJson(json['engine_assembly']);
+      // overHaulReport.engineAssemblyReportCont
+      //     .fromJson(json['engine_assembly_report_cont']);
+      // overHaulReport.gearTrain.fromJson(json['gear_train'][0]);
+      // overHaulReport.engineAssemblyPartsExchangeCatalog
+      //     .fromJson(json['engine_assembly_parts_exchange_catalog']);
       list.add(overHaulReport);
     }
-    // customerEngineInfo.fromJson(json)
-    // return jsonList
-    //     .map((json) => OverHaulReport(type: json['type']))
-    //     .toList();
     return list;
   }
 }
 
-// String? id;
-// CustomerEngineInfo? customerEngineInfo;
-// EngineAssembly? engineAssembly;
-// EngineAssemblyReportCont? engineAssemblyReportCont;
-// GearTrain? gearTrain;
-// EngineAssemblyPartsExchangeCatalog? engineAssemblyPartsExchangeCatalog;
-// String? type;
-//
-// OverHaulReport({
-//   this.id,
-//   this.customerEngineInfo,
-//   this.engineAssembly,
-//   this.engineAssemblyReportCont,
-//   this.gearTrain,
-//   this.engineAssemblyPartsExchangeCatalog,
-//   this.type,
-// });
-//
-// // factory OverHaulReport.fromJson(Map<String, dynamic> json) {
-// //   return OverHaulReport(
-// //     id: json['_id'],
-// //     customerEngineInfo: json['customer_engine_info'] != null
-// //         ? CustomerEngineInfo.fromJson(json['customer_engine_info'])
-// //         : null,
-// //     engineAssembly: json['engine_assembly'] != null
-// //         ? EngineAssembly.fromJson(json['engine_assembly'])
-// //         : null,
-// //     engineAssemblyReportCont: json['engine_assembly_report_cont'] != null
-// //         ? EngineAssemblyReportCont.fromJson(
-// //             json['engine_assembly_report_cont'])
-// //         : null,
-// //     gearTrain: json['gear_train'] != null
-// //         ? GearTrain.fromJson(json['gear_train'])
-// //         : null,
-// //     engineAssemblyPartsExchangeCatalog:
-// //         json['engine_assembly_parts_exchange_catalog'] != null
-// //             ? EngineAssemblyPartsExchangeCatalog.fromJson(
-// //                 json['engine_assembly_parts_exchange_catalog'])
-// //             : null,
-// //     type: json['type'],
-// //   );
-// // }
-//
-// fromJson(Map<String, dynamic> json) {
-//   customerEngineInfo = json['customer_engine_info'] != null
-//       ? CustomerEngineInfo().fromJson(json['customer_engine_info'])
-//       : null;
-// }
-//
-// String finalToJson() {
-//   return jsonEncode({
-//     'customer_engine_info': customerEngineInfo?.toJson(),
-//     'engine_assembly': engineAssembly?.toJson(),
-//     'engine_assembly_report_cont': engineAssemblyReportCont?.toJson(),
-//     'engine_assembly_parts_exchange_catalog':
-//         engineAssemblyPartsExchangeCatalog?.toJson(),
-//     "type": type,
-//     "gear_train": gearTrain?.toJson()
-//   });
-// }
-// }
-
 class CustomerEngineInfo {
+  final id = Rx<String?>(null);
   final customer = TextEditingController(),
       workorder = TextEditingController(),
       location = TextEditingController(),
@@ -140,21 +98,21 @@ class CustomerEngineInfo {
   DateTime? date;
 
   fromJson(Map<String, dynamic> json) {
+    id.value = json["_id"];
     customer.text = json["customer"] ?? '';
     workorder.text = json["workorder"] ?? '';
     location.text = json["location"] ?? '';
-    // lsd.text = json["lsd"];
-    // unit.text = json["unit"];
-    // unitHours.text = json["unit_hours"];
-    // // json["date"] == null ? null : DateTime.parse(json["date"]);
-    // engineMake.text = json["engine_make"];
-    // engineModel.text = json["engine_model"];
-    // engineSerial.text = json["engine_serial"];
-    // engineArrangement.text = json["engine_arrangement"];
-    // customerContact.text = json["customer_contact"];
-    // mechanic1.text = json["mechanic1"];
-    // mechanic2.text = json["mechanic2"];
-    // List<String>.from(json["mechanic"]!.map((x) => x))
+    lsd.text = json["lsd"];
+    unit.text = json["unit"];
+    unitHours.text = json["unit_hours"];
+    // json["date"] == null ? null : DateTime.parse(json["date"]);
+    engineMake.text = json["engine_make"];
+    engineModel.text = json["engine_model"];
+    engineSerial.text = json["engine_serial"];
+    engineArrangement.text = json["engine_arrangement"];
+    customerContact.text = json["customer_contact"];
+    mechanic1.text = json["mechanic1"];
+    mechanic2.text = json["mechanic2"];
   }
 
   Map<String, dynamic> toJson() => {
@@ -173,8 +131,6 @@ class CustomerEngineInfo {
         "customer_contact": customerContact.text.trim(),
         "mechanic1": mechanic1.text.trim(),
         "mechanic2": mechanic2.text.trim(),
-        // "mechanic":
-        //     mechanic == null ? [] : List<dynamic>.from(mechanic!.map((x) => x)),
       };
 }
 
@@ -188,7 +144,8 @@ class EngineAssembly {
     }
   }
 
-  final engineBlocks = Rx<String?>(null),
+  final id = Rx<String?>(null),
+      engineBlocks = Rx<String?>(null),
       lineBorePerformed = Rx<String?>(null),
       magCheckedForCracks = Rx<String?>(null),
       linerFitsRepaired = Rx<String?>(null),
@@ -204,6 +161,7 @@ class EngineAssembly {
       engineReportIndicateWhichOne = [];
 
   fromJson(Map<String, dynamic> json) {
+    id.value = json["_id"] ?? '';
     engineBlocks.value = json["engine_blocks"] ?? '';
     lineBorePerformed.value = json["line_bore_performed"] ?? '';
     magCheckedForCracks.value = json["mag_checked_for_cracks"] ?? '';
@@ -298,7 +256,8 @@ class EngineAssemblyReportCont {
       valveInjector = TextEditingController();
 
   ///Bool
-  final mainBearingsReplaced = Rx<String?>(null),
+  final id = Rx<String?>(null),
+      mainBearingsReplaced = Rx<String?>(null),
       mainBearingTorqued = Rx<String?>(null),
       thrustBearingsReplaced = Rx<String?>(null),
       crossTiesTorqued = Rx<String?>(null),
@@ -420,6 +379,7 @@ class EngineAssemblyReportCont {
       };
 
   fromJson(Map<String, dynamic> json) {
+    id.value = json["_id"] ?? '';
     mainBearingsReplaced.value = json["main_bearings_replaced"] ?? '';
     reasonIfMainBearingsNotReplaced.text =
         json["reason_if_main_bearings_not_replaced"] ?? '';
@@ -441,12 +401,19 @@ class EngineAssemblyReportCont {
     frontAndRearSealsReplacedDescRear.text =
         json["front_and_rear_seals_replaced_desc_rear"] ?? '';
     connectingRods.value = json["connecting_rods"] ?? '';
-    connectingRodsIndicateWhichOne.addAll(
-        json["connecting_rods_indicate_which_one"] == null
-            ? []
-            : List<TextEditingController>.from(
-                json["connecting_rods_indicate_which_one"]!
-                    .map((x) => TextEditingController())));
+    //-------------------------
+    connectingRodsIndicateWhichOne.clear();
+    for (var x in List<String>.from(
+        json["connecting_rods_indicate_which_one"] ?? [])) {
+      connectingRodsIndicateWhichOne.add(TextEditingController(text: x));
+    }
+    // connectingRodsIndicateWhichOne.addAll(
+    //     json["connecting_rods_indicate_which_one"] == null
+    //         ? []
+    //         : List<TextEditingController>.from(
+    //             json["connecting_rods_indicate_which_one"]!
+    //                 .map((x) => TextEditingController())));
+    //-------------------------
     connectingRodBearingsReplaced.value =
         json["connecting_rod_bearings_replaced"] ?? '';
     reasonIfNotConnectingRodBearingsReplaced.text =
@@ -458,43 +425,70 @@ class EngineAssemblyReportCont {
         json["connecting_rod_side_clearance_checked"] ?? '';
     connectingRodSideClearanceCheckedSpec.text =
         json["connecting_rod_side_clearance_checked_spec"] ?? '';
-    actualReading.addAll(json['actual_reading'] == null
-        ? []
-        : List<TextEditingController>.from(
-            json['actual_reading']!.map((x) => TextEditingController())));
+    actualReading.clear();
+    for (var x in List<String>.from(json["actual_reading"] ?? [])) {
+      actualReading.add(TextEditingController(text: x));
+    }
+    // actualReading.addAll(json['actual_reading'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(
+    //         json['actual_reading']!.map((x) => TextEditingController())));
     pistonPins.value = json["piston_pins"] ?? '';
-    indicateNewPistons.addAll(json['indicate_new_pistons'] == null
-        ? []
-        : List<TextEditingController>.from(
-            json['indicate_new_pistons']!.map((x) => TextEditingController())));
+    indicateNewPistons.clear();
+    for (var x in List<String>.from(json["indicate_new_pistons"] ?? [])) {
+      indicateNewPistons.add(TextEditingController(text: x));
+    }
+    // indicateNewPistons.addAll(json['indicate_new_pistons'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(
+    //         json['indicate_new_pistons']!.map((x) => TextEditingController())));
     pistons.value = json["pistons"] ?? '';
-    indicateNewPins.addAll(json['indicate_new_pins'] == null
-        ? []
-        : List<TextEditingController>.from(
-            json['indicate_new_pins']!.map((x) => TextEditingController())));
+    indicateNewPins.clear();
+    for (var x in List<String>.from(json["indicate_new_pins"] ?? [])) {
+      indicateNewPins.add(TextEditingController(text: x));
+    }
+    // indicateNewPins.addAll(json['indicate_new_pins'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(
+    //         json['indicate_new_pins']!.map((x) => TextEditingController())));
     linerPacks.value = json["liner_packs"] ?? '';
-    ringClearancesInLiners.addAll(_test(json['ring_clearances_in_liners']));
-    ringClearancesInPistons.addAll(_test(json['ring_clearances_pistons']));
+    // ringClearancesInLiners.clear();
+    ringClearancesInLiners.assignAll(_test(json['ring_clearances_in_liners']));
+    // ringClearancesInPistons.clear();
+    ringClearancesInPistons.assignAll(_test(json['ring_clearances_pistons']));
     cylinderLiners.value = json["cylinder_liners"] ?? '';
-    indicateNewLiners.addAll(json['indicate_new_liners'] == null
-        ? []
-        : List<TextEditingController>.from(
-            json['indicate_new_liners']!.map((x) => TextEditingController())));
+    indicateNewLiners.clear();
+    for (var x in List<String>.from(json["indicate_new_liners"] ?? [])) {
+      indicateNewLiners.add(TextEditingController(text: x));
+    }
+    // indicateNewLiners.addAll(json['indicate_new_liners'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(
+    //         json['indicate_new_liners']!.map((x) => TextEditingController())));
     linerORingsReplaced.value = json["liner_o_rings_replaced"] ?? '';
     cylinderHeads.value = json["cylinder_heads"] ?? '';
     cylinderHeadsBool.value = json["cylinder_heads_bool"] ?? '';
-    indicateCylinderHeads.addAll(json['indicate_cylinder_heads'] == null
-        ? []
-        : List<TextEditingController>.from(json['indicate_cylinder_heads']!
-            .map((x) => TextEditingController())));
+    indicateCylinderHeads.clear();
+    for (var x in List<String>.from(json["indicate_cylinder_heads"] ?? [])) {
+      indicateCylinderHeads.add(TextEditingController(text: x));
+    }
+    // indicateCylinderHeads.addAll(json['indicate_cylinder_heads'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(json['indicate_cylinder_heads']!
+    //         .map((x) => TextEditingController())));
     cylinderHeadSpec.text = json["cylinder_head_spec"] ?? '';
     rockerShaftAssemblies.value = json["rocker_shaft_assemblies"] ?? '';
-    rockerShaftAssembliesIndicateWhichOne.addAll(
-        json['rocker_shaft_assemblies_indicate_which_one'] == null
-            ? []
-            : List<TextEditingController>.from(
-                json['rocker_shaft_assemblies_indicate_which_one']!
-                    .map((x) => TextEditingController())));
+    rockerShaftAssembliesIndicateWhichOne.clear();
+    for (var x in List<String>.from(
+        json["rocker_shaft_assemblies_indicate_which_one"] ?? [])) {
+      rockerShaftAssembliesIndicateWhichOne.add(TextEditingController(text: x));
+    }
+    // rockerShaftAssembliesIndicateWhichOne.addAll(
+    //     json['rocker_shaft_assemblies_indicate_which_one'] == null
+    //         ? []
+    //         : List<TextEditingController>.from(
+    //             json['rocker_shaft_assemblies_indicate_which_one']!
+    //                 .map((x) => TextEditingController())));
     rockerShaftAssembliesBool.value =
         json["rocker_shaft_assemblies_bool"] ?? '';
     rockerShaftAssembliesSpec.text = json["rocker_shaft_assemblies_spec"] ?? '';
@@ -515,10 +509,14 @@ class EngineAssemblyReportCont {
     valveIntake.text = json["valve_intake"] ?? '';
     valveExhaust.text = json["valve_exhaust"] ?? '';
     valveInjector.text = json["valve_injector"] ?? '';
-    injectorTrimCodes.addAll(json['injector_trim_codes'] == null
-        ? []
-        : List<TextEditingController>.from(
-            json['injector_trim_codes']!.map((x) => TextEditingController())));
+    injectorTrimCodes.clear();
+    for (var x in List<String>.from(json["injector_trim_codes"] ?? [])) {
+      injectorTrimCodes.add(TextEditingController(text: x));
+    }
+    // injectorTrimCodes.addAll(json['injector_trim_codes'] == null
+    //     ? []
+    //     : List<TextEditingController>.from(
+    //         json['injector_trim_codes']!.map((x) => TextEditingController())));
   }
 
   List<List<TextEditingController>> _test(dynamic data) {
@@ -589,7 +587,8 @@ class GearTrain {
 }
 
 class EngineAssemblyPartsExchangeCatalog {
-  final oilPump = Rx<String?>(null),
+  final id = Rx<String?>(null),
+      oilPump = Rx<String?>(null),
       oilWaterPump = Rx<String?>(null),
       auxWaterPump = Rx<String?>(null),
       starter = Rx<String?>(null),
@@ -683,6 +682,7 @@ class EngineAssemblyPartsExchangeCatalog {
       };
 
   fromJson(Map<String, dynamic> json) {
+    id.value = json["_id"] ?? '';
     oilPump.value = json['oil_pump'] ?? '';
     oilWaterPump.value = json['oil_water_pump'] ?? '';
     auxWaterPump.value = json['aux_water_pump'] ?? '';

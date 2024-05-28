@@ -30,8 +30,10 @@ class ApiEndPoints {
   static String createOverhaulReportUrl =
       '/api/engineoverhual/createengineoverhual';
   static String getOverhaulReportUrl = '/api/engineoverhual/getengineoverhual';
-  static String getOverhaulReportByIdUrl = '/api/report/getreportbyid';
-  static String deleteOverhaulReportUrl = '/api/report/deletereportbyid';
+  static String deleteOverhaulReportUrl =
+      '/api/engineoverhual/deleteengineoverhual';
+  static String updateOverhaulReportUrl =
+      '/api/engineoverhual/updateengineoverhual';
 
   //Engine
   static String addEngineUrl = '/api/engine/createenginebrand';

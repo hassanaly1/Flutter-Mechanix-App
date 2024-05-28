@@ -1,47 +1,63 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/compressor_task_controller.dart';
+import 'package:mechanix/controllers/report_v8_controller.dart';
+import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
-import 'package:mechanix/views/add_task/compressor_task/cusom_compressor_body.dart';
+import 'package:mechanix/views/add_task/engine_overhawl_report/custom_v8_body.dart';
 
-class AddAssemblyReportScreen extends StatefulWidget {
-  final bool isUpdatingTask;
+class AddReportScreen extends StatefulWidget {
+  final String reportType;
   final SideMenuController sideMenu;
+  final int? updatingReportIndex;
 
-  const AddAssemblyReportScreen(
-      {super.key, required this.sideMenu, required this.isUpdatingTask});
+  const AddReportScreen(
+      {super.key,
+      required this.sideMenu,
+      required this.reportType,
+      this.updatingReportIndex});
 
   @override
-  State<AddAssemblyReportScreen> createState() => _CompressorTaskScreenState();
+  State<AddReportScreen> createState() => _CompressorTaskScreenState();
 }
 
-class _CompressorTaskScreenState extends State<AddAssemblyReportScreen> {
-  late CompressorTaskController controller;
+class _CompressorTaskScreenState extends State<AddReportScreen> {
+  late OverhaulReportController controller;
+  late UniversalController universalController;
 
   @override
   void initState() {
-    controller = Get.put(CompressorTaskController());
+    universalController = Get.find();
+    widget.reportType == 'V8'
+        ? universalController.numberOfControllers.value = 8
+        : widget.reportType == 'V12'
+            ? universalController.numberOfControllers.value = 12
+            : widget.reportType == 'V16'
+                ? universalController.numberOfControllers.value = 16
+                : universalController.numberOfControllers.value = 12;
+    debugPrint('ControllersValue: ${universalController.numberOfControllers}');
+    controller = Get.put(OverhaulReportController(widget.updatingReportIndex));
+
     super.initState();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final CompressorTaskController controller = Get.find();
     return SafeArea(
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
-        Get.delete<CompressorTaskController>();
+        universalController.numberOfControllers.value = 0;
+        Get.delete<OverhaulReportController>();
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -69,7 +85,7 @@ class _CompressorTaskScreenState extends State<AddAssemblyReportScreen> {
                     flexibleSpace: ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        TopSection(controller: controller),
+                        TopSection(reportType: widget.reportType),
                       ],
                     ),
                   ),
@@ -90,12 +106,9 @@ class _CompressorTaskScreenState extends State<AddAssemblyReportScreen> {
 }
 
 class TopSection extends StatelessWidget {
-  const TopSection({
-    super.key,
-    required this.controller,
-  });
+  final String reportType;
 
-  final CompressorTaskController controller;
+  const TopSection({super.key, required this.reportType});
 
   @override
   Widget build(BuildContext context) {
@@ -111,23 +124,15 @@ class TopSection extends StatelessWidget {
               width: context.width,
               child: ReUsableContainer(
                 color: AppColors.primaryColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const IconButton(
-                        onPressed: null,
-                        icon: Icon(Icons.qr_code_scanner_rounded,
-                            color: Colors.transparent)),
-                    Expanded(
-                      child: CustomTextWidget(
-                        text: 'Engine OverHaul V8 Report',
-                        fontSize: 16.0,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ), // Expanded(
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: CustomTextWidget(
+                    text: 'Engine OverHaul $reportType Report',
+                    fontSize: 16.0,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
@@ -151,7 +156,7 @@ class BottomPageViewSection extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: CustomCompressorBody1(
+          child: CustomV8Body1(
             isTaskUpdating: false,
             sideMenuController: sideMenuController,
           ),

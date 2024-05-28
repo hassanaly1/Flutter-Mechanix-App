@@ -1,7 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:mechanix/views/add_task/compressor_task/add_compressor_task.dart';
-import 'package:mechanix/views/add_task/engine_overhawl_report_v8/add_v8_report.dart';
+import 'package:mechanix/views/add_task/engine_overhawl_report/add_v8_report.dart';
 import 'package:mechanix/views/add_task/generator_task/add_generator_task.dart';
 import 'package:mechanix/views/engines.dart';
 import 'package:mechanix/views/home.dart';
@@ -36,19 +36,13 @@ class RightSideWidget extends StatelessWidget {
           // 1
           CompressorTaskScreen(sideMenu: sideMenu, isUpdatingTask: false),
           // 2
-          AddV8ReportScreen(
-              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V8'),
+          AddReportScreen(sideMenu: sideMenu, reportType: 'V8'),
           // 3
-          AddV8ReportScreen(
-              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V12'),
+          AddReportScreen(sideMenu: sideMenu, reportType: 'V12'),
           // 4
-          AddV8ReportScreen(
-              sideMenu: sideMenu, isUpdatingTask: false, reportType: 'V16'),
+          AddReportScreen(sideMenu: sideMenu, reportType: 'V16'),
           // 5
-          AddV8ReportScreen(
-              sideMenu: sideMenu,
-              isUpdatingTask: false,
-              reportType: 'L7042GL C-14871'),
+          AddReportScreen(sideMenu: sideMenu, reportType: 'L7042GL C-14871'),
           // 6
           ViewAllTasksScreen(sideMenu: sideMenu),
           // 7

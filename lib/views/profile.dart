@@ -2,6 +2,8 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mechanix/controllers/dashboard_controller.dart';
+import 'package:mechanix/controllers/engines_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
@@ -121,6 +123,9 @@ class _ProfileSectionState extends State<ProfileSection> {
                           onTap: () {
                             storage.remove('token');
                             storage.remove('user_info');
+                            Get.delete<UniversalController>();
+                            Get.delete<DashboardController>();
+                            Get.delete<EnginesController>();
                             Get.offAll(() => LoginScreen());
                           },
                           textColor: Colors.white60,

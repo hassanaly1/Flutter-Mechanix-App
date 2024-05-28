@@ -95,8 +95,6 @@ class GeneratorTaskService {
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        print('response: ${response.statusCode} ${response.reasonPhrase}');
-
         if (jsonData['data'] != null) {
           final tasksList = jsonData['data'];
 
@@ -115,7 +113,8 @@ class GeneratorTaskService {
             if (tasksDataList.isNotEmpty) {
               tasks.addAll(tasksDataList.map((data) => Payload.fromJson(data)));
             } else {
-              debugPrint('No Generator tasks found');
+              debugPrint(
+                  'No Generator tasks found, please create the Generator task first.');
               return [];
             }
           }

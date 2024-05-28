@@ -50,7 +50,7 @@ class HeadingAndTextfield extends StatelessWidget {
             onTap: onTap,
             readOnly: readOnly,
             hintText: hintText ?? title,
-            maxLines: maxLines,
+            maxLines: 1,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             keyboardType: keyboardType,

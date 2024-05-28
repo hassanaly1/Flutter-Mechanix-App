@@ -11,18 +11,36 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/tabbar.dart';
 import 'package:mechanix/models/compressor_model.dart';
+import 'package:mechanix/models/overhaul_report_model.dart';
 import 'package:mechanix/models/payload.dart';
 import 'package:mechanix/views/update_task/update_compressor_task.dart';
 import 'package:mechanix/views/update_task/update_generator_task.dart';
+import 'package:mechanix/views/update_task/update_overhaul_task.dart';
 
-class ViewAllTasksScreen extends StatelessWidget {
+class ViewAllTasksScreen extends StatefulWidget {
   final SideMenuController sideMenu;
 
-  ViewAllTasksScreen({super.key, required this.sideMenu});
+  const ViewAllTasksScreen({super.key, required this.sideMenu});
 
+  @override
+  State<ViewAllTasksScreen> createState() => _ViewAllTasksScreenState();
+}
+
+class _ViewAllTasksScreenState extends State<ViewAllTasksScreen> {
   final UniversalController controller = Get.find();
 
-  // Rx<DateTime> selectedDate = DateTime.now().obs;
+  @override
+  void initState() {
+    debugPrint('CallingAllTasks');
+    _callAllTasks();
+    super.initState();
+  }
+
+  void _callAllTasks() {
+    controller.getAllGeneratorTasks();
+    controller.getAllCompressorTasks();
+    controller.getAllOverhaulTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +48,7 @@ class ViewAllTasksScreen extends StatelessWidget {
       child: PopScope(
         canPop: false,
         onPopInvoked: (didPop) {
-          sideMenu.changePage(0);
+          widget.sideMenu.changePage(0);
           controller.currentPage.value = 1;
         },
         child: DefaultTabController(
@@ -72,7 +90,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Obx(
-                            () => controller.isTasksAreLoading.value
+                            () => controller.isGeneratorTasksAreLoading.value
                                 ? const SingleChildScrollView(
                                     physics: AlwaysScrollableScrollPhysics(),
                                     child: Center(
@@ -147,7 +165,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                                       ),
                           ),
                           Obx(
-                            () => controller.isTasksAreLoading.value
+                            () => controller.isCompressorTasksAreLoading.value
                                 ? const SingleChildScrollView(
                                     physics: AlwaysScrollableScrollPhysics(),
                                     child: Center(
@@ -222,7 +240,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                                       ),
                           ),
                           Obx(
-                            () => controller.isTasksAreLoading.value
+                            () => controller.isOverhaulTasksAreLoading.value
                                 ? const SingleChildScrollView(
                                     physics: AlwaysScrollableScrollPhysics(),
                                     child: Center(
@@ -232,7 +250,7 @@ class ViewAllTasksScreen extends StatelessWidget {
                                           size: 40.0,
                                         )),
                                   )
-                                : controller.compressorTasks.isEmpty
+                                : controller.overhaulReportsTasks.isEmpty
                                     ? SingleChildScrollView(
                                         child: Column(
                                           mainAxisAlignment:
@@ -255,30 +273,38 @@ class ViewAllTasksScreen extends StatelessWidget {
                                       )
                                     : ListView.builder(
                                         controller: controller
-                                            .scrollControllerForCompressor,
+                                            .scrollControllerForOverhaul,
                                         shrinkWrap: true,
                                         physics:
                                             const AlwaysScrollableScrollPhysics(),
-                                        itemCount:
-                                            controller.compressorTasks.length +
-                                                (controller.isLoading.value
-                                                    ? 1
-                                                    : 0),
+                                        itemCount: controller
+                                                .overhaulReportsTasks.length +
+                                            (controller.isLoading.value
+                                                ? 1
+                                                : 0),
                                         itemBuilder: (context, index) {
                                           if (index <
-                                              controller
-                                                  .compressorTasks.length) {
+                                              controller.overhaulReportsTasks
+                                                  .length) {
                                             return InkWell(
                                               onTap: () {
                                                 Get.to(() =>
-                                                    UpdateCompressorTaskScreen(
+                                                    UpdateOverhaulTaskScreen(
+                                                        index: index,
                                                         model: controller
-                                                                .compressorTasks[
+                                                                .overhaulReportsTasks[
                                                             index]));
+                                                // Get.to(() => AddReportScreen(
+                                                //     sideMenu: widget.sideMenu,
+                                                //     reportType: controller
+                                                //         .overhaulReportsTasks[
+                                                //             index]
+                                                //         .type));
                                               },
-                                              child: CustomCompressorTaskCard(
+                                              child: CustomOverHaulTaskCard(
                                                 model: controller
-                                                    .compressorTasks[index],
+                                                        .overhaulReportsTasks[
+                                                    index],
                                                 controller: controller,
                                               ),
                                             );
@@ -308,22 +334,6 @@ class ViewAllTasksScreen extends StatelessWidget {
       ),
     );
   }
-
-// Future<void> _selectDate(BuildContext context) async {
-//   final DateTime? picked = await showDatePicker(
-//     context: context,
-//     initialDate: selectedDate.value,
-//     firstDate: DateTime(2000),
-//     lastDate: DateTime(2101),
-//   );
-//   if (picked != null && picked != selectedDate.value) {
-//     selectedDate.value = picked;
-//     String formattedStartDate =
-//         DateFormat('yyyy-MM-dd').format(selectedDate.value);
-//     print('SelectedDate: $formattedStartDate');
-//     await controller.getAllTasks(date: formattedStartDate);
-//   }
-// }
 }
 
 class CustomGeneratorTaskCard extends StatelessWidget {
@@ -515,6 +525,107 @@ class CustomCompressorTaskCard extends StatelessWidget {
   }
 }
 
+class CustomOverHaulTaskCard extends StatelessWidget {
+  final OverHaulReportModel model;
+  final UniversalController controller;
+
+  const CustomOverHaulTaskCard({
+    super.key,
+    required this.model,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReUsableContainer(
+      color: Colors.white30,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextWidget(
+                      text:
+                          'Date: ${model.customerEngineInfo.date ?? 'Not Assigned'}',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    CustomTextWidget(
+                      text:
+                          'Location: ${model.customerEngineInfo.location.text.trim() == "" ? 'Not Assigned' : model.customerEngineInfo.location.text.trim()}',
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
+                    _showDeletePopup(
+                        context: context, controller: controller, model: model);
+                  },
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                )
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                Image.asset(
+                  'assets/images/construction-worker.png',
+                  height: 30.0,
+                  color: AppColors.blueTextColor,
+                ),
+                const SizedBox(width: 4.0),
+                Flexible(
+                  child: CustomTextWidget(
+                    text: model.customerEngineInfo.customer.text.trim() == ""
+                        ? 'Not Assigned'
+                        : model.customerEngineInfo.customer.text.trim(),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            CustomTextWidget(
+              text: 'Report Type: ${model.type}',
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+            ),
+            CustomTextWidget(
+              text:
+                  'Customer Email: ${model.customerEngineInfo.customerContact.text.trim() == "" ? 'Not Assigned' : model.customerEngineInfo.customerContact.text.trim()}',
+              fontSize: 12.0,
+              fontWeight: FontWeight.w400,
+            ),
+            CustomTextWidget(
+              text:
+                  'Mechanic 1: ${model.customerEngineInfo.mechanic1.text.trim() == "" ? 'Not Assigned' : model.customerEngineInfo.mechanic1.text.trim()}',
+              fontSize: 10.0,
+              fontWeight: FontWeight.w400,
+            ),
+            CustomTextWidget(
+              text:
+                  'Mechanic 2: ${model.customerEngineInfo.mechanic2.text.trim() == "" ? 'Not Assigned' : model.customerEngineInfo.mechanic2.text.trim()}',
+              fontSize: 10.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void _showDeletePopup(
     {required BuildContext context,
     required UniversalController controller,
@@ -583,6 +694,13 @@ void _showDeletePopup(
                                   print('CompressorTaskDeleteCalled');
                                   controller.deleteCompressorTask(
                                       taskId: model.taskId ?? '');
+                                } else if (model.runtimeType ==
+                                    OverHaulReportModel) {
+                                  print('OverHaulTaskDeleteCalled');
+                                  controller.deleteOverhaulTask(
+                                      taskId: model.engineAssemblyReportCont.id
+                                              .value ??
+                                          '');
                                 } else {
                                   return;
                                 }

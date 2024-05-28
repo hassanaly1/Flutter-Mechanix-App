@@ -18,7 +18,9 @@ import 'package:mechanix/services/report_service.dart';
 
 class UniversalController extends GetxController {
   RxBool isLoading = false.obs;
-  RxBool isTasksAreLoading = false.obs;
+  RxBool isGeneratorTasksAreLoading = false.obs;
+  RxBool isCompressorTasksAreLoading = false.obs;
+  RxBool isOverhaulTasksAreLoading = false.obs;
   RxBool isReportsAreLoading = false.obs;
 
   RxInt numberOfControllers = 0.obs;
@@ -26,7 +28,7 @@ class UniversalController extends GetxController {
   // Tasks
   List<Payload> generatorTasks = <Payload>[].obs;
   List<CompressorTaskModel> compressorTasks = <CompressorTaskModel>[].obs;
-  List<OverHaulReport> overhaulReportsTasks = <OverHaulReport>[].obs;
+  List<OverHaulReportModel> overhaulReportsTasks = <OverHaulReportModel>[].obs;
 
   List<ReportModel> reports = <ReportModel>[].obs;
   List<EngineModel> engines = <EngineModel>[].obs;
@@ -54,6 +56,7 @@ class UniversalController extends GetxController {
   //For Pagination
   ScrollController scrollControllerForGenerator = ScrollController();
   ScrollController scrollControllerForCompressor = ScrollController();
+  ScrollController scrollControllerForOverhaul = ScrollController();
   final RxInt currentPage = 1.obs;
 
   final customerEngineInfo = CustomerEngineInfo();
@@ -74,10 +77,10 @@ class UniversalController extends GetxController {
         EngineAssemblyReportCont(count: numberOfControllers.value);
     // await getAllGeneratorTasks();
     // await getAllCompressorTasks();
-    var result = await getAllOverhaulTasks();
-    for (var element in result) {
-      print(element.customerEngineInfo.customer.text.trim());
-    }
+    // await getAllOverhaulTasks();
+    // for (var element in result) {
+    //   print(element.customerEngineInfo.customer.text.trim());
+    // }
     // print(result[1].finalToJson());
 
     // await getAllReports();
@@ -94,6 +97,14 @@ class UniversalController extends GetxController {
           scrollControllerForCompressor.position.maxScrollExtent) {
         if (!isLoading.value) {
           _loadNextPageCompressors();
+        }
+      }
+    });
+    scrollControllerForOverhaul.addListener(() {
+      if (scrollControllerForOverhaul.position.pixels ==
+          scrollControllerForOverhaul.position.maxScrollExtent) {
+        if (!isLoading.value) {
+          // _loadNextPageCompressors();
         }
       }
     });
@@ -134,7 +145,7 @@ class UniversalController extends GetxController {
   Future<void> getAllGeneratorTasks({String? searchName, int? page}) async {
     debugPrint('Page${page ?? currentPage.value} Generator tasks called.');
     try {
-      isTasksAreLoading.value = true;
+      isGeneratorTasksAreLoading.value = true;
       List<Payload> fetchedTasks = await generatorTaskService.getAllTasks(
         searchString: searchName ?? '',
         token: storage.read('token'),
@@ -149,14 +160,14 @@ class UniversalController extends GetxController {
     } catch (e) {
       debugPrint('Error fetching Generator Tasks: $e');
     } finally {
-      isTasksAreLoading.value = false;
+      isGeneratorTasksAreLoading.value = false;
     }
   }
 
   Future<void> getAllCompressorTasks({String? searchName, int? page}) async {
     debugPrint('Page ${page ?? currentPage.value} Compressor tasks called.');
     try {
-      isTasksAreLoading.value = true;
+      isCompressorTasksAreLoading.value = true;
       List<CompressorTaskModel> fetchedCompressorTasks =
           await compressorTaskService.getAllCompressorTasks(
         searchString: searchName ?? '',
@@ -172,25 +183,33 @@ class UniversalController extends GetxController {
     } catch (e) {
       debugPrint('Error fetching compressorTasks: $e');
     } finally {
-      isTasksAreLoading.value = false;
+      isCompressorTasksAreLoading.value = false;
     }
   }
 
-  Future<List<OverHaulReport>> getAllOverhaulTasks(
+  Future<List<OverHaulReportModel>> getAllOverhaulTasks(
       {String? searchName, int? page}) async {
     debugPrint('Page ${page ?? currentPage.value} Overhaul tasks called.');
     try {
-      isTasksAreLoading.value = true;
+      isOverhaulTasksAreLoading.value = true;
       List<dynamic> data = await overhaulReportServices.getAllTasks(
         searchString: searchName ?? '',
         token: storage.read('token'),
         page: page ?? currentPage.value,
       );
-      return OverHaulReport.fromJsonList(data);
+      List<OverHaulReportModel> fetchedOverhaulTasks =
+          OverHaulReportModel.fromJsonList(data);
+      debugPrint('OverhawlTasksCount: ${fetchedOverhaulTasks.length}');
+      if (fetchedOverhaulTasks.isNotEmpty) {
+        overhaulReportsTasks = fetchedOverhaulTasks;
+      } else {
+        overhaulReportsTasks = [];
+      }
+      return overhaulReportsTasks;
     } catch (e) {
       debugPrint('Error fetching OverhawlTasks: $e');
     } finally {
-      isTasksAreLoading.value = false;
+      isOverhaulTasksAreLoading.value = false;
     }
     return [];
   }
@@ -261,6 +280,35 @@ class UniversalController extends GetxController {
 
       if (taskDeleted) {
         await getAllCompressorTasks(page: 1);
+        ToastMessage.showToastMessage(
+            message: 'Task Deleted Successfully',
+            backgroundColor: Colors.green);
+        Get.back();
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Failed to delete task, please try again',
+            backgroundColor: Colors.red);
+      }
+    } catch (e) {
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, please try again',
+          backgroundColor: Colors.red);
+      debugPrint('Error deleting task: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> deleteOverhaulTask({taskId}) async {
+    isLoading.value = true;
+    try {
+      bool taskDeleted = await overhaulReportServices.deleteTaskById(
+        taskId: taskId,
+        token: storage.read('token'),
+      );
+
+      if (taskDeleted) {
+        await getAllOverhaulTasks(page: 1);
         ToastMessage.showToastMessage(
             message: 'Task Deleted Successfully',
             backgroundColor: Colors.green);

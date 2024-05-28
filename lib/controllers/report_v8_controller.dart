@@ -8,11 +8,15 @@ import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/overhaul_report_model.dart';
 import 'package:mechanix/services/overhaul_report_service.dart';
 
-class ReportV8Controller extends GetxController {
+class OverhaulReportController extends GetxController {
+  final int? updatingReportIndex;
+
+  OverhaulReportController(this.updatingReportIndex);
+
   RxBool isLoading = false.obs;
 
   final UniversalController universalController = Get.find();
-  late OverHaulReport overHaulReport;
+  late OverHaulReportModel overHaulReport;
 
   // final customerEngineInfo = CustomerEngineInfo();
   // late EngineAssembly engineAssembly;
@@ -22,17 +26,23 @@ class ReportV8Controller extends GetxController {
   // final gearTrain = GearTrain();
 
   OverhaulReportServices overhaulReportServices = OverhaulReportServices();
+  final ScrollController scrollController = ScrollController();
 
   @override
   onInit() async {
-    overHaulReport = OverHaulReport(
-        type: universalController.numberOfControllers.value == 8
-            ? 'V8'
-            : universalController.numberOfControllers.value == 12
-                ? 'V12'
-                : universalController.numberOfControllers.value == 16
-                    ? 'V16'
-                    : 'L7042GL C-14871');
+    if (updatingReportIndex != null) {
+      overHaulReport =
+          universalController.overhaulReportsTasks[updatingReportIndex!];
+    } else {
+      overHaulReport = OverHaulReportModel(
+          type: universalController.numberOfControllers.value == 8
+              ? 'V8'
+              : universalController.numberOfControllers.value == 12
+                  ? 'V12'
+                  : universalController.numberOfControllers.value == 16
+                      ? 'V16'
+                      : 'L7042GL C-14871');
+    }
     // debugPrint(
     //     'NumberOfControllersAtInit: ${universalController.numberOfControllers.value}');
     // engineAssembly =
@@ -69,7 +79,7 @@ class ReportV8Controller extends GetxController {
         data: overHaulReport.finalToJson(),
         token: storage.read('token'),
       );
-      print('Type: ${overHaulReport.type}');
+      debugPrint('Type: ${overHaulReport.type}');
       if (taskResponse.success) {
         ToastMessage.showToastMessage(
             message: 'Task Created Successfully',
@@ -84,7 +94,7 @@ class ReportV8Controller extends GetxController {
         // await controller.getAllCompressorTasks();
         sideMenuController?.changePage(0);
         universalController.numberOfControllers.value = 0;
-        Get.delete<ReportV8Controller>();
+        Get.delete<OverhaulReportController>();
       } else {
         ToastMessage.showToastMessage(
             message: 'Failed to create task, please try again',
@@ -100,6 +110,51 @@ class ReportV8Controller extends GetxController {
     }
   }
 
+  Future<void> updateOverhaulReportTask() async {
+    try {
+      isLoading.value = true;
+      OverhaulReportTaskResponse taskResponse =
+          await overhaulReportServices.updateOverhaulReport(
+        data: overHaulReport.finalToJson(),
+        token: storage.read('token'),
+        taskId: '${overHaulReport.engineAssemblyReportCont.id}',
+      );
+      debugPrint('Type: ${overHaulReport.type}');
+      if (taskResponse.success) {
+        ToastMessage.showToastMessage(
+            message: 'Task Updated Successfully',
+            backgroundColor: AppColors.blueTextColor);
+        // showConfirmationPopup(
+        //   context: context,
+        //   taskId: taskResponse.taskId ?? '',
+        //   token: storage.read('token'),
+        //   taskName: taskName.text.trim(),
+        //   customerEmail: clientEmail.text.trim(),
+        // );
+        // await controller.getAllCompressorTasks();
+        Get.back();
+        universalController.numberOfControllers.value = 0;
+      } else {
+        ToastMessage.showToastMessage(
+            message: 'Failed to update task, please try again',
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      debugPrint('Error updating Generator task: $error');
+      ToastMessage.showToastMessage(
+          message: 'Something went wrong, try again',
+          backgroundColor: Colors.red);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void scrollUp() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(0.0,
+          duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+    }
+  }
 // String finalToJson() {
 //   return jsonEncode({
 //     'customer_engine_info': customerEngineInfo.toJson(),

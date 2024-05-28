@@ -17,7 +17,7 @@ class InjectorTrimCodes extends StatelessWidget {
   });
 
   final UniversalController universalController;
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class Valves extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class Bridges extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class CamFollowers extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +171,7 @@ class Camshaft extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +210,8 @@ class Camshaft extends StatelessWidget {
               hintText: 'Specs',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .camshaftBearingTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
@@ -224,12 +226,16 @@ class Camshaft extends StatelessWidget {
                   hintText: 'Specs',
                   controller: controller.overHaulReport.engineAssemblyReportCont
                       .camshaftEndPlayCheckedSpec,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
                 Flexible(
                     child: ReUsableTextField(
                   hintText: 'Actual',
                   controller: controller.overHaulReport.engineAssemblyReportCont
                       .camshaftEndPlayCheckActual,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
               ],
             ),
@@ -246,7 +252,7 @@ class PushRods extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +289,7 @@ class RockerShaftAssemblies extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -323,6 +329,8 @@ class RockerShaftAssemblies extends StatelessWidget {
             ),
             ReUsableTextField(
               hintText: 'Specs',
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .rockerShaftAssembliesSpec,
             )
@@ -340,7 +348,7 @@ class CylinderHeads extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -380,6 +388,8 @@ class CylinderHeads extends StatelessWidget {
             ),
             ReUsableTextField(
               hintText: 'Specs',
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               controller: controller
                   .overHaulReport.engineAssemblyReportCont.cylinderHeadSpec,
             )
@@ -397,7 +407,7 @@ class CylinderLiners extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -448,7 +458,7 @@ class RingClearancesInPistons extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -480,11 +490,13 @@ class RingClearancesInPistons extends StatelessWidget {
                           const SizedBox(width: 4.0),
                           Flexible(
                               child: ReUsableTextField(
-                            hintText: '# ${j + 1}',
+                            hintText: '${j + 1}',
                             controller: controller
                                 .overHaulReport
                                 .engineAssemblyReportCont
                                 .ringClearancesInPistons[i][j],
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                           )),
                         ],
                       ),
@@ -504,7 +516,7 @@ class RingClearancesInLiners extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -536,11 +548,13 @@ class RingClearancesInLiners extends StatelessWidget {
                           const SizedBox(width: 4.0),
                           Flexible(
                               child: ReUsableTextField(
-                            hintText: '# ${j + 1}',
+                            hintText: '${j + 1}',
                             controller: controller
                                 .overHaulReport
                                 .engineAssemblyReportCont
                                 .ringClearancesInLiners[i][j],
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                           )),
                         ],
                       ),
@@ -561,7 +575,7 @@ class PistonPins extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -621,7 +635,7 @@ class ConnectingRods extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -671,9 +685,11 @@ class ConnectingRods extends StatelessWidget {
               heading: 'Rod bearing caps torqued?',
             ),
             ReUsableTextField(
-              hintText: 'Specs',
+              hintText: 'Specs ft (lb)',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .rodBearingCapsTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
@@ -682,9 +698,11 @@ class ConnectingRods extends StatelessWidget {
               heading: 'Connecting rod side clearance checked?',
             ),
             ReUsableTextField(
-              hintText: 'Specs',
+              hintText: 'Specs ft (lb)',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .connectingRodSideClearanceCheckedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             const ContainerHeading(heading: 'Actual Readings'),
             DynamicTextFields(
@@ -707,7 +725,7 @@ class EngineAssemblyReport extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -732,61 +750,73 @@ class EngineAssemblyReport extends StatelessWidget {
                     .reasonIfMainBearingsNotReplaced),
             HeadingAndTextfield(
                 title: 'Numbers on Upper Shell',
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 controller: controller.overHaulReport.engineAssemblyReportCont
                     .numbersOfUpperShell),
             HeadingAndTextfield(
                 title: 'Numbers on Lower Shell',
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 controller: controller.overHaulReport.engineAssemblyReportCont
                     .numbersOfLowerShell),
             CustomRadioButton(
               options: const ['YES', 'NO'],
               selectedOption: controller
                   .overHaulReport.engineAssemblyReportCont.mainBearingTorqued,
-              heading: 'Main Bearings Torqued',
+              heading: 'Main Bearings Torqued (ft)',
             ),
             ReUsableTextField(
               hintText: 'Specs',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .mainBearingTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
               selectedOption: controller.overHaulReport.engineAssemblyReportCont
                   .thrustBearingsReplaced,
-              heading: 'Thrust Bearings Torqued',
+              heading: 'Thrust Bearings Torqued (ft)',
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
               selectedOption: controller
                   .overHaulReport.engineAssemblyReportCont.crossTiesTorqued,
-              heading: 'Cross Ties Torqued?',
+              heading: 'Cross Ties Torqued? (ft)',
             ),
             ReUsableTextField(
               hintText: 'Specs',
               controller: controller
                   .overHaulReport.engineAssemblyReportCont.crossTiesTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
               selectedOption: controller.overHaulReport.engineAssemblyReportCont
                   .counterWeightsTorqued,
-              heading: 'Counter Weights Torqued?',
+              heading: 'Counter Weights Torqued? (ft)',
             ),
             ReUsableTextField(
               hintText: 'Specs',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .counterWeightsTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             CustomRadioButton(
               options: const ['YES', 'NO'],
               selectedOption: controller.overHaulReport.engineAssemblyReportCont
                   .vibrationDampenerReplacedTorqued,
-              heading: 'Vibration Dampener Replaced and Torqued?',
+              heading: 'Vibration Dampener Replaced and Torqued? (ft)',
             ),
             ReUsableTextField(
               hintText: 'Specs',
               controller: controller.overHaulReport.engineAssemblyReportCont
                   .vibrationDampenerReplacedTorquedSpec,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             // ReUsableTextField(
             //   hintText: 'Specs',
@@ -822,7 +852,7 @@ class EngineBlock extends StatelessWidget {
     required this.universalController,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
   final UniversalController universalController;
 
   @override
@@ -900,12 +930,16 @@ class EngineBlock extends StatelessWidget {
                   title: 'Specs',
                   controller: controller.overHaulReport.engineAssembly
                       .plastiGuageReadingsOneMainBearingSpec,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
                 Flexible(
                     child: HeadingAndTextfield(
                   title: 'Annual',
                   controller: controller.overHaulReport.engineAssembly
                       .plastiGuageReadingsOneMainBearingActual,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
               ],
             ),
@@ -929,12 +963,16 @@ class EngineBlock extends StatelessWidget {
                   title: 'Specs',
                   controller:
                       controller.overHaulReport.engineAssembly.endPlaySpec,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
                 Flexible(
                     child: HeadingAndTextfield(
                   title: 'Actual',
                   controller:
                       controller.overHaulReport.engineAssembly.endPlayActual,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 )),
               ],
             ),
@@ -951,7 +989,7 @@ class GeneralInfo extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -978,6 +1016,7 @@ class GeneralInfo extends StatelessWidget {
                   title: 'Work Order',
                   controller:
                       controller.overHaulReport.customerEngineInfo.workorder,
+                  keyboardType: TextInputType.number,
                 )),
                 Flexible(
                     child: HeadingAndTextfield(
@@ -1001,20 +1040,14 @@ class GeneralInfo extends StatelessWidget {
                 )),
               ],
             ),
-            Row(
-              children: [
-                Flexible(
-                    child: HeadingAndTextfield(
-                  title: 'Date',
-                  controller: TextEditingController(),
-                )),
-                Flexible(
-                    child: HeadingAndTextfield(
-                  title: 'Customer Contact',
-                  controller: controller
-                      .overHaulReport.customerEngineInfo.customerContact,
-                )),
-              ],
+            HeadingAndTextfield(
+              title: 'Date',
+              controller: TextEditingController(),
+            ),
+            HeadingAndTextfield(
+              title: 'Customer Contact',
+              controller:
+                  controller.overHaulReport.customerEngineInfo.customerContact,
             ),
             Row(
               children: [
@@ -1039,10 +1072,11 @@ class GeneralInfo extends StatelessWidget {
                   title: 'Engine Serial #',
                   controller:
                       controller.overHaulReport.customerEngineInfo.engineSerial,
+                  keyboardType: TextInputType.number,
                 )),
                 Flexible(
                     child: HeadingAndTextfield(
-                  title: 'Engine Arrangement',
+                  title: 'Arrangement #',
                   controller: controller
                       .overHaulReport.customerEngineInfo.engineArrangement,
                 )),
@@ -1077,7 +1111,7 @@ class MechanicsQuestionare extends StatelessWidget {
     required this.controller,
   });
 
-  final ReportV8Controller controller;
+  final OverhaulReportController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -1227,6 +1261,8 @@ class DynamicTextFields extends StatelessWidget {
                 number: '${i + 1}',
                 hintText: controllers[i].text.toString(),
                 controller: controllers[i],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
             ),
             Flexible(
@@ -1234,6 +1270,8 @@ class DynamicTextFields extends StatelessWidget {
                 number: '${i + 2}',
                 hintText: controllers[i + 1].text.toString(),
                 controller: controllers[i + 1],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
             ),
           ],
@@ -1248,7 +1286,7 @@ class DynamicTextFields extends StatelessWidget {
   }
 }
 
-Widget buildEngineAssemblyReportSection(ReportV8Controller controller) {
+Widget buildEngineAssemblyReportSection(OverhaulReportController controller) {
   final radioOptions = [
     'NEW',
     'EXCHANGE',
