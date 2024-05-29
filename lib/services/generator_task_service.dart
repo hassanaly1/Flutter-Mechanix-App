@@ -28,7 +28,9 @@ class GeneratorTaskService {
     required List<Part> parts,
   }) async {
     final Uri apiUrl =
-        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.createTaskUrl);
+        Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createTaskUrl);
+    debugPrint('Payload1: ${task.gasSampleAsFound}');
+    debugPrint('Payload2: ${task.gasSampleAsAdjusted}');
     final Map<String, dynamic> payload = {
       "geolocation": geolocation.toJson(),
       "task": task.toJson(),
@@ -56,7 +58,6 @@ class GeneratorTaskService {
       if (response.statusCode == 201) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         debugPrint('Task created successfully: ${responseData["message"]}');
-        debugPrint('Task Response Body: ${response.body}');
         return GeneratorTaskResponse(
           success: true,
           message: responseData["message"],
@@ -78,7 +79,7 @@ class GeneratorTaskService {
   Future<List<Payload>> getAllTasks(
       {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        '${ApiEndPoints.baseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
+        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -149,7 +150,7 @@ class GeneratorTaskService {
     bool isSuccess = false;
 
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.baseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
+      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
     );
 
     final Map<String, dynamic> payload = {

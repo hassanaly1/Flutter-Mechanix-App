@@ -134,7 +134,7 @@ class TopSection extends StatelessWidget {
                       Expanded(
                         child: CustomTextWidget(
                           text: controller.engineBrandName.value == ''
-                              ? 'CAT 3600 SERVICE'
+                              ? 'Generator Service Report'
                               : controller.engineBrandName.value,
                           fontSize: 16.0,
                           maxLines: 2,

@@ -60,11 +60,11 @@ class OverhaulReportServices {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        // body: jsonEncode({
-        //   'search': {
-        //     "name": searchString,
-        //   }
-        // }),
+        body: jsonEncode({
+          'search': {
+            "name": searchString,
+          }
+        }),
       );
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
@@ -81,7 +81,8 @@ class OverhaulReportServices {
           return [];
         }
       } else {
-        debugPrint('Failed to get Overhawl tasks: ${response.reasonPhrase}');
+        debugPrint(
+            'Failed to get Overhawl tasks: ${response.statusCode} ${response.body}}');
         return [];
       }
     } catch (e) {

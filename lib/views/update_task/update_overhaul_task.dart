@@ -79,7 +79,11 @@ class _UpdateOverhaulTaskScreenState extends State<UpdateOverhaulTaskScreen> {
                                     ),
                                   ),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        // PdfService().printCustomersPdf(
+                                        //   widget.model,
+                                        // );
+                                      },
                                       icon: const Icon(
                                         Icons.picture_as_pdf_sharp,
                                         color: Colors.white,

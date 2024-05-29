@@ -28,6 +28,7 @@ class ViewAllTasksScreen extends StatefulWidget {
 
 class _ViewAllTasksScreenState extends State<ViewAllTasksScreen> {
   final UniversalController controller = Get.find();
+  RxInt currentPage = 0.obs;
 
   @override
   void initState() {
@@ -76,11 +77,23 @@ class _ViewAllTasksScreenState extends State<ViewAllTasksScreen> {
                         hintText: 'Search Task',
                         suffixIcon: const Icon(Icons.search_sharp),
                         onChanged: (value) {
-                          controller.getAllGeneratorTasks(searchName: value);
+                          if (currentPage.value == 0) {
+                            debugPrint('SearchingGeneratorTasks');
+                            controller.getAllGeneratorTasks(searchName: value);
+                          } else if (currentPage.value == 1) {
+                            debugPrint('SearchingCompressorTasks');
+                            controller.getAllCompressorTasks(searchName: value);
+                          } else if (currentPage.value == 2) {
+                            debugPrint('SearchingOverhaulTasks');
+                            controller.getAllOverhaulTasks(searchName: value);
+                          }
                         },
                       ),
                     ),
-                    const CustomTabBar(
+                    CustomTabBar(
+                      onTap: (val) {
+                        currentPage.value = val;
+                      },
                       title1: 'Generator',
                       title2: 'Compressor',
                       title3: 'OverHaul Reports',

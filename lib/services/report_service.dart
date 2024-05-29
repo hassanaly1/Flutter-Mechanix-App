@@ -20,8 +20,7 @@ class ReportService {
     );
 
     if (response.statusCode == 200) {
-      debugPrint(
-          '${response.body} ${response.statusCode} ${response.reasonPhrase}');
+      debugPrint(' ${response.statusCode} ${response.reasonPhrase}');
       Map<String, dynamic> data = jsonDecode(response.body);
       return true;
     } else {

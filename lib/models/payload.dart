@@ -96,14 +96,12 @@ class Payload {
 }
 
 class Temperatures {
-  int? temperatureNumber;
   bool? forCylinder;
   bool? forBurnTemperature;
   bool? forHotCompression;
   int? temperature;
 
   Temperatures({
-    this.temperatureNumber,
     this.forCylinder,
     this.forBurnTemperature,
     this.forHotCompression,
@@ -112,7 +110,6 @@ class Temperatures {
 
   // Convert Temperatures object to a JSON string
   Map<String, dynamic> toJson() => {
-        'temperatureNumber': temperatureNumber ?? 0,
         'forCylinder': forCylinder ?? false,
         'forEngineTuneUpHotCompressionTest': forBurnTemperature ?? false,
         'forHotCompression': forHotCompression ?? false,
@@ -122,7 +119,6 @@ class Temperatures {
   // Create Temperatures object from a JSON string
   factory Temperatures.fromJson(Map<String, dynamic> json) {
     return Temperatures(
-      temperatureNumber: json['temperature_number'],
       forCylinder: json['cylinder_exhaust_pyrometer'],
       forBurnTemperature: json['burn_compression'],
       forHotCompression: json['hot_compression'],
@@ -236,22 +232,6 @@ class Part {
         "description": description ?? "",
         "quantity": quantity ?? 0,
         "vendor": vendor ?? "",
-      };
-}
-
-class GasSampleAs {
-  String? gasName;
-
-  GasSampleAs({
-    this.gasName,
-  });
-
-  factory GasSampleAs.fromJson(Map<String, dynamic> json) => GasSampleAs(
-        gasName: json["gas_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "gas_name": gasName ?? "",
       };
 }
 

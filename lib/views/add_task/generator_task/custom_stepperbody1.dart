@@ -26,7 +26,7 @@ class CustomStepperBody1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
@@ -34,170 +34,182 @@ class CustomStepperBody1 extends StatelessWidget {
           topRight: Radius.circular(32.0),
         ),
       ),
-      child: ListView(
-        children: [
-          ReUsableContainer(
-            showBackgroundShadow: false,
-            color: Colors.grey.shade300,
-            child: Column(
-              children: [
-                HeadingAndTextfield(
-                  title: 'Task Name',
-                  controller: controller.taskName,
-                  // readOnly: isTaskUpdating,
-                ),
-                HeadingAndTextfield(
-                  title: 'Client\'s Email',
-                  controller: controller.clientEmail,
-                  // readOnly: isTaskUpdating,
-                ),
-                HeadingAndTextfield(
-                    title: 'Select Location',
-                    controller: controller.selectedAddress,
-                    suffixIcon: InkWell(
-                      onTap: () => Get.to(() => SelectLocationScreen()),
-                      child: Icon(Icons.location_on_outlined,
-                          color: AppColors.blueTextColor),
-                    )),
-                Row(
-                  children: [
-                    Flexible(
-                      child: HeadingAndTextfield(
-                        title: 'Set Unit',
-                        controller: controller.setUnits,
-                        keyboardType: TextInputType.number,
-                        readOnly: isTaskUpdating,
-                      ),
-                    ),
-                    Flexible(
-                      child: HeadingAndTextfield(
-                        title: 'Unit Hours',
-                        controller: controller.unitHours,
-                        keyboardType: TextInputType.number,
-                        readOnly: isTaskUpdating,
-                      ),
-                    )
-                  ],
-                ),
-                Obx(
-                  () => Row(
+      child: Scaffold(
+        bottomNavigationBar: CustomButton(
+            isLoading: false,
+            buttonText: 'Next',
+            onTap: () {
+              controller.nextPage();
+              controller.scrollUp();
+            }),
+        body: ListView(
+          children: [
+            ReUsableContainer(
+              showBackgroundShadow: false,
+              color: Colors.grey.shade300,
+              child: Column(
+                children: [
+                  HeadingAndTextfield(
+                    title: 'Task Name',
+                    controller: controller.taskName,
+                    // readOnly: isTaskUpdating,
+                  ),
+                  HeadingAndTextfield(
+                    title: 'Client\'s Email',
+                    controller: controller.clientEmail,
+                    // readOnly: isTaskUpdating,
+                  ),
+                  HeadingAndTextfield(
+                      title: 'Select Location',
+                      controller: controller.selectedAddress,
+                      suffixIcon: InkWell(
+                        onTap: () => Get.to(() => SelectLocationScreen()),
+                        child: Icon(Icons.location_on_outlined,
+                            color: AppColors.blueTextColor),
+                      )),
+                  Row(
                     children: [
                       Flexible(
                         child: HeadingAndTextfield(
-                          title: 'Select Date',
-                          hintText:
-                              controller.taskSelectedDate.value.toString(),
-                          // hintText:
-                          //     '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
-                          onTap: () => controller.selectDate(context),
-                          readOnly: true,
+                          title: 'Set Unit',
+                          controller: controller.setUnits,
+                          keyboardType: TextInputType.number,
+                          readOnly: isTaskUpdating,
                         ),
                       ),
                       Flexible(
                         child: HeadingAndTextfield(
-                          title: 'Select Time',
-                          hintText:
-                              controller.taskSelectedTime.value.toString(),
-                          // hintText:
-                          //     '${controller.taskSelectedTime.value.format(context)..padLeft(2, '0')} ',
-                          onTap: () => controller.selectTime(context),
-                          readOnly: true,
-                          // onChanged: (value) {
-                          //   controller.selectTime(context);
-                          // },
+                          title: 'Unit Hours',
+                          controller: controller.unitHours,
+                          keyboardType: TextInputType.number,
+                          readOnly: isTaskUpdating,
                         ),
                       )
                     ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomTextWidget(
-                      text: 'Engine Brand',
-                      fontWeight: FontWeight.w600,
-                      maxLines: 2,
+                  Obx(
+                    () => Row(
+                      children: [
+                        Flexible(
+                          child: HeadingAndTextfield(
+                            title: 'Select Date',
+                            hintText:
+                                controller.taskSelectedDate.value.toString(),
+                            // hintText:
+                            //     '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
+                            onTap: () => controller.selectDate(context),
+                            readOnly: true,
+                          ),
+                        ),
+                        Flexible(
+                          child: HeadingAndTextfield(
+                            title: 'Select Time',
+                            hintText:
+                                controller.taskSelectedTime.value.toString(),
+                            // hintText:
+                            //     '${controller.taskSelectedTime.value.format(context)..padLeft(2, '0')} ',
+                            onTap: () => controller.selectTime(context),
+                            readOnly: true,
+                            // onChanged: (value) {
+                            //   controller.selectTime(context);
+                            // },
+                          ),
+                        )
+                      ],
                     ),
-                    Obx(
-                      () => CustomDropdown(
-                        items: universalController.engines,
-                        hintText: controller.engineBrandName.value != ''
-                            ? controller.engineBrandName.value
-                            : 'Select Engine Brand',
-                        onTap: () {
-                          debugPrint('Dropdown tapped');
-                          universalController.engines.isEmpty
-                              ? ToastMessage.showToastMessage(
-                                  message:
-                                      'Please Add Engines first from the Engine section.',
-                                  backgroundColor: Colors.red)
-                              : null;
-                        },
-                        onChanged: (value) {
-                          controller.engineBrandId.value = value?.id ?? '';
-                          controller.engineBrandName.value = value?.name ?? '';
-                        },
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextWidget(
+                        text: 'Engine Brand',
+                        fontWeight: FontWeight.w600,
+                        maxLines: 2,
                       ),
-                    ),
-                  ],
-                ),
-                HeadingAndTextfield(
-                  title: 'Name of JOURNEYMAN',
-                  controller: controller.nameOfJourneyMan,
-                  readOnly: isTaskUpdating,
-                ),
-                CustomRadioButton(
-                  heading: 'Unit Online on Arrival?',
-                  options: const ['YES', 'NO'],
-                  selectedOption: controller.unitOnlineOnArrival,
-                ),
-                HeadingAndTextfield(
-                  title: 'Job Scope',
-                  maxLines: 5,
-                  controller: controller.jobScope,
-                  readOnly: isTaskUpdating,
-                ),
-                HeadingAndTextfield(
-                  title: 'Report Any Operations Problems',
-                  maxLines: 5,
-                  controller: controller.operationalProblems,
-                  readOnly: isTaskUpdating,
-                ),
-                Row(children: [
-                  Flexible(
-                      child: HeadingAndTextfield(
-                          title: 'Model Number',
-                          controller: controller.modelNumber,
-                          readOnly: isTaskUpdating,
-                          keyboardType: TextInputType.number)),
-                  Flexible(
-                      child: HeadingAndTextfield(
-                          title: 'Serial Number',
-                          controller: controller.serialNumber,
-                          readOnly: isTaskUpdating,
-                          keyboardType: TextInputType.number))
-                ]),
-                HeadingAndTextfield(
-                    title: 'Arrangement Number',
-                    controller: controller.arrangementNumber,
+                      Obx(
+                        () => CustomDropdown(
+                          items: universalController.engines
+                              .where((element) => element.isGenerator == true)
+                              .toList(),
+                          hintText: controller.engineBrandName.value != ''
+                              ? controller.engineBrandName.value
+                              : 'Select Engine Brand',
+                          onTap: () {
+                            debugPrint('Dropdown tapped');
+                            universalController.engines.isEmpty
+                                ? ToastMessage.showToastMessage(
+                                    message:
+                                        'Please Add Engines first from the Engine section.',
+                                    backgroundColor: Colors.red)
+                                : null;
+                          },
+                          onChanged: (value) {
+                            controller.engineBrandId.value = value?.id ?? '';
+                            controller.engineBrandName.value =
+                                value?.name ?? '';
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  HeadingAndTextfield(
+                    title: 'Name of JOURNEYMAN',
+                    controller: controller.nameOfJourneyMan,
                     readOnly: isTaskUpdating,
-                    keyboardType: TextInputType.number),
-                CustomRadioButton(
-                  heading: 'Oil Sample (s) Taken?',
-                  options: const ['YES', 'NO'],
-                  selectedOption: controller.oilSamplesTaken,
-                ),
-              ],
+                  ),
+                  CustomRadioButton(
+                    heading: 'Unit Online on Arrival?',
+                    options: const ['YES', 'NO'],
+                    selectedOption: controller.unitOnlineOnArrival,
+                  ),
+                  HeadingAndTextfield(
+                    title: 'Job Scope',
+                    maxLines: 5,
+                    controller: controller.jobScope,
+                    readOnly: isTaskUpdating,
+                  ),
+                  HeadingAndTextfield(
+                    title: 'Report Any Operations Problems',
+                    maxLines: 5,
+                    controller: controller.operationalProblems,
+                    readOnly: isTaskUpdating,
+                  ),
+                  Row(children: [
+                    Flexible(
+                        child: HeadingAndTextfield(
+                            title: 'Model Number',
+                            controller: controller.modelNumber,
+                            readOnly: isTaskUpdating,
+                            keyboardType: TextInputType.number)),
+                    Flexible(
+                        child: HeadingAndTextfield(
+                            title: 'Serial Number',
+                            controller: controller.serialNumber,
+                            readOnly: isTaskUpdating,
+                            keyboardType: TextInputType.number))
+                  ]),
+                  HeadingAndTextfield(
+                      title: 'Arrangement Number',
+                      controller: controller.arrangementNumber,
+                      readOnly: isTaskUpdating,
+                      keyboardType: TextInputType.number),
+                  CustomRadioButton(
+                    heading: 'Oil Sample (s) Taken?',
+                    options: const ['YES', 'NO'],
+                    selectedOption: controller.oilSamplesTaken,
+                  ),
+                ],
+              ),
             ),
-          ),
-          CustomButton(
-              isLoading: false,
-              buttonText: 'Next',
-              onTap: () {
-                controller.nextPage();
-                controller.scrollUp();
-              })
-        ],
+            // CustomButton(
+            //     isLoading: false,
+            //     buttonText: 'Next',
+            //     onTap: () {
+            //       controller.nextPage();
+            //       controller.scrollUp();
+            //     })
+          ],
+        ),
       ),
     );
   }

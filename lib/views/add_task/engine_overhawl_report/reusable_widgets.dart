@@ -1009,6 +1009,15 @@ class GeneralInfo extends StatelessWidget {
               title: 'Location',
               controller: controller.overHaulReport.customerEngineInfo.location,
             ),
+            // HeadingAndTextfield(
+            //     title: 'Select Location',
+            //     controller:
+            //         controller.overHaulReport.customerEngineInfo.location,
+            //     suffixIcon: InkWell(
+            //       onTap: () => Get.to(() => SelectLocationScreen()),
+            //       child: Icon(Icons.location_on_outlined,
+            //           color: AppColors.blueTextColor),
+            //     )),
             Row(
               children: [
                 Flexible(
@@ -1040,12 +1049,23 @@ class GeneralInfo extends StatelessWidget {
                 )),
               ],
             ),
-            HeadingAndTextfield(
-              title: 'Date',
-              controller: TextEditingController(),
+            Obx(
+              () => HeadingAndTextfield(
+                title: 'Select Date',
+                hintText:
+                    controller.overHaulReport.customerEngineInfo.date.value,
+                // hintText:
+                //     '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
+                onTap: () => controller.selectDate(context),
+                readOnly: true,
+              ),
             ),
+            // HeadingAndTextfield(
+            //   title: 'Date',
+            //   controller: TextEditingController(),
+            // ),
             HeadingAndTextfield(
-              title: 'Customer Contact',
+              title: 'Customer Email',
               controller:
                   controller.overHaulReport.customerEngineInfo.customerContact,
             ),

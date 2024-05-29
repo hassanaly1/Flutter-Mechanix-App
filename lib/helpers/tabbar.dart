@@ -6,13 +6,9 @@ class CustomTabBar extends StatelessWidget {
   final String? title1;
   final String? title2;
   final String? title3;
+  void Function(int)? onTap;
 
-  const CustomTabBar({
-    super.key,
-    this.title1,
-    this.title2,
-    this.title3,
-  });
+  CustomTabBar({super.key, this.title1, this.title2, this.title3, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +20,7 @@ class CustomTabBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           border: Border.all(color: Colors.black45)),
       child: TabBar(
+        onTap: onTap,
         dividerColor: Colors.transparent,
         indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),

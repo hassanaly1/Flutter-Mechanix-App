@@ -75,8 +75,7 @@ class EnginesScreen extends StatelessWidget {
                               context: context, controller: controller),
                         ),
                         //TabBar
-                        const CustomTabBar(
-                            title1: 'Generator', title2: 'Compressor'),
+                        CustomTabBar(title1: 'Generator', title2: 'Compressor'),
                         Expanded(
                           child: Obx(
                             () => TabBarView(

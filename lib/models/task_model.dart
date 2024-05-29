@@ -1,5 +1,3 @@
-import 'package:mechanix/models/payload.dart';
-
 class TaskModel {
   //Page1
   String? name;
@@ -19,14 +17,15 @@ class TaskModel {
   int? serialNumber;
   int? arrangementNumber;
   String? isOilSampleTaken;
+
   //Page2
   int? engineLoad;
   int? engineRpm;
   int? btdc;
-  List<GasSampleAs>? gasSampleAsFound;
+  List<String>? gasSampleAsFound;
   int? lbBankAsGasFound;
   int? rbBankAsGasFound;
-  List<GasSampleAs>? gasSampleAsAdjusted;
+  List<String>? gasSampleAsAdjusted;
   int? lbBankAsGasAdjusted;
   int? rbBankAsGasAdjusted;
   int? btdcValue;
@@ -63,6 +62,7 @@ class TaskModel {
   String? excessiveVibrationDescription;
   String? isInDrivingProblem;
   String? drivingProblemDescription;
+
   //Page3
   int? intakeValue;
   String? intakeType;
@@ -101,6 +101,7 @@ class TaskModel {
   String? oilDrainedIsolation;
   String? tankFilter;
   String? tankValuesOpen;
+
   //Page4
   String? oilPressureEngineGood;
   String? engineOilLevel;
@@ -249,16 +250,14 @@ class TaskModel {
         engineLoad: json["engine_load"],
         engineRpm: json["engine_rpm"],
         btdc: json["btdc"],
-        gasSampleAsFound: json["gas_sample_as_found"] == null
-            ? []
-            : List<GasSampleAs>.from(json["gas_sample_as_found"]!
-                .map((x) => GasSampleAs.fromJson(x))),
+        gasSampleAsFound: json['gas_sample_as_found'] != null
+            ? List<String>.from(json['gas_sample_as_found'])
+            : [],
         lbBankAsGasFound: json["lb_bank_as_gas_found"],
         rbBankAsGasFound: json["rb_bank_as_gas_found"],
-        gasSampleAsAdjusted: json["gas_sample_as_adjusted"] == null
-            ? []
-            : List<GasSampleAs>.from(json["gas_sample_as_adjusted"]!
-                .map((x) => GasSampleAs.fromJson(x))),
+        gasSampleAsAdjusted: json['gas_sample_as_adjusted'] != null
+            ? List<String>.from(json['gas_sample_as_adjusted'])
+            : [],
         lbBankAsGasAdjusted: json["lb_bank_as_gas_adjusted"],
         rbBankAsGasAdjusted: json["rb_bank_as_gas_adjusted"],
         btdcValue: json["btdc_value"],
@@ -349,6 +348,10 @@ class TaskModel {
         partRepairedOrder: json["part_repaired_order"],
       );
 
+  List<String> _test(List<dynamic> list) {
+    return [];
+  }
+
   Map<String, dynamic> toJson() => {
         "name": name ?? "",
         "user": userId ?? "",
@@ -369,14 +372,10 @@ class TaskModel {
         "engine_load": engineLoad ?? 0,
         "engine_rpm": engineRpm ?? 0,
         "btdc": btdc ?? 0,
-        "gas_sample_as_found": gasSampleAsFound == null
-            ? []
-            : List<dynamic>.from(gasSampleAsFound!.map((x) => x.toJson())),
+        'gas_sample_as_found': gasSampleAsFound ?? [],
         "lb_bank_as_gas_found": lbBankAsGasFound ?? 0,
         "rb_bank_as_gas_found": rbBankAsGasFound ?? 0,
-        "gas_sample_as_adjusted": gasSampleAsAdjusted == null
-            ? []
-            : List<dynamic>.from(gasSampleAsAdjusted!.map((x) => x.toJson())),
+        'gas_sample_as_adjusted': gasSampleAsAdjusted ?? [],
         "lb_bank_as_gas_adjusted": lbBankAsGasAdjusted ?? 0,
         "rb_bank_as_gas_adjusted": rbBankAsGasAdjusted ?? 0,
         "btdc_value": btdcValue ?? 0,

@@ -1,6 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mechanix/controllers/googlemap_controller.dart';
 import 'package:mechanix/controllers/report_v8_controller.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
@@ -26,6 +27,7 @@ class AddReportScreen extends StatefulWidget {
 class _CompressorTaskScreenState extends State<AddReportScreen> {
   late OverhaulReportController controller;
   late UniversalController universalController;
+  late MapController mapController;
 
   @override
   void initState() {
@@ -39,7 +41,7 @@ class _CompressorTaskScreenState extends State<AddReportScreen> {
                 : universalController.numberOfControllers.value = 12;
     debugPrint('ControllersValue: ${universalController.numberOfControllers}');
     controller = Get.put(OverhaulReportController(widget.updatingReportIndex));
-
+    mapController = Get.put(MapController());
     super.initState();
   }
 
@@ -58,6 +60,7 @@ class _CompressorTaskScreenState extends State<AddReportScreen> {
         widget.sideMenu.changePage(0);
         universalController.numberOfControllers.value = 0;
         Get.delete<OverhaulReportController>();
+        Get.delete<MapController>();
       },
       child: Container(
         decoration: const BoxDecoration(

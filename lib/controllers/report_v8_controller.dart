@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
@@ -156,6 +157,24 @@ class OverhaulReportController extends GetxController {
     if (scrollController.hasClients) {
       scrollController.animateTo(0.0,
           duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+    }
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      confirmText: 'Select Date',
+      // keyboardType: TextInputType.numberWithOptions(),
+      lastDate: DateTime(2101),
+      helpText: 'Select the Date',
+    );
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      overHaulReport.customerEngineInfo.date.value = formattedDate;
+      print(overHaulReport.customerEngineInfo.date.value);
+      // print(formattedDate); // Output: 2024-05-06
     }
   }
 // String finalToJson() {

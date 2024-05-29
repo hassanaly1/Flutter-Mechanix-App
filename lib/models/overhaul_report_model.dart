@@ -95,7 +95,7 @@ class CustomerEngineInfo {
       customerContact = TextEditingController(),
       mechanic1 = TextEditingController(),
       mechanic2 = TextEditingController();
-  DateTime? date;
+  final date = Rx<String?>(null);
 
   fromJson(Map<String, dynamic> json) {
     id.value = json["_id"];
@@ -105,7 +105,7 @@ class CustomerEngineInfo {
     lsd.text = json["lsd"];
     unit.text = json["unit"];
     unitHours.text = json["unit_hours"];
-    // json["date"] == null ? null : DateTime.parse(json["date"]);
+    date.value = json["date"] ?? '';
     engineMake.text = json["engine_make"];
     engineModel.text = json["engine_model"];
     engineSerial.text = json["engine_serial"];
@@ -122,8 +122,7 @@ class CustomerEngineInfo {
         "lsd": lsd.text.trim(),
         "unit": unit.text.trim(),
         "unit_hours": unitHours.text.trim(),
-        // "date":
-        //     "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "date": date,
         "engine_make": engineMake.text.trim(),
         "engine_model": engineModel.text.trim(),
         "engine_serial": engineSerial.text.trim(),

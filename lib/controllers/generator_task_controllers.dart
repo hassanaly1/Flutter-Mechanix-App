@@ -16,15 +16,11 @@ class AddTaskController extends GetxController {
   RxBool isLoading = false.obs;
   var activePageIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
-
   final UniversalController controller = Get.find();
   final MapController mapController = Get.put(MapController());
-
   SideMenuController? sideMenuController;
   GeneratorTaskService taskService = GeneratorTaskService();
-
   RxBool isTaskUpdating = false.obs;
-
   List<Part> partsList = <Part>[].obs;
 
   @override
@@ -70,8 +66,8 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint(
-          'cylinderExhaustPyrometer Temperature: ${controller.text.trim()}');
+      // debugPrint(
+      //     'cylinderExhaustPyrometer Temperature: ${controller.text.trim()}');
     }
 
     //HotCompression
@@ -85,7 +81,7 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint('HotTemperature: ${controller.text.trim()}');
+      // debugPrint('HotTemperature: ${controller.text.trim()}');
     }
     //BurnCompression
     List<Temperatures> burnCompression = [];
@@ -98,7 +94,7 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint('Burn Temperature: ${controller.text.trim()}');
+      // debugPrint('Burn Temperature: ${controller.text.trim()}');
     }
     //Task
     TaskModel newTask = TaskModel(
@@ -126,10 +122,10 @@ class AddTaskController extends GetxController {
       engineLoad: int.tryParse(engineLoad.text.trim()),
       engineRpm: int.tryParse(engineRPM.text.trim()),
       btdc: int.tryParse(ignitionTiming.text.trim()),
-      // gasSampleAsFound: exhaustGasSampleFound,
+      gasSampleAsFound: exhaustGasSampleFound,
       lbBankAsGasFound: int.tryParse(leftBankFound.text.trim()),
       rbBankAsGasFound: int.tryParse(rightBankFound.text.trim()),
-      // gasSampleAsAdjusted: exhaustGasSampleAdjusted,
+      gasSampleAsAdjusted: exhaustGasSampleAdjusted,
       lbBankAsGasAdjusted: int.tryParse(leftBankAdjusted.text.trim()),
       rbBankAsGasAdjusted: int.tryParse(rightBankAdjusted.text.trim()),
       btdcValue: int.tryParse(btuValue.text.trim()),
@@ -273,6 +269,12 @@ class AddTaskController extends GetxController {
             message: 'Please Enter Client Name and Email',
             backgroundColor: Colors.red);
       } else {
+        print(
+            'CylinderTemperatures: ${cylinderExhaustPyrometer.map((e) => e.temperature).toList()}');
+        print(
+            'HotTemperatures: ${hotCompression.map((e) => e.temperature).toList()}');
+        print(
+            'BurnTemperatures: ${burnCompression.map((e) => e.temperature).toList()}');
         isLoading.value = true;
         GeneratorTaskResponse taskResponse = await taskService.createTask(
           token: storage.read('token'),
@@ -336,8 +338,6 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint(
-          'cylinderExhaustPyrometer Temperature: ${controller.text.trim()}');
     }
 
     //HotCompression
@@ -351,7 +351,6 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint('HotTemperature: ${controller.text.trim()}');
     }
     //BurnCompression
     List<Temperatures> burnCompression = [];
@@ -364,7 +363,6 @@ class AddTaskController extends GetxController {
           temperature: int.tryParse(controller.text.trim()),
         ),
       );
-      debugPrint('Burn Temperature: ${controller.text.trim()}');
     }
     //Task
     TaskModel newTask = TaskModel(
@@ -391,10 +389,10 @@ class AddTaskController extends GetxController {
       engineLoad: int.tryParse(engineLoad.text.trim()),
       engineRpm: int.tryParse(engineRPM.text.trim()),
       btdc: int.tryParse(ignitionTiming.text.trim()),
-      // gasSampleAsFound: exhaustGasSampleFound,
+      gasSampleAsFound: exhaustGasSampleFound,
       lbBankAsGasFound: int.tryParse(leftBankFound.text.trim()),
       rbBankAsGasFound: int.tryParse(rightBankFound.text.trim()),
-      // gasSampleAsAdjusted: exhaustGasSampleAdjusted,
+      gasSampleAsAdjusted: exhaustGasSampleAdjusted,
       lbBankAsGasAdjusted: int.tryParse(leftBankAdjusted.text.trim()),
       rbBankAsGasAdjusted: int.tryParse(rightBankAdjusted.text.trim()),
       btdcValue: int.tryParse(btuValue.text.trim()),
@@ -551,6 +549,12 @@ class AddTaskController extends GetxController {
           leakageFound: leakageFound,
           parts: parts,
         );
+        print(
+            'CylinderTemperaturesAfterUpdate: ${cylinderExhaustPyrometer.map((e) => e.temperature).toList()}');
+        print(
+            'HotTemperaturesAfterUpdate: ${hotCompression.map((e) => e.temperature).toList()}');
+        print(
+            'BurnTemperaturesAfterUpdate: ${burnCompression.map((e) => e.temperature).toList()}');
 
         if (taskUpdated) {
           ToastMessage.showToastMessage(
@@ -579,6 +583,28 @@ class AddTaskController extends GetxController {
 
   void updateControllers(Payload payload) {
     isTaskUpdating.value = true;
+    //CylinderExhaustPyrometer
+    for (int i = 0; i < 16; i++) {
+      cylinderExhaustPyrometerTemperatureCtrl[i].text =
+          payload.cylinderExhaustPyrometer?[i].temperature.toString() ?? 0;
+      debugPrint(
+          'cylinderExhaustPyrometerTemperatureWhenUpdating: ${payload.cylinderExhaustPyrometer?[i].temperature.toString()}');
+    }
+    //BurnTemperatures
+    for (int i = 0; i < 16; i++) {
+      burnTemperatureCtrl[i].text =
+          payload.burnCompression?[i].temperature.toString() ?? 0;
+      debugPrint(
+          'BurnTemperatureWhenUpdating: ${payload.burnCompression?[i].temperature.toString()}');
+    }
+    //HotCompressionTemperature
+    for (int i = 0; i < 16; i++) {
+      hotCompressionTemperatureCtrl[i].text =
+          payload.hotCompression?[i].temperature.toString() ?? 0;
+      debugPrint(
+          'hotTemperatureWhenUpdating: ${payload.hotCompression?[i].temperature.toString()}');
+    }
+
     //Page1
     taskName.text = payload.task?.name ?? '';
     clientEmail.text = payload.task?.customerEmail ?? '';
@@ -599,13 +625,12 @@ class AddTaskController extends GetxController {
     engineLoad.text = payload.task?.engineLoad.toString() ?? '';
     engineRPM.text = payload.task?.engineRpm.toString() ?? '';
     ignitionTiming.text = payload.task?.btdc.toString() ?? '';
-    // payload.task?.gasSampleAsFound?[0].gasName == 'Yes';
-    exhaustGasSampleFound.value = (payload.task?.gasSampleAsFound ?? [])
+    exhaustGasSampleFound.value = (payload.task?.gasSampleAsFound)!
         .map((item) => item.toString())
         .toList();
     leftBankFound.text = payload.task?.lbBankAsGasFound.toString() ?? '';
     rightBankFound.text = payload.task?.rbBankAsGasFound.toString() ?? '';
-    exhaustGasSampleAdjusted.value = (payload.task?.gasSampleAsAdjusted ?? [])
+    exhaustGasSampleAdjusted.value = (payload.task?.gasSampleAsAdjusted)!
         .map((item) => item.toString())
         .toList();
     leftBankAdjusted.text = payload.task?.lbBankAsGasAdjusted.toString() ?? '';
@@ -613,21 +638,6 @@ class AddTaskController extends GetxController {
 
     btuValue.text = payload.task?.btdcValue.toString() ?? '';
     selectedBtuValue.value = payload.task?.btuType ?? 'C';
-    //CylinderExhaustPyrometer
-    for (int i = 0; i < 16; i++) {
-      cylinderExhaustPyrometerTemperatureCtrl[i].text =
-          payload.cylinderExhaustPyrometer?[i].temperature.toString() ?? 0;
-    }
-    //BurnTemperatures
-    for (int i = 0; i < 16; i++) {
-      burnTemperatureCtrl[i].text =
-          payload.burnCompression?[i].temperature.toString() ?? 0;
-    }
-    //HotCompressionTemperature
-    for (int i = 0; i < 16; i++) {
-      hotCompressionTemperatureCtrl[i].text =
-          payload.hotCompression?[i].temperature.toString() ?? 0;
-    }
     //IN
     lbTurboIn.value = payload.turboTemperature?[0].lbInType ?? '';
     lbTurboInTemp.text =
