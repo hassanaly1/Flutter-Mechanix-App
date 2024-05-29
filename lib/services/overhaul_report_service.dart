@@ -54,7 +54,7 @@ class OverhaulReportServices {
     String apiUrl =
         '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getOverhaulReportUrl}';
     try {
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',

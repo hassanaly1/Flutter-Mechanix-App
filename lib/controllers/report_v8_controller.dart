@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,7 @@ class OverhaulReportController extends GetxController {
   OverhaulReportController(this.updatingReportIndex);
 
   RxBool isLoading = false.obs;
+  File? pdfFile;
 
   final UniversalController universalController = Get.find();
   late OverHaulReportModel overHaulReport;

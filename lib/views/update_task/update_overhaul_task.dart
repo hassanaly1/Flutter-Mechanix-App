@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/report_v8_controller.dart';
-import 'package:mechanix/helpers/appbar.dart';
 import 'package:mechanix/helpers/appcolors.dart';
+import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/models/overhaul_report_model.dart';
 import 'package:mechanix/views/add_task/engine_overhawl_report/custom_v8_body.dart';
 
@@ -57,8 +57,36 @@ class _UpdateOverhaulTaskScreenState extends State<UpdateOverhaulTaskScreen> {
                         expandedHeight: context.height * 0.15,
                         flexibleSpace: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: ReUsableAppbar(
-                                title: 'Update Task ${widget.model.type}')))
+                            child: Container(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                      onPressed: () => Get.back(),
+                                      icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.white,
+                                      )),
+                                  Flexible(
+                                    child: CustomTextWidget(
+                                      text: widget.model.type,
+                                      maxLines: 2,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 20.0,
+                                      textColor: Colors.white,
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.picture_as_pdf_sharp,
+                                        color: Colors.white,
+                                      )),
+                                ],
+                              ),
+                            )))
                   ];
                 },
                 body: Container(

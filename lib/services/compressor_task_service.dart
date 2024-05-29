@@ -20,7 +20,7 @@ class CompressorTaskService {
     required CompressorTaskModel compressor,
   }) async {
     final Uri apiUrl =
-        Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createCompressorUrl);
+    Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createCompressorUrl);
     final Map<String, dynamic> payload = {"payload": compressor.toJson()};
     final headers = {
       'Content-Type': 'application/json',
@@ -45,7 +45,8 @@ class CompressorTaskService {
         );
       } else {
         debugPrint(
-            'Failed to create task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+            'Failed to create task. Status Code: ${response
+                .statusCode} ${response.reasonPhrase}');
         debugPrint('Response Body: ${response.body}');
         return CompressorTaskResponse(
             success: false, message: 'Failed to create task');
@@ -60,9 +61,10 @@ class CompressorTaskService {
   Future<List<CompressorTaskModel>> getAllCompressorTasks(
       {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getAllCompressorUrl}?page=$page';
+        '${ApiEndPoints.newBaseUrl}${ApiEndPoints
+        .getAllCompressorUrl}?page=$page';
     try {
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
@@ -110,7 +112,8 @@ class CompressorTaskService {
     bool isSuccess = false;
     debugPrint('Deleting Compressor task with ID: $taskId');
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.deleteCompressorByIdUrl}?id=$taskId',
+      '${ApiEndPoints.newBaseUrl}${ApiEndPoints
+          .deleteCompressorByIdUrl}?id=$taskId',
     );
 
     final headers = {
@@ -124,7 +127,8 @@ class CompressorTaskService {
         headers: headers,
       );
       debugPrint(
-          'DeleteCompressorTaskResponse: ${response.reasonPhrase}  ${response.statusCode}');
+          'DeleteCompressorTaskResponse: ${response.reasonPhrase}  ${response
+              .statusCode}');
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         final String message = responseData['message'];
@@ -133,7 +137,8 @@ class CompressorTaskService {
         isSuccess = true;
       } else {
         print(
-            'Failed to delete Compressor task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+            'Failed to delete Compressor task. Status Code: ${response
+                .statusCode} ${response.reasonPhrase}');
         print('Response Body: ${response.body}');
       }
     } catch (error) {
@@ -151,7 +156,8 @@ class CompressorTaskService {
     bool isSuccess = false;
 
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateCompressorByIdUrl}?id=$taskId',
+      '${ApiEndPoints.newBaseUrl}${ApiEndPoints
+          .updateCompressorByIdUrl}?id=$taskId',
     );
 
     final Map<String, dynamic> payload = {"payload": compressor.toJson()};
@@ -181,12 +187,14 @@ class CompressorTaskService {
         }
 
         debugPrint(
-            'Task Updated successfully: ${response.statusCode} ${response.reasonPhrase}');
+            'Task Updated successfully: ${response.statusCode} ${response
+                .reasonPhrase}');
         debugPrint('Task Updated Body: ${response.body}');
         isSuccess = true;
       } else {
         debugPrint(
-            'Failed to update task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
+            'Failed to update task. Status Code: ${response
+                .statusCode} ${response.reasonPhrase}');
         debugPrint('Response Body: ${response.body}');
       }
     } catch (error) {
