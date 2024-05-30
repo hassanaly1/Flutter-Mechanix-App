@@ -35,6 +35,7 @@ class CustomStepperBody1 extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         bottomNavigationBar: CustomButton(
             isLoading: false,
             buttonText: 'Next',
@@ -48,6 +49,7 @@ class CustomStepperBody1 extends StatelessWidget {
               showBackgroundShadow: false,
               color: Colors.grey.shade300,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeadingAndTextfield(
                     title: 'Task Name',

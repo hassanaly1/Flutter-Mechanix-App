@@ -277,8 +277,7 @@ class AuthService {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse(
-          'https://mechanix-api-production.up.railway.app/api/auth/editprofile'),
+      Uri.parse('${ApiEndPoints.baseUrl}${ApiEndPoints.updateProfileUrl}'),
     );
 
     request.fields.addAll({
@@ -349,7 +348,7 @@ class AuthService {
     var request = http.MultipartRequest(
       'POST',
       Uri.parse(
-          'https://mechanix-api-production.up.railway.app/api/auth/editprofilefile'),
+          '${ApiEndPoints.baseUrl}${ApiEndPoints.updateProfilePictureUrl}'),
     );
     request.files.add(
       http.MultipartFile.fromBytes(

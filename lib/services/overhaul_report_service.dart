@@ -17,7 +17,7 @@ class OverhaulReportServices {
   Future<OverhaulReportTaskResponse> createOverhaulReport(
       {required String data, required String token}) async {
     Uri apiUrl = Uri.parse(
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.createOverhaulReportUrl}');
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.createOverhaulReportUrl}');
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -52,7 +52,7 @@ class OverhaulReportServices {
   getAllTasks(
       {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getOverhaulReportUrl}';
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.getOverhaulReportUrl}';
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -98,7 +98,7 @@ class OverhaulReportServices {
     bool isSuccess = false;
     debugPrint('Deleting Overhaul task with ID: $taskId');
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.deleteOverhaulReportUrl}?id=$taskId',
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteOverhaulReportUrl}?id=$taskId',
     );
 
     final headers = {
@@ -137,7 +137,7 @@ class OverhaulReportServices {
       required String taskId}) async {
     debugPrint('Updating Overhaul task with ID: $taskId');
     Uri apiUrl = Uri.parse(
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateOverhaulReportUrl}?id=$taskId');
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.updateOverhaulReportUrl}?id=$taskId');
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

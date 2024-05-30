@@ -28,7 +28,7 @@ class GeneratorTaskService {
     required List<Part> parts,
   }) async {
     final Uri apiUrl =
-        Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createTaskUrl);
+        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.createTaskUrl);
     debugPrint('Payload1: ${task.gasSampleAsFound}');
     debugPrint('Payload2: ${task.gasSampleAsAdjusted}');
     final Map<String, dynamic> payload = {
@@ -79,7 +79,7 @@ class GeneratorTaskService {
   Future<List<Payload>> getAllTasks(
       {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.getAllTaskUrl}?page=$page';
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -150,7 +150,7 @@ class GeneratorTaskService {
     bool isSuccess = false;
 
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
     );
 
     final Map<String, dynamic> payload = {

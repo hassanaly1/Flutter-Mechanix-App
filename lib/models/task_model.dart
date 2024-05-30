@@ -348,10 +348,6 @@ class TaskModel {
         partRepairedOrder: json["part_repaired_order"],
       );
 
-  List<String> _test(List<dynamic> list) {
-    return [];
-  }
-
   Map<String, dynamic> toJson() => {
         "name": name ?? "",
         "user": userId ?? "",

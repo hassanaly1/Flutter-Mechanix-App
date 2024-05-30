@@ -154,6 +154,7 @@ class CustomStepperBody2 extends StatelessWidget {
               showBackgroundShadow: false,
               color: Colors.grey.shade300,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ContainerHeading(heading: 'Fuel Quality in Use'),
                   HeadingAndTextfield(
@@ -409,6 +410,7 @@ class CustomStepperBody2 extends StatelessWidget {
               showBackgroundShadow: false,
               color: Colors.grey.shade300,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ContainerHeading(heading: 'Misfires Detected'),
                   CustomRadioButton(

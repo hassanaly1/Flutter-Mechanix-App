@@ -38,8 +38,8 @@ class _ViewAllTasksScreenState extends State<ViewAllTasksScreen> {
   }
 
   void _callAllTasks() {
-    controller.getAllGeneratorTasks();
-    controller.getAllCompressorTasks();
+    // controller.getAllGeneratorTasks();
+    // controller.getAllCompressorTasks();
     controller.getAllOverhaulTasks();
   }
 

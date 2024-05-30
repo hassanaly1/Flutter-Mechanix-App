@@ -20,7 +20,7 @@ class CompressorTaskService {
     required CompressorTaskModel compressor,
   }) async {
     final Uri apiUrl =
-        Uri.parse(ApiEndPoints.newBaseUrl + ApiEndPoints.createCompressorUrl);
+        Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.createCompressorUrl);
     final Map<String, dynamic> payload = {"payload": compressor.toJson()};
     final headers = {
       'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ class CompressorTaskService {
   Future<List<CompressorTaskModel>> getAllCompressorTasks(
       {String? searchString, required String token, required int page}) async {
     String apiUrl =
-        '${ApiEndPoints.newBaseUrl}${ApiEndPoints.getAllCompressorUrl}?page=$page';
+        '${ApiEndPoints.baseUrl}${ApiEndPoints.getAllCompressorUrl}?page=$page';
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -107,7 +107,7 @@ class CompressorTaskService {
     bool isSuccess = false;
     debugPrint('Deleting Compressor task with ID: $taskId');
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.deleteCompressorByIdUrl}?id=$taskId',
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.deleteCompressorByIdUrl}?id=$taskId',
     );
 
     final headers = {
@@ -146,7 +146,7 @@ class CompressorTaskService {
     bool isSuccess = false;
 
     final Uri apiUrl = Uri.parse(
-      '${ApiEndPoints.newBaseUrl}${ApiEndPoints.updateCompressorByIdUrl}?id=$taskId',
+      '${ApiEndPoints.baseUrl}${ApiEndPoints.updateCompressorByIdUrl}?id=$taskId',
     );
 
     final Map<String, dynamic> payload = {"payload": compressor.toJson()};

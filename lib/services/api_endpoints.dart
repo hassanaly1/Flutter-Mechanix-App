@@ -1,6 +1,6 @@
 class ApiEndPoints {
-  static String baseUrl = 'https://mechanix-api-production.up.railway.app';
-  static String newBaseUrl = 'https://mechanix-api.vercel.app';
+  // static String baseUrl = 'https://mechanix-api-production.up.railway.app';
+  static String baseUrl = 'https://mechanixapi-production.up.railway.app';
 
   //Authentications
   static String registerUserUrl = '/api/auth/register'; //Registration
@@ -13,6 +13,7 @@ class ApiEndPoints {
   static String changePasswordUrl =
       '/api/auth/changepassword'; //Change Password
   static String updateProfileUrl = '/api/auth/editprofile';
+  static String updateProfilePictureUrl = '/api/auth/editprofilefile';
 
   //Generator-Task
   static String createTaskUrl = '/api/task/createtask';
@@ -41,7 +42,7 @@ class ApiEndPoints {
   static String getEngineBrandById = '/api/engine/getenginebrandbyid';
   static String updateEngineUrl = '/api/engine/updateenginebrand';
   static String deleteEngineUrl = '/api/engine/deleteenginebrand';
-  static String updateEngineImageUrl = '/api/engine/updateengineprofile';
+  static String updateEngineImageUrl = '/api/engine/getenginebrandbyid';
 
   // Report
   static String createReportUrl = '/api/report/generateReportbyid';

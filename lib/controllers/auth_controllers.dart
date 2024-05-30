@@ -144,6 +144,7 @@ class AuthController extends GetxController {
           // emailController.clear();
           // passwordController.clear();
         } else {
+          debugPrint('Error: ${response['message']}');
           ToastMessage.showToastMessage(
               message: response['message'], backgroundColor: Colors.red);
         }

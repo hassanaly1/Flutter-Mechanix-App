@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mechanix/controllers/universal_controller.dart';
-import 'package:mechanix/services/engine_service.dart';
 import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/engine_model.dart';
+import 'package:mechanix/services/engine_service.dart';
 
 class EnginesController extends GetxController {
   var isLoading = false.obs;
@@ -38,7 +38,8 @@ class EnginesController extends GetxController {
 
   @override
   onInit() {
-    getAllEngines();
+    /// todo: uncomment below line
+    // getAllEngines();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
