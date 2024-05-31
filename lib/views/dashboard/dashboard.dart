@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     debugPrint('DashboardScreenOnInitCalled');
     controller.tabController = TabController(
       initialIndex: 0,
-      length: 12,
+      length: 11,
       vsync: this,
     );
   }
@@ -117,73 +117,8 @@ class HomeAppbar extends StatelessWidget {
     // var currentPage = sideMenu.currentPage;
 
     return SizedBox(
-      height:
-          context.isLandscape ? context.height * 0.15 : context.height * 0.15,
-      child:
-          // context.isLandscape
-          //     ? Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //             children: [
-          //               context.isLandscape
-          //                   ? Image.asset(
-          //                       'assets/images/app-logo-white.png',
-          //                       height: context.height * 0.1,
-          //                       fit: BoxFit.cover,
-          //                     )
-          //                   : IconButton(
-          //                       onPressed: () => sideMenu.changePage(1),
-          //                       icon: const Icon(Icons.arrow_back_rounded,
-          //                           color: Colors.white70)),
-          //               Obx(
-          //                 () => CustomTextWidget(
-          //                   text: controller.currentPage.value == 0
-          //                       ? 'Service reports made easy'
-          //                       : controller.currentPage.value == 2
-          //                           ? 'Service reports made easy'
-          //                           : controller.currentPage.value == 3
-          //                               ? 'View Task'
-          //                               : controller.currentPage.value == 5
-          //                                   ? 'Reports'
-          //                                   : controller.currentPage.value == 6
-          //                                       ? 'Customize Units'
-          //                                       : controller.currentPage.value == 7
-          //                                           ? 'Engines'
-          //                                           : '',
-          //                   textColor: Colors.white,
-          //                   fontSize: context.isLandscape ? 20.0 : 18.0,
-          //                   fontWeight: FontWeight.w600,
-          //                   maxLines: 2,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //           Padding(
-          //             padding: const EdgeInsets.all(8.0),
-          //             child: context.isLandscape
-          //                 ? Container(
-          //                     decoration: BoxDecoration(
-          //                       shape: BoxShape.circle,
-          //                       color: Colors.grey.shade200,
-          //                     ),
-          //                     child: IconButton(
-          //                       onPressed: () {},
-          //                       icon: const Icon(Icons.logout_rounded),
-          //                     ),
-          //                   )
-          //                 : Visibility(
-          //                     visible:
-          //                         controller.currentPage.value == 3 ? false : true,
-          //                     child: ProfileAvatar(
-          //                       onTap: () => sideMenu.changePage(8),
-          //                     )),
-          //           ),
-          //         ],
-          //       )
-          //     :
-          Padding(
+      height: context.height * 0.15,
+      child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Column(
           children: [
@@ -215,24 +150,15 @@ class HomeAppbar extends StatelessWidget {
                             icon: const Icon(Icons.logout_rounded),
                           ),
                         )
-                      : Visibility(
-                          visible:
-                              controller.currentPage.value == 3 ? false : true,
-                          child: Row(
-                            children: [
-                              // IconButton(
-                              //   onPressed: () => sideMenu.changePage(8),
-                              //   icon: const Icon(
-                              //     Symbols.event_repeat_rounded,
-                              //     color: Colors.white,
-                              //     size: 30,
-                              //   ),
-                              // ),
-                              ProfileAvatar(
-                                onTap: () => sideMenu.changePage(11),
-                              ),
-                            ],
-                          )),
+                      : Obx(
+                          () => controller.currentPage.value == 0
+                              ? ProfileAvatar(
+                                  onTap: () => sideMenu.changePage(10),
+                                )
+                              : const CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.transparent),
+                        ),
                 ),
               ],
             ),
@@ -259,14 +185,18 @@ class HomeAppbar extends StatelessWidget {
                                                   : controller.currentPage
                                                               .value ==
                                                           8
-                                                      ? 'Reports'
+                                                      // ? 'Reports'
+                                                      // : controller.currentPage
+                                                      //             .value ==
+                                                      //         9
+                                                      ? 'Engines'
                                                       : controller.currentPage
                                                                   .value ==
-                                                              9
-                                                          ? 'Engines'
+                                                              10
+                                                          ? 'Profile'
                                                           : '',
                   textColor: Colors.white,
-                  fontSize: context.isLandscape ? 20.0 : 18.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.w600,
                 ),
               ),

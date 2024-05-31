@@ -1,4 +1,5 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/controllers/generator_task_controllers.dart';
@@ -33,11 +34,11 @@ class _GeneratorTaskScreenState extends State<GeneratorTaskScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,9 @@ class _GeneratorTaskScreenState extends State<GeneratorTaskScreen> {
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverAppBar(
-                      expandedHeight: context.height * 0.28,
+                      expandedHeight: context.isLandscape
+                          ? context.height * 0.32
+                          : context.height * 0.28,
                       pinned: false,
                       floating: true,
                       primary: false,
@@ -143,11 +146,28 @@ class TopSection extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {
+                        onPressed: () {
+                          if (kIsWeb) {
+                            Get.dialog(
+                              AlertDialog(
+                                title: const Text('Platform Not Supported'),
+                                content: const Text(
+                                    'Please switch to the mobile application to use the QR code scanner.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
                             Get.to(() => const ScanQrCodeScreen(),
                                 transition: Transition.rightToLeft);
-                          },
-                          icon: const Icon(Icons.qr_code_scanner_rounded))
+                          }
+                        },
+                        icon: const Icon(Icons.qr_code_scanner_rounded),
+                      )
                     ],
                   ),
                 ),

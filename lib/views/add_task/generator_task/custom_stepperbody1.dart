@@ -8,6 +8,7 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/dropdown.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/toast.dart';
+import 'package:mechanix/services/engine_service.dart';
 import 'package:mechanix/views/add_task/generator_task/select_location.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -54,12 +55,10 @@ class CustomStepperBody1 extends StatelessWidget {
                   HeadingAndTextfield(
                     title: 'Task Name',
                     controller: controller.taskName,
-                    // readOnly: isTaskUpdating,
                   ),
                   HeadingAndTextfield(
                     title: 'Client\'s Email',
                     controller: controller.clientEmail,
-                    // readOnly: isTaskUpdating,
                   ),
                   HeadingAndTextfield(
                       title: 'Select Location',
@@ -76,7 +75,6 @@ class CustomStepperBody1 extends StatelessWidget {
                           title: 'Set Unit',
                           controller: controller.setUnits,
                           keyboardType: TextInputType.number,
-                          readOnly: isTaskUpdating,
                         ),
                       ),
                       Flexible(
@@ -84,7 +82,6 @@ class CustomStepperBody1 extends StatelessWidget {
                           title: 'Unit Hours',
                           controller: controller.unitHours,
                           keyboardType: TextInputType.number,
-                          readOnly: isTaskUpdating,
                         ),
                       )
                     ],
@@ -120,44 +117,80 @@ class CustomStepperBody1 extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomTextWidget(
-                        text: 'Engine Brand',
-                        fontWeight: FontWeight.w600,
-                        maxLines: 2,
-                      ),
-                      Obx(
-                        () => CustomDropdown(
-                          items: universalController.engines
-                              .where((element) => element.isGenerator == true)
-                              .toList(),
-                          hintText: controller.engineBrandName.value != ''
-                              ? controller.engineBrandName.value
-                              : 'Select Engine Brand',
-                          onTap: () {
-                            debugPrint('Dropdown tapped');
-                            universalController.engines.isEmpty
-                                ? ToastMessage.showToastMessage(
-                                    message:
-                                        'Please Add Engines first from the Engine section.',
-                                    backgroundColor: Colors.red)
-                                : null;
-                          },
-                          onChanged: (value) {
-                            controller.engineBrandId.value = value?.id ?? '';
-                            controller.engineBrandName.value =
-                                value?.name ?? '';
-                          },
+                  Visibility(
+                    visible: !isTaskUpdating,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextWidget(
+                          text: 'Engine Brand',
+                          fontWeight: FontWeight.w600,
+                          maxLines: 2,
                         ),
-                      ),
-                    ],
+                        Obx(
+                          () => InkWell(
+                            onTap: () {
+                              universalController.engines.isEmpty
+                                  ? ToastMessage.showToastMessage(
+                                      message:
+                                          'Please Add Engines first from the Engine section.',
+                                      backgroundColor: Colors.red)
+                                  : null;
+                            },
+                            child: CustomDropdown(
+                              items: universalController.engines
+                                  .where(
+                                      (element) => element.isGenerator == true)
+                                  .toList(),
+                              hintText: controller.engineBrandName.value != ''
+                                  ? controller.engineBrandName.value
+                                  : 'Select Engine Brand',
+                              onChanged: (value) async {
+                                try {
+                                  final result = await EngineService()
+                                      .getEngineData(
+                                          engineName: value?.name ?? '');
+
+                                  if (result['success']) {
+                                    final engineData = result['data'];
+                                    final engineId = engineData['_id'];
+                                    final engineName = engineData['name'];
+
+                                    controller.engineBrandName.value =
+                                        engineName ?? '';
+                                    controller.engineBrandId.value = engineId;
+                                    debugPrint(
+                                        'EngineId: ${controller.engineBrandId.value}');
+                                    debugPrint(
+                                        'EngineName: ${controller.engineBrandName.value}');
+                                  } else {
+                                    final errorMessage = result['message'];
+                                    print('Failed to fetch engine data');
+                                    print('ErrorData: ${result['data']}');
+                                    debugPrint('ErrorMessage: $errorMessage');
+
+                                    ToastMessage.showToastMessage(
+                                        message: errorMessage,
+                                        backgroundColor:
+                                            AppColors.blueTextColor);
+                                  }
+                                } catch (e) {
+                                  debugPrint('An error occurred: $e');
+                                  ToastMessage.showToastMessage(
+                                      message:
+                                          'An error occurred, please try again',
+                                      backgroundColor: AppColors.blueTextColor);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   HeadingAndTextfield(
                     title: 'Name of JOURNEYMAN',
                     controller: controller.nameOfJourneyMan,
-                    readOnly: isTaskUpdating,
                   ),
                   CustomRadioButton(
                     heading: 'Unit Online on Arrival?',
@@ -168,32 +201,27 @@ class CustomStepperBody1 extends StatelessWidget {
                     title: 'Job Scope',
                     maxLines: 5,
                     controller: controller.jobScope,
-                    readOnly: isTaskUpdating,
                   ),
                   HeadingAndTextfield(
                     title: 'Report Any Operations Problems',
                     maxLines: 5,
                     controller: controller.operationalProblems,
-                    readOnly: isTaskUpdating,
                   ),
                   Row(children: [
                     Flexible(
                         child: HeadingAndTextfield(
                             title: 'Model Number',
                             controller: controller.modelNumber,
-                            readOnly: isTaskUpdating,
                             keyboardType: TextInputType.number)),
                     Flexible(
                         child: HeadingAndTextfield(
                             title: 'Serial Number',
                             controller: controller.serialNumber,
-                            readOnly: isTaskUpdating,
                             keyboardType: TextInputType.number))
                   ]),
                   HeadingAndTextfield(
                       title: 'Arrangement Number',
                       controller: controller.arrangementNumber,
-                      readOnly: isTaskUpdating,
                       keyboardType: TextInputType.number),
                   CustomRadioButton(
                     heading: 'Oil Sample (s) Taken?',

@@ -76,6 +76,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              SizedBox(height: context.height * 0.2),
                               CustomTextWidget(
                                 text: 'Reset your password',
                                 fontSize: 16.0,

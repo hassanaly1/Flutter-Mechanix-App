@@ -9,22 +9,24 @@ class CustomDropdown extends StatelessWidget {
   final String hintText;
   final List<EngineModel> items;
   final void Function(EngineModel?)? onChanged;
-  final VoidCallback? onTap;
+
   const CustomDropdown({
     super.key,
     required this.items,
     required this.onChanged,
     required this.hintText,
-    this.onTap,
   });
+
   @override
   Widget build(BuildContext context) {
     return ReUsableContainer(
       child: DropdownButtonFormField(
+
         padding: EdgeInsets.zero,
         isExpanded: true,
         hint: Text(hintText),
-        dropdownColor: Colors.white, borderRadius: BorderRadius.circular(12.0),
+        dropdownColor: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
         style: TextStyle(
           fontFamily: 'Poppins',
@@ -41,7 +43,8 @@ class CustomDropdown extends StatelessWidget {
         ),
 
         items: items
-            .map((options) => DropdownMenuItem(
+            .map((options) =>
+            DropdownMenuItem(
                 value: options,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -9,6 +9,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
+
   @override
   State<OnBoardingScreen> createState() => _DoctorBoardingScreenState();
 }
@@ -78,7 +79,8 @@ class _DoctorBoardingScreenState extends State<OnBoardingScreen> {
                     height: Get.height * 0.2,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: context.width * 0.2),
                     child: CustomButton(
                       isLoading: false,
                       buttonText: currentPageIndex < 2 ? 'Next' : 'Get Started',

@@ -1053,9 +1053,8 @@ class GeneralInfo extends StatelessWidget {
               () => HeadingAndTextfield(
                 title: 'Select Date',
                 hintText:
-                    controller.overHaulReport.customerEngineInfo.date.value,
-                // hintText:
-                //     '${controller.taskSelectedDate.value.day.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.month.toString().padLeft(2, '0')}-${controller.taskSelectedDate.value.year.toString().padLeft(2, '0')}',
+                    controller.overHaulReport.customerEngineInfo.date.value ??
+                        'Select a date',
                 onTap: () => controller.selectDate(context),
                 readOnly: true,
               ),

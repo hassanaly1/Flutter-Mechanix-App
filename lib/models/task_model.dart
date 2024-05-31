@@ -238,7 +238,10 @@ class TaskModel {
         unitHours: json["unit_hours"],
         date: json["date"],
         time: json["time"],
-        engineBrandId: json["engine_brand"],
+        // engineBrandId: json["engine_brand"],
+        // engineBrandId: json["engine_brand"] != null
+        //     ? EngineBrand.fromJson(json["engine_brand"])
+        //     : null,
         nameJourneyMan: json["name_journey_man"],
         unitOnlineArrival: json["unit_online_arrival"],
         jobScope: json["job_scope"],

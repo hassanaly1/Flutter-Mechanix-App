@@ -34,10 +34,21 @@ class CustomTabBar extends StatelessWidget {
         isScrollable: true,
         tabAlignment: TabAlignment.center,
         tabs: [
-          Tab(text: title1),
-          Tab(text: title2),
-          if (title3 != null) Tab(text: title3),
+          if (title3 != null) ...[
+            Tab(text: title1),
+            Tab(text: title2),
+            Tab(text: title3),
+          ] else ...[
+            Tab(text: title1),
+            Tab(text: title2),
+          ],
         ],
+
+        // tabs: [
+        //   Tab(text: title1),
+        //   Tab(text: title2),
+        //   if (title3 != null) Tab(text: title3),
+        // ],
       ),
     );
   }

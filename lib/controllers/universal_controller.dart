@@ -118,27 +118,60 @@ class UniversalController extends GetxController {
   void _loadNextPageGenerators() async {
     debugPrint('Loading Next Page ${currentPage.value} Generator Tasks');
     isLoading.value = true;
+
     List<Payload> nextPageTasks = await generatorTaskService.getAllTasks(
       token: storage.read('token'),
       page: currentPage.value,
     );
 
-    generatorTasks.addAll(nextPageTasks);
-    currentPage.value++;
+    // Create a Set of existing task IDs to avoid duplicates
+    Set<String?> existingTaskIds =
+        generatorTasks.map((task) => task.task?.taskId).toSet();
+
+    // Add only unique tasks
+    for (var task in nextPageTasks) {
+      if (!existingTaskIds.contains(task.task?.taskId)) {
+        generatorTasks.add(task);
+        existingTaskIds
+            .add(task.task?.taskId); // Update the set with the new task ID
+      }
+    }
+
+    // Only increment the page if we received a full page of tasks
+    if (nextPageTasks.length >= 10) {
+      currentPage.value++;
+    }
+
     isLoading.value = false;
   }
 
   void _loadNextPageCompressors() async {
     debugPrint('Loading Next Page ${currentPage.value} Compressor Tasks');
     isLoading.value = true;
+
     List<CompressorTaskModel> nextPageTasks =
         await compressorTaskService.getAllCompressorTasks(
       token: storage.read('token'),
       page: currentPage.value,
     );
 
-    compressorTasks.addAll(nextPageTasks);
-    currentPage.value++;
+    // Create a Set of existing task IDs to avoid duplicates
+    Set<String?> existingTaskIds =
+        compressorTasks.map((task) => task.taskId).toSet();
+
+    // Add only unique tasks
+    for (var task in nextPageTasks) {
+      if (!existingTaskIds.contains(task.taskId)) {
+        compressorTasks.add(task);
+        existingTaskIds.add(task.taskId); // Update the set with the new task ID
+      }
+    }
+
+    // Only increment the page if we received a full page of tasks
+    if (nextPageTasks.length >= 10) {
+      currentPage.value++;
+    }
+
     isLoading.value = false;
   }
 

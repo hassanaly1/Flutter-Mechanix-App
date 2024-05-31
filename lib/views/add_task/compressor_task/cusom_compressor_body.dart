@@ -29,7 +29,7 @@ class CustomCompressorBody1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
@@ -47,7 +47,7 @@ class CustomCompressorBody1 extends StatelessWidget {
                 isTaskUpdating
                     ? controller.updateCompressorTask(
                         taskId: model?.taskId ?? '')
-                    : controller.addCompressorTask(sideMenuController);
+                    : controller.addCompressorTask(context, sideMenuController);
               }),
         ),
         body: ListView(

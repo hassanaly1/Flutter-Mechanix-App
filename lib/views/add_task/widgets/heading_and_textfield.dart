@@ -41,8 +41,8 @@ class HeadingAndTextfield extends StatelessWidget {
           CustomTextWidget(
             text: title,
             fontWeight: FontWeight.w500,
-            fontSize: fontSize,
-            maxLines: 2,
+            fontSize: 12,
+            maxLines: 1,
           ),
           ReUsableTextField(
             controller: controller,

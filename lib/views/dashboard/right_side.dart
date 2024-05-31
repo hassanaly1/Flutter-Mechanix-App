@@ -6,7 +6,6 @@ import 'package:mechanix/views/add_task/generator_task/add_generator_task.dart';
 import 'package:mechanix/views/engines.dart';
 import 'package:mechanix/views/home.dart';
 import 'package:mechanix/views/profile.dart';
-import 'package:mechanix/views/reports.dart';
 import 'package:mechanix/views/view_task.dart';
 
 class RightSideWidget extends StatelessWidget {
@@ -46,7 +45,7 @@ class RightSideWidget extends StatelessWidget {
           // 6
           ViewAllTasksScreen(sideMenu: sideMenu),
           // 7
-          ReportsScreen(sideMenu: sideMenu),
+          // ReportsScreen(sideMenu: sideMenu),
           // 8
           EnginesScreen(sideMenu: sideMenu),
           // 9

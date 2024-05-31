@@ -38,10 +38,11 @@ class _CompressorTaskScreenState extends State<AddReportScreen> {
             ? universalController.numberOfControllers.value = 12
             : widget.reportType == 'V16'
                 ? universalController.numberOfControllers.value = 16
-                : universalController.numberOfControllers.value = 12;
+                : widget.reportType == 'L7042GL C-14871'
+                    ? universalController.numberOfControllers.value = 18
+                    : 8;
     debugPrint('ControllersValue: ${universalController.numberOfControllers}');
     controller = Get.put(OverhaulReportController(widget.updatingReportIndex));
-    mapController = Get.put(MapController());
     super.initState();
   }
 
@@ -60,7 +61,6 @@ class _CompressorTaskScreenState extends State<AddReportScreen> {
         widget.sideMenu.changePage(0);
         universalController.numberOfControllers.value = 0;
         Get.delete<OverhaulReportController>();
-        Get.delete<MapController>();
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -94,7 +94,10 @@ class _CompressorTaskScreenState extends State<AddReportScreen> {
                   ),
                 ];
               },
-              body: BottomPageViewSection(sideMenuController: widget.sideMenu)),
+              body: BottomPageViewSection(
+                sideMenuController: widget.sideMenu,
+                reportType: widget.reportType,
+              )),
           floatingActionButton: FloatingActionButton(
             onPressed: () => controller.scrollUp(),
             backgroundColor: AppColors.primaryColor,
@@ -148,10 +151,12 @@ class TopSection extends StatelessWidget {
 
 class BottomPageViewSection extends StatelessWidget {
   final SideMenuController sideMenuController;
+  final String reportType;
 
   const BottomPageViewSection({
     super.key,
     required this.sideMenuController,
+    required this.reportType,
   });
 
   @override
@@ -162,6 +167,7 @@ class BottomPageViewSection extends StatelessWidget {
           child: CustomV8Body1(
             isTaskUpdating: false,
             sideMenuController: sideMenuController,
+            reportType: reportType,
           ),
         ),
       ],

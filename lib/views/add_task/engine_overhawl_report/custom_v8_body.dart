@@ -15,12 +15,14 @@ class CustomV8Body1 extends StatefulWidget {
   final bool isTaskUpdating;
   final SideMenuController? sideMenuController;
   final CompressorTaskModel? model;
+  final String? reportType;
 
   const CustomV8Body1({
     super.key,
     required this.isTaskUpdating,
     this.sideMenuController,
     this.model,
+    this.reportType,
   });
 
   @override
@@ -39,8 +41,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
 
   @override
   void dispose() {
-    controller.dispose();
-
+    Get.delete<OverhaulReportController>();
     super.dispose();
   }
 
@@ -49,7 +50,7 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
     final OverhaulReportController controller = Get.find();
     final UniversalController universalController = Get.find();
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
@@ -66,8 +67,8 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
               onTap: () async {
                 widget.isTaskUpdating
                     ? await controller.updateOverhaulReportTask()
-                    : await controller
-                        .addOverhaulReportTask(widget.sideMenuController);
+                    : await controller.addOverhaulReportTask(
+                        context, widget.sideMenuController);
               }),
         ),
         body: ListView(
@@ -126,18 +127,27 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
             CamFollowers(controller: controller),
 
             /// Bridges
-            Bridges(controller: controller),
+            Visibility(
+                visible: !(widget.reportType == 'L7042GL C-14871'),
+                child: Bridges(controller: controller)),
 
             /// Valves
-            Valves(controller: controller),
+            Visibility(
+                visible: !(widget.reportType == 'L7042GL C-14871'),
+                child: Valves(controller: controller)),
 
             /// Injector Trim Codes
-            InjectorTrimCodes(
-                universalController: universalController,
-                controller: controller),
+            Visibility(
+              visible: !(widget.reportType == 'L7042GL C-14871'),
+              child: InjectorTrimCodes(
+                  universalController: universalController,
+                  controller: controller),
+            ),
 
             ///Gear Train
-            GearTrain(controller: controller),
+            Visibility(
+                visible: widget.reportType == 'L7042GL C-14871',
+                child: GearTrain(controller: controller)),
 
             ///Engine Assembly Report Cont
             buildEngineAssemblyReportSection(controller),

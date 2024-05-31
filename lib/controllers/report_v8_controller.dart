@@ -10,6 +10,7 @@ import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/overhaul_report_model.dart';
 import 'package:mechanix/services/overhaul_report_service.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
 class OverhaulReportController extends GetxController {
   final int? updatingReportIndex;
@@ -21,14 +22,6 @@ class OverhaulReportController extends GetxController {
 
   final UniversalController universalController = Get.find();
   late OverHaulReportModel overHaulReport;
-
-  // final customerEngineInfo = CustomerEngineInfo();
-  // late EngineAssembly engineAssembly;
-  // late EngineAssemblyReportCont engineAssemblyReportCont;
-  // final engineAssemblyPartsExchangeCatalog =
-  //     EngineAssemblyPartsExchangeCatalog();
-  // final gearTrain = GearTrain();
-
   OverhaulReportServices overhaulReportServices = OverhaulReportServices();
   final ScrollController scrollController = ScrollController();
 
@@ -45,39 +38,17 @@ class OverhaulReportController extends GetxController {
                   ? 'V12'
                   : universalController.numberOfControllers.value == 16
                       ? 'V16'
-                      : 'L7042GL C-14871');
+                      : universalController.numberOfControllers.value == 18
+                          ? 'L7042GL C-14871'
+                          : 'V8');
     }
-    // debugPrint(
-    //     'NumberOfControllersAtInit: ${universalController.numberOfControllers.value}');
-    // engineAssembly =
-    //     EngineAssembly(count: universalController.numberOfControllers.value);
-    // engineAssemblyReportCont = EngineAssemblyReportCont(
-    //     count: universalController.numberOfControllers.value);
-
-    // engineAssembly.fromJson(json);
-    // print(engineAssembly.toJson());
     super.onInit();
   }
 
   Future<void> addOverhaulReportTask(
-      SideMenuController? sideMenuController) async {
+      BuildContext context, SideMenuController? sideMenuController) async {
     try {
       isLoading.value = true;
-
-      // final OverHaulReport overHaulReport = OverHaulReport(
-      //   customerEngineInfo: customerEngineInfo,
-      //   engineAssembly: engineAssembly,
-      //   engineAssemblyReportCont: engineAssemblyReportCont,
-      //   engineAssemblyPartsExchangeCatalog: engineAssemblyPartsExchangeCatalog,
-      //   type: universalController.numberOfControllers.value == 8
-      //       ? 'V8'
-      //       : universalController.numberOfControllers.value == 12
-      //           ? 'V12'
-      //           : universalController.numberOfControllers.value == 16
-      //               ? 'V16'
-      //               : 'L7042GL C-14871',
-      //   gearTrain: gearTrain,
-      // );
       OverhaulReportTaskResponse taskResponse =
           await overhaulReportServices.createOverhaulReport(
         data: overHaulReport.finalToJson(),
@@ -88,13 +59,13 @@ class OverhaulReportController extends GetxController {
         ToastMessage.showToastMessage(
             message: 'Task Created Successfully',
             backgroundColor: AppColors.blueTextColor);
-        // showConfirmationPopup(
-        //   context: context,
-        //   taskId: taskResponse.taskId ?? '',
-        //   token: storage.read('token'),
-        //   taskName: taskName.text.trim(),
-        //   customerEmail: clientEmail.text.trim(),
-        // );
+        showConfirmationPopup(
+          context: context,
+          taskId: taskResponse.taskId ?? '',
+          token: storage.read('token'),
+          taskName: overHaulReport.type,
+          customerEmail: overHaulReport.customerEngineInfo.customer.text.trim(),
+        );
         // await controller.getAllCompressorTasks();
         sideMenuController?.changePage(0);
         universalController.numberOfControllers.value = 0;
@@ -105,7 +76,7 @@ class OverhaulReportController extends GetxController {
             backgroundColor: Colors.red);
       }
     } catch (error) {
-      debugPrint('Error adding Generator task: $error');
+      debugPrint('Error adding Overhawl task: $error');
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
           backgroundColor: Colors.red);
@@ -128,23 +99,16 @@ class OverhaulReportController extends GetxController {
         ToastMessage.showToastMessage(
             message: 'Task Updated Successfully',
             backgroundColor: AppColors.blueTextColor);
-        // showConfirmationPopup(
-        //   context: context,
-        //   taskId: taskResponse.taskId ?? '',
-        //   token: storage.read('token'),
-        //   taskName: taskName.text.trim(),
-        //   customerEmail: clientEmail.text.trim(),
-        // );
         // await controller.getAllCompressorTasks();
         Get.back();
         universalController.numberOfControllers.value = 0;
       } else {
         ToastMessage.showToastMessage(
-            message: 'Failed to update task, please try again',
+            message: 'Failed to update overhaul task, please try again',
             backgroundColor: Colors.red);
       }
     } catch (error) {
-      debugPrint('Error updating Generator task: $error');
+      debugPrint('Error updating overhaul task: $error');
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
           backgroundColor: Colors.red);
@@ -165,18 +129,19 @@ class OverhaulReportController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      confirmText: 'Select Date',
-      // keyboardType: TextInputType.numberWithOptions(),
       lastDate: DateTime(2101),
       helpText: 'Select the Date',
+      confirmText: 'Select Date',
     );
+
     if (pickedDate != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       overHaulReport.customerEngineInfo.date.value = formattedDate;
       print(overHaulReport.customerEngineInfo.date.value);
-      // print(formattedDate); // Output: 2024-05-06
+      print(formattedDate); // Output: 2024-05-06
     }
   }
+
 // String finalToJson() {
 //   return jsonEncode({
 //     'customer_engine_info': customerEngineInfo.toJson(),

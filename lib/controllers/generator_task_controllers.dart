@@ -20,7 +20,6 @@ class AddTaskController extends GetxController {
   final MapController mapController = Get.put(MapController());
   SideMenuController? sideMenuController;
   GeneratorTaskService taskService = GeneratorTaskService();
-  RxBool isTaskUpdating = false.obs;
   List<Part> partsList = <Part>[].obs;
 
   @override
@@ -111,8 +110,7 @@ class AddTaskController extends GetxController {
       unitOnlineArrival: unitOnlineOnArrival.value,
       jobScope: jobScope.text.trim(),
       problems: operationalProblems.text.trim(),
-      // engineBrand: engineBrand.value,
-      engineBrandId: '137128323123',
+      engineBrandId: engineBrandId.value,
       modelNumber: int.tryParse(modelNumber.text.trim()),
       serialNumber: int.tryParse(serialNumber.text.trim()),
       arrangementNumber: int.tryParse(arrangementNumber.text.trim()),
@@ -268,6 +266,11 @@ class AddTaskController extends GetxController {
         ToastMessage.showToastMessage(
             message: 'Please Enter Client Name and Email',
             backgroundColor: Colors.red);
+      }
+      if (engineBrandId.value == "") {
+        ToastMessage.showToastMessage(
+            message: 'Please Select Engine Brand from 1st Tab',
+            backgroundColor: Colors.red);
       } else {
         print(
             'CylinderTemperatures: ${cylinderExhaustPyrometer.map((e) => e.temperature).toList()}');
@@ -299,7 +302,7 @@ class AddTaskController extends GetxController {
             taskName: taskName.text.trim(),
             customerEmail: clientEmail.text.trim(),
           );
-          await controller.getAllGeneratorTasks();
+          // await controller.getAllGeneratorTasks();
           sideMenuController.changePage(0);
           Get.delete<AddTaskController>();
           Get.delete<MapController>();
@@ -378,8 +381,7 @@ class AddTaskController extends GetxController {
       unitOnlineArrival: unitOnlineOnArrival.value,
       jobScope: jobScope.text.trim(),
       problems: operationalProblems.text.trim(),
-      // engineBrand: engineBrand.value,
-      engineBrandId: '137128323123',
+      // engineBrandId: engineBrandId.value,
       modelNumber: int.tryParse(modelNumber.text.trim()),
       serialNumber: int.tryParse(serialNumber.text.trim()),
       arrangementNumber: int.tryParse(arrangementNumber.text.trim()),
@@ -582,7 +584,6 @@ class AddTaskController extends GetxController {
   }
 
   void updateControllers(Payload payload) {
-    isTaskUpdating.value = true;
     //CylinderExhaustPyrometer
     for (int i = 0; i < 16; i++) {
       cylinderExhaustPyrometerTemperatureCtrl[i].text =

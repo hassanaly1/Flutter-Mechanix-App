@@ -504,7 +504,8 @@ void showConfirmationPopup(
                                   .generateReportById(taskId, token);
                               // isLoading = true;
                               if (success) {
-                                print('Report sent successfully');
+                                print(
+                                    'Report sent successfully to $customerEmail');
                                 ToastMessage.showToastMessage(
                                     message: 'Report has been sent',
                                     backgroundColor: Colors.green);

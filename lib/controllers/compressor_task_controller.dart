@@ -7,6 +7,7 @@ import 'package:mechanix/helpers/storage_helper.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/compressor_model.dart';
 import 'package:mechanix/services/compressor_task_service.dart';
+import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
 class CompressorTaskController extends GetxController {
   RxBool isLoading = false.obs;
@@ -21,7 +22,8 @@ class CompressorTaskController extends GetxController {
     }
   }
 
-  Future<void> addCompressorTask(SideMenuController? sideMenuController) async {
+  Future<void> addCompressorTask(
+      BuildContext context, SideMenuController? sideMenuController) async {
     var compressorTask = CompressorTaskModel(
       compressorId: '66486afb62fcb4e3463550c0',
       user: storage.read('user_info')['_id'],
@@ -84,14 +86,14 @@ class CompressorTaskController extends GetxController {
           ToastMessage.showToastMessage(
               message: 'Task Created Successfully',
               backgroundColor: AppColors.blueTextColor);
-          // showConfirmationPopup(
-          //   context: context,
-          //   taskId: taskResponse.taskId ?? '',
-          //   token: storage.read('token'),
-          //   taskName: taskName.text.trim(),
-          //   customerEmail: clientEmail.text.trim(),
-          // );
-          await controller.getAllCompressorTasks();
+          showConfirmationPopup(
+            context: context,
+            taskId: taskResponse.taskId ?? '',
+            token: storage.read('token'),
+            taskName: taskName.text.trim(),
+            customerEmail: customerEmail.text.trim(),
+          );
+          // await controller.getAllCompressorTasks();
           sideMenuController?.changePage(0);
           Get.delete<CompressorTaskController>();
         } else {

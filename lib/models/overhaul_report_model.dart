@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OverHaulReportModel {
   final String type;
@@ -22,8 +23,10 @@ class OverHaulReportModel {
             ? 12
             : type == 'V16'
                 ? 16
-                : 12;
-    // : 'L7042GL C-14871';
+                : type == 'L7042GL C-14871'
+                    ? 18
+                    : 8;
+    count = (count == 18) ? 12 : count;
     customerEngineInfo = CustomerEngineInfo();
     engineAssembly = EngineAssembly(count: count);
     engineAssemblyReportCont = EngineAssemblyReportCont(count: count);
@@ -98,6 +101,8 @@ class CustomerEngineInfo {
   final date = Rx<String?>(null);
 
   fromJson(Map<String, dynamic> json) {
+    DateTime parsedDate = DateTime.parse(json['date']);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
     id.value = json["_id"];
     customer.text = json["customer"] ?? '';
     workorder.text = json["workorder"] ?? '';
@@ -105,7 +110,8 @@ class CustomerEngineInfo {
     lsd.text = json["lsd"];
     unit.text = json["unit"];
     unitHours.text = json["unit_hours"];
-    date.value = json["date"] ?? '';
+    date.value = formattedDate;
+    // date.value = (json['date']);
     engineMake.text = json["engine_make"];
     engineModel.text = json["engine_model"];
     engineSerial.text = json["engine_serial"];
@@ -122,7 +128,8 @@ class CustomerEngineInfo {
         "lsd": lsd.text.trim(),
         "unit": unit.text.trim(),
         "unit_hours": unitHours.text.trim(),
-        "date": date,
+        // "date": date,
+        'date': date.value,
         "engine_make": engineMake.text.trim(),
         "engine_model": engineModel.text.trim(),
         "engine_serial": engineSerial.text.trim(),

@@ -26,6 +26,7 @@ class ProfileSection extends StatefulWidget {
 class _ProfileSectionState extends State<ProfileSection> {
   final UniversalController universalController = Get.find();
   RxBool isLoading = false.obs;
+  RxBool circularLoading = false.obs;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final ImagePicker picker = ImagePicker();
@@ -51,17 +52,45 @@ class _ProfileSectionState extends State<ProfileSection> {
               children: [
                 InkWell(
                   onTap: updateUserImage,
-                  child: CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      // backgroundImage:
-                      //     MemoryImage(universalController.userImageInBytes!),
-                      backgroundImage: universalController.userImageURL.value !=
-                              ''
-                          ? NetworkImage(
-                              universalController.userImageURL.value ?? '')
-                          : const AssetImage('assets/images/placeholder.png')
-                              as ImageProvider),
+                  child: Obx(() => Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 45,
+                            backgroundColor: Colors.white,
+                            backgroundImage: universalController
+                                    .userImageURL.value.isNotEmpty
+                                ? NetworkImage(
+                                    universalController.userImageURL.value)
+                                : const AssetImage(
+                                        'assets/images/placeholder.png')
+                                    as ImageProvider, // Cast AssetImage to ImageProvider
+                          ),
+                          if (circularLoading.value)
+                            CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                              strokeWidth: 2.0,
+                            ),
+                          // Show circular loading indicator
+                        ],
+                      )),
+
+                  // child: Obx(
+                  //   () => CircleAvatar(
+                  //       radius: 45,
+                  //       backgroundColor: Colors.white,
+                  //       // backgroundImage:
+                  //       //     MemoryImage(universalController.userImageInBytes!),
+                  //       backgroundImage: circularLoading.value == true
+                  //           ? null
+                  //           : universalController.userImageURL.value != ''
+                  //               ? NetworkImage(
+                  //                   universalController.userImageURL.value ??
+                  //                       '')
+                  //               : const AssetImage(
+                  //                       'assets/images/placeholder.png')
+                  //                   as ImageProvider),
+                  // ),
                 ),
                 const SizedBox(height: 12.0),
                 Obx(
@@ -154,58 +183,73 @@ class _ProfileSectionState extends State<ProfileSection> {
 
       if (success) {
         setState(() {});
+        ToastMessage.showToastMessage(
+            message: 'Profile updated successfully',
+            backgroundColor: Colors.green);
         // Profile update successful
       } else {
         // Profile update failed
         ToastMessage.showToastMessage(
             message: 'Something went wrong, try again',
-            backgroundColor: Colors.green);
+            backgroundColor: Colors.red);
       }
     } catch (e) {
       ToastMessage.showToastMessage(
           message: 'Something went wrong, try again',
-          backgroundColor: Colors.green);
+          backgroundColor: Colors.red);
       isLoading.value = false;
     }
   }
 
   Future<void> updateUserImage() async {
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      universalController.userImage = image;
-      universalController.userImageURL.value = image.path;
-      universalController.userImageInBytes =
-          (await universalController.userImage?.readAsBytes())!;
-      debugPrint('UserImageInBytes: ${universalController.userImageInBytes}');
+    try {
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      circularLoading.value = true;
+      if (image != null) {
+        universalController.userImage = image;
+        universalController.userImageURL.value = image.path;
+        universalController.userImageInBytes =
+            (await universalController.userImage?.readAsBytes())!;
+        debugPrint('UserImageInBytes: ${universalController.userImageInBytes}');
 
-      UpdateUserImageResult result = await AuthService().updateUserImage(
-        token: storage.read('token'),
-        engineImageInBytes: universalController.userImageInBytes!,
-      );
+        UpdateUserImageResult result = await AuthService().updateUserImage(
+          token: storage.read('token'),
+          engineImageInBytes: universalController.userImageInBytes!,
+        );
 
-      if (result.isSuccess) {
-        if (result.userData != null) {
-          debugPrint('AfterUpdateProfileLink: ${result.userData!['profile']}');
-          universalController.setUserImageUrl = result.userData!['profile'];
-          debugPrint('AfterUpdate: ${universalController.userImageURL.value}');
-          ToastMessage.showToastMessage(
-              message: 'Profile Image Updated', backgroundColor: Colors.green);
+        if (result.isSuccess) {
+          if (result.userData != null) {
+            debugPrint(
+                'AfterUpdateProfileLink: ${result.userData!['profile']}');
+            universalController.setUserImageUrl = result.userData!['profile'];
+            debugPrint(
+                'AfterUpdate: ${universalController.userImageURL.value}');
+            ToastMessage.showToastMessage(
+                message: 'Profile Image Updated',
+                backgroundColor: Colors.green);
+          } else {
+            ToastMessage.showToastMessage(
+                message: 'Something went wrong, try again',
+                backgroundColor: Colors.yellow);
+          }
         } else {
           ToastMessage.showToastMessage(
-              message: 'Profile Image Updated, but user data is missing',
-              backgroundColor: Colors.yellow);
+              message: 'Something went wrong, try again',
+              backgroundColor: Colors.red);
         }
+        circularLoading.value = false;
+        setState(() {});
       } else {
+        debugPrint('No image selected');
         ToastMessage.showToastMessage(
-            message: 'Something went wrong, try again',
-            backgroundColor: Colors.red);
+            message: 'No image selected', backgroundColor: Colors.red);
+        circularLoading.value = false;
       }
-
-      setState(() {});
-    } else {
-      debugPrint('No image selected');
+    } catch (e) {
+      // Handle any errors that occur during the execution of the function
+      debugPrint('Error occurred: $e');
       ToastMessage.showToastMessage(
-          message: 'No image selected', backgroundColor: Colors.red);
+          message: 'An error occurred: $e', backgroundColor: Colors.red);
     }
   }
 }

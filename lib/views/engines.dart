@@ -61,7 +61,7 @@ class EnginesScreen extends StatelessWidget {
                                   : 0.0),
                           child: ReUsableTextField(
                             controller: controller.searchController,
-                            hintText: 'Search Reports',
+                            hintText: 'Search Engine',
                             suffixIcon: const Icon(Icons.search_sharp),
                             onChanged: (value) {
                               controller.getAllEngines(searchName: value);

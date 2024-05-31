@@ -75,7 +75,7 @@ class _UpdateGeneratorTaskScreenState extends State<UpdateGeneratorTaskScreen> {
                         children: [
                           CustomTextWidget(
                             text: widget.model.task?.name ?? '',
-                            fontSize: 22.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.center,
                             textColor: Colors.white,
@@ -85,12 +85,11 @@ class _UpdateGeneratorTaskScreenState extends State<UpdateGeneratorTaskScreen> {
                               sizing: StackFit.loose,
                               index: controller.activePageIndex.value,
                               children: [
-                                CustomStepperBody1(isTaskUpdating: false),
-                                CustomStepperBody2(isTaskUpdating: false),
-                                CustomStepperBody3(isTaskUpdating: false),
+                                CustomStepperBody1(isTaskUpdating: true),
+                                CustomStepperBody2(isTaskUpdating: true),
+                                CustomStepperBody3(isTaskUpdating: true),
                                 CustomStepperBody4(
-                                  isTaskUpdating:
-                                      controller.isTaskUpdating.value,
+                                  isTaskUpdating: true,
                                   model: widget.model,
                                 ),
                               ],

@@ -31,6 +31,7 @@ class GeneratorTaskService {
         Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.createTaskUrl);
     debugPrint('Payload1: ${task.gasSampleAsFound}');
     debugPrint('Payload2: ${task.gasSampleAsAdjusted}');
+    debugPrint('EngineId: ${task.engineBrandId}');
     final Map<String, dynamic> payload = {
       "geolocation": geolocation.toJson(),
       "task": task.toJson(),
@@ -152,6 +153,7 @@ class GeneratorTaskService {
     final Uri apiUrl = Uri.parse(
       '${ApiEndPoints.baseUrl}${ApiEndPoints.updateTaskUrl}?id=$taskId',
     );
+    debugPrint('EngineId: ${task.engineBrandId}');
 
     final Map<String, dynamic> payload = {
       "geolocation": geolocation.toJson(),
