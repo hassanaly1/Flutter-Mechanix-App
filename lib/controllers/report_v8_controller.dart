@@ -14,6 +14,7 @@ import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart'
 
 class OverhaulReportController extends GetxController {
   final int? updatingReportIndex;
+  DateTime now = DateTime.now();
 
   OverhaulReportController(this.updatingReportIndex);
 
@@ -31,6 +32,8 @@ class OverhaulReportController extends GetxController {
       overHaulReport =
           universalController.overhaulReportsTasks[updatingReportIndex!];
     } else {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+
       overHaulReport = OverHaulReportModel(
           type: universalController.numberOfControllers.value == 8
               ? 'V8'
@@ -41,6 +44,7 @@ class OverhaulReportController extends GetxController {
                       : universalController.numberOfControllers.value == 18
                           ? 'L7042GL C-14871'
                           : 'V8');
+      overHaulReport.customerEngineInfo.date.value = formattedDate;
     }
     super.onInit();
   }

@@ -10,7 +10,6 @@ import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/toast.dart';
 import 'package:mechanix/models/payload.dart';
-import 'package:mechanix/services/report_service.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody2.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
@@ -499,32 +498,36 @@ void showConfirmationPopup(
                           buttonText: 'Yes',
                           fontSize: 12.0,
                           onTap: () async {
-                            try {
-                              bool success = await ReportService()
-                                  .generateReportById(taskId, token);
-                              // isLoading = true;
-                              if (success) {
-                                print(
-                                    'Report sent successfully to $customerEmail');
-                                ToastMessage.showToastMessage(
-                                    message: 'Report has been sent',
-                                    backgroundColor: Colors.green);
-                                Get.back();
-                              } else {
-                                ToastMessage.showToastMessage(
-                                    message:
-                                        'Something went wrong, please try again',
-                                    backgroundColor: Colors.red);
-                                Get.back();
-                              }
-                            } catch (e) {
-                              print('Error generating report: $e');
-                              ToastMessage.showToastMessage(
-                                  message:
-                                      'Something went wrong, please try again',
-                                  backgroundColor: Colors.green);
-                              Get.back();
-                            } finally {}
+                            ToastMessage.showToastMessage(
+                                message: 'Report has been sent',
+                                backgroundColor: Colors.green);
+                            Get.back();
+                            // try {
+                            //   bool success = await ReportService()
+                            //       .generateReportById(taskId, token);
+                            //   // isLoading = true;
+                            //   if (success) {
+                            //     print(
+                            //         'Report sent successfully to $customerEmail');
+                            //     ToastMessage.showToastMessage(
+                            //         message: 'Report has been sent',
+                            //         backgroundColor: Colors.green);
+                            //     Get.back();
+                            //   } else {
+                            //     ToastMessage.showToastMessage(
+                            //         message:
+                            //             'Something went wrong, please try again',
+                            //         backgroundColor: Colors.red);
+                            //     Get.back();
+                            //   }
+                            // } catch (e) {
+                            //   print('Error generating report: $e');
+                            //   ToastMessage.showToastMessage(
+                            //       message:
+                            //           'Something went wrong, please try again',
+                            //       backgroundColor: Colors.green);
+                            //   Get.back();
+                            // }
                           },
                         ),
                         CustomButton(

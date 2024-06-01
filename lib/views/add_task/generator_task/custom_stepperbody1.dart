@@ -165,8 +165,8 @@ class CustomStepperBody1 extends StatelessWidget {
                                         'EngineName: ${controller.engineBrandName.value}');
                                   } else {
                                     final errorMessage = result['message'];
-                                    print('Failed to fetch engine data');
-                                    print('ErrorData: ${result['data']}');
+                                    debugPrint('Failed to fetch engine data');
+                                    debugPrint('ErrorData: ${result['data']}');
                                     debugPrint('ErrorMessage: $errorMessage');
 
                                     ToastMessage.showToastMessage(

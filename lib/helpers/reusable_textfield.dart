@@ -17,6 +17,7 @@ class ReUsableTextField extends StatelessWidget {
   bool obscureText;
   final String? Function(String?)? validator;
   final bool showBackgroundShadow;
+
   ReUsableTextField({
     super.key,
     required this.hintText,
@@ -67,7 +68,7 @@ class ReUsableTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(
             fontFamily: 'Poppins',
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: FontWeight.w300,
             color: AppColors.lightTextColor,
           ),

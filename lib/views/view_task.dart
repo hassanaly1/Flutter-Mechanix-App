@@ -699,17 +699,17 @@ void _showDeletePopup(
                           () => InkWell(
                               onTap: () {
                                 if (model.runtimeType == Payload) {
-                                  print('GeneratorTaskDeleteCalled');
+                                  debugPrint('GeneratorTaskDeleteCalled');
                                   controller.deleteGeneratorTask(
                                       taskId: model.task?.taskId);
                                 } else if (model.runtimeType ==
                                     CompressorTaskModel) {
-                                  print('CompressorTaskDeleteCalled');
+                                  debugPrint('CompressorTaskDeleteCalled');
                                   controller.deleteCompressorTask(
                                       taskId: model.taskId ?? '');
                                 } else if (model.runtimeType ==
                                     OverHaulReportModel) {
-                                  print('OverHaulTaskDeleteCalled');
+                                  debugPrint('OverHaulTaskDeleteCalled');
                                   controller.deleteOverhaulTask(
                                       taskId: model.engineAssemblyReportCont.id
                                               .value ??

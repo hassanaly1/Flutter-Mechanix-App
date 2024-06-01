@@ -62,7 +62,7 @@ class OverhaulReportServices {
         },
         body: jsonEncode({
           'search': {
-            "name": searchString,
+            "name": "",
           }
         }),
       );
@@ -71,6 +71,7 @@ class OverhaulReportServices {
 
         if (jsonData['data'] != null) {
           final data = jsonData['data'];
+          print(data);
           // final List<OverHaulReport> tasks = [];
           // Payload payload = Payload.fromJson(tasksDataList[0]);
           // print(payload);

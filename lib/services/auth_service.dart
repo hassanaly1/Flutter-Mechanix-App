@@ -363,7 +363,7 @@ class AuthService {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         String responseString = await response.stream.bytesToString();
-        print('Response: $responseString');
+        debugPrint('Response: $responseString');
         try {
           Map<String, dynamic> jsonResponse = json.decode(responseString);
           if (jsonResponse['status'] == 'success') {

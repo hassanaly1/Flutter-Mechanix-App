@@ -233,16 +233,16 @@ class GeneratorTaskService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         final String message = responseData['message'];
         final Map<String, dynamic> data = responseData['data'];
-        print('Task deletion message: $message');
-        print('Deleted Task details: $data');
+        debugPrint('Task deletion message: $message');
+        debugPrint('Deleted Task details: $data');
         isSuccess = true;
       } else {
-        print(
+        debugPrint(
             'Failed to delete task. Status Code: ${response.statusCode} ${response.reasonPhrase}');
-        print('Response Body: ${response.body}');
+        debugPrint('Response Body: ${response.body}');
       }
     } catch (error) {
-      print('Error deleting task: $error');
+      debugPrint('Error deleting task: $error');
     }
 
     return isSuccess;

@@ -68,15 +68,6 @@ class OverHaulReportModel {
       overHaulReport.engineAssemblyPartsExchangeCatalog.fromJson(
         json['engine_assembly_parts_exchange_catalog'] ?? {},
       );
-      // overHaulReport.customerEngineInfo.fromJson(
-      //   json['customer_engine_info'] ?? {},
-      // );
-      // overHaulReport.engineAssembly.fromJson(json['engine_assembly']);
-      // overHaulReport.engineAssemblyReportCont
-      //     .fromJson(json['engine_assembly_report_cont']);
-      // overHaulReport.gearTrain.fromJson(json['gear_train'][0]);
-      // overHaulReport.engineAssemblyPartsExchangeCatalog
-      //     .fromJson(json['engine_assembly_parts_exchange_catalog']);
       list.add(overHaulReport);
     }
     return list;
@@ -111,7 +102,6 @@ class CustomerEngineInfo {
     unit.text = json["unit"];
     unitHours.text = json["unit_hours"];
     date.value = formattedDate;
-    // date.value = (json['date']);
     engineMake.text = json["engine_make"];
     engineModel.text = json["engine_model"];
     engineSerial.text = json["engine_serial"];

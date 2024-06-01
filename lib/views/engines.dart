@@ -371,38 +371,46 @@ class DialogSecondView extends StatelessWidget {
             ),
           ),
         ),
-        controller.isQrCodeGenerated.value
-            ? Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black54)),
-                child: QrImageView(
-                  data: controller.engineName.text.trim(),
-                  version: QrVersions.auto,
-                  size: 200.0,
-                  errorStateBuilder: (cxt, err) {
-                    return Center(
-                      child: CustomTextWidget(
-                        text: 'Uh oh! Something went wrong...',
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        fontSize: 12.0,
-                      ),
-                    );
-                  },
-                ),
-              )
-            : Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomTextWidget(
-                    text:
-                        'Something went wrong in generating the QrCode, try again!',
-                    maxLines: 2,
-                    fontSize: 10.0,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+        Container(
+          decoration: BoxDecoration(border: Border.all(color: Colors.black54)),
+          child: QrImageView(
+            data: controller.engineName.text.trim(),
+            version: QrVersions.auto,
+            size: 200.0,
+          ),
+        ),
+        // controller.isQrCodeGenerated.value
+        //     ? Container(
+        //         decoration:
+        //             BoxDecoration(border: Border.all(color: Colors.black54)),
+        //         child: QrImageView(
+        //           data: controller.engineName.text.trim(),
+        //           version: QrVersions.auto,
+        //           size: 200.0,
+        //           // errorStateBuilder: (cxt, err) {
+        //           //   return Center(
+        //           //     child: CustomTextWidget(
+        //           //       text: 'Uh oh! Something went wrong...',
+        //           //       textAlign: TextAlign.center,
+        //           //       maxLines: 2,
+        //           //       fontSize: 12.0,
+        //           //     ),
+        //           //   );
+        //           // },
+        //         ),
+        //       )
+        //     : Center(
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(8.0),
+        //           child: CustomTextWidget(
+        //             text:
+        //                 'Something went wrong in generating the QrCode, try again!',
+        //             maxLines: 2,
+        //             fontSize: 10.0,
+        //             textAlign: TextAlign.center,
+        //           ),
+        //         ),
+        //       ),
         const Divider(color: Colors.black54),
         CustomButton(
           isLoading: false,

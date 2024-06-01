@@ -31,13 +31,12 @@ class CustomRadioButton extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.start,
             children: options.map((option) {
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   runAlignment: WrapAlignment.center,
                   alignment: WrapAlignment.center,
-                  runSpacing: 4.0,
+                  runSpacing: 2.0,
                   children: [
                     Radio(
                       visualDensity: VisualDensity.compact,
