@@ -18,7 +18,7 @@ class CustomStepperBody3 extends StatelessWidget {
     required this.isTaskUpdating,
   });
 
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {

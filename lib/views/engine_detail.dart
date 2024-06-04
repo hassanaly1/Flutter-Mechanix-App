@@ -7,6 +7,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class EngineDetailScreen extends StatelessWidget {
   final EngineModel model;
+
   const EngineDetailScreen({super.key, required this.model});
 
   @override
@@ -123,7 +124,7 @@ class EngineDetailScreen extends StatelessWidget {
                               child: CustomTextWidget(
                                 text: model.isGenerator!
                                     ? 'Generator'
-                                    : 'Compressor' ?? '',
+                                    : 'Compressor',
                                 textAlign: TextAlign.start,
                                 maxLines: 2,
                                 fontSize: 14.0,

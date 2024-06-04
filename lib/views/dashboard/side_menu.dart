@@ -74,8 +74,8 @@ class SideMenuCard extends StatelessWidget {
                 onTap: (index, _) async {
                   debugPrint('HomeScreenCalled');
                   sideMenu.changePage(index);
-                  if (Get.isRegistered<AddTaskController>()) {
-                    await Get.delete<AddTaskController>();
+                  if (Get.isRegistered<GeneratorTaskController>()) {
+                    await Get.delete<GeneratorTaskController>();
                   }
                   if (Get.isRegistered<MapController>()) {
                     await Get.delete<MapController>();
@@ -92,6 +92,25 @@ class SideMenuCard extends StatelessWidget {
               title: "Tasks",
               icon: const Icon(Icons.task),
               children: [
+                SideMenuItem(
+                  //1 GeneratorTask
+                  title: 'Custom Task',
+                  onTap: (index, _) async {
+                    sideMenu.changePage(index);
+                    debugPrint('CustomTaskScreenCalled');
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
+                    }
+                    if (Get.isRegistered<CompressorTaskController>()) {
+                      await Get.delete<CompressorTaskController>();
+                    }
+                    if (Get.isRegistered<OverhaulReportController>()) {
+                      await Get.delete<OverhaulReportController>();
+                    }
+                  },
+                  icon: const Icon(FontAwesomeIcons.plus),
+                  tooltipContent: "Start Task",
+                ),
                 SideMenuItem(
                   //1 GeneratorTask
                   title: 'Generator Task',
@@ -114,8 +133,8 @@ class SideMenuCard extends StatelessWidget {
                   onTap: (index, _) async {
                     sideMenu.changePage(index);
                     debugPrint('CompressorTaskScreenCalled');
-                    if (Get.isRegistered<AddTaskController>()) {
-                      await Get.delete<AddTaskController>();
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
                     }
                     if (Get.isRegistered<MapController>()) {
                       await Get.delete<MapController>();
@@ -133,8 +152,8 @@ class SideMenuCard extends StatelessWidget {
                   onTap: (index, _) async {
                     sideMenu.changePage(index);
                     debugPrint('OverHaulReportV8Called');
-                    if (Get.isRegistered<AddTaskController>()) {
-                      await Get.delete<AddTaskController>();
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
                     }
                     if (Get.isRegistered<MapController>()) {
                       await Get.delete<MapController>();
@@ -155,8 +174,8 @@ class SideMenuCard extends StatelessWidget {
                   onTap: (index, _) async {
                     sideMenu.changePage(index);
                     debugPrint('OverHaulReportV12Called');
-                    if (Get.isRegistered<AddTaskController>()) {
-                      await Get.delete<AddTaskController>();
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
                     }
                     if (Get.isRegistered<MapController>()) {
                       await Get.delete<MapController>();
@@ -177,8 +196,8 @@ class SideMenuCard extends StatelessWidget {
                   onTap: (index, _) async {
                     sideMenu.changePage(index);
                     debugPrint('OverHaulReportV16Called');
-                    if (Get.isRegistered<AddTaskController>()) {
-                      await Get.delete<AddTaskController>();
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
                     }
                     if (Get.isRegistered<MapController>()) {
                       await Get.delete<MapController>();
@@ -199,8 +218,8 @@ class SideMenuCard extends StatelessWidget {
                   onTap: (index, _) async {
                     sideMenu.changePage(index);
                     debugPrint('OverHaulReportAssemblyCalled');
-                    if (Get.isRegistered<AddTaskController>()) {
-                      await Get.delete<AddTaskController>();
+                    if (Get.isRegistered<GeneratorTaskController>()) {
+                      await Get.delete<GeneratorTaskController>();
                     }
                     if (Get.isRegistered<MapController>()) {
                       await Get.delete<MapController>();
@@ -227,37 +246,6 @@ class SideMenuCard extends StatelessWidget {
               icon: const Icon(FontAwesomeIcons.listCheck),
               tooltipContent: "View Task",
             ),
-            // SideMenuItem(
-            //   //4
-            //   title: 'Reports',
-            //   onTap: (index, _) {
-            //     sideMenu.changePage(index);
-            //   },
-            //   icon: const Icon(Symbols.lab_profile),
-            //   trailing: Padding(
-            //     padding: const EdgeInsets.all(2.0),
-            //     child: Container(
-            //         decoration: const BoxDecoration(
-            //             color: Colors.amber,
-            //             borderRadius: BorderRadius.all(Radius.circular(6))),
-            //         child: Padding(
-            //           padding: const EdgeInsets.symmetric(
-            //               horizontal: 6.0, vertical: 3),
-            //           child: Text(
-            //             'New',
-            //             style: TextStyle(fontSize: 11, color: Colors.grey[800]),
-            //           ),
-            //         )),
-            //   ),
-            // ),
-            // SideMenuItem(
-            //   //5
-            //   title: 'Customize Units',
-            //   onTap: (index, _) {
-            //     sideMenu.changePage(index);
-            //   },
-            //   icon: const Icon(Symbols.dashboard_customize),
-            // ),
             SideMenuItem(
               //6
               title: 'Engines',
@@ -273,13 +261,6 @@ class SideMenuCard extends StatelessWidget {
                 return const Divider(endIndent: 8, indent: 8);
               },
             ),
-            // SideMenuItem(
-            //   title: 'Subscription',
-            //   onTap: (index, _) {
-            //     sideMenu.changePage(index);
-            //   },
-            //   icon: const Icon(Symbols.event_repeat_rounded),
-            // ),
             SideMenuItem(
               //8
               title: 'Profile',

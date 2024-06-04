@@ -15,22 +15,20 @@ import 'package:mechanix/views/add_task/generator_task/scan_qrcode.dart';
 import 'package:mechanix/views/add_task/generator_task/stepper_header.dart';
 
 class GeneratorTaskScreen extends StatefulWidget {
-  final bool isUpdatingTask;
   final SideMenuController sideMenu;
 
-  const GeneratorTaskScreen(
-      {super.key, required this.sideMenu, required this.isUpdatingTask});
+  const GeneratorTaskScreen({super.key, required this.sideMenu});
 
   @override
   State<GeneratorTaskScreen> createState() => _GeneratorTaskScreenState();
 }
 
 class _GeneratorTaskScreenState extends State<GeneratorTaskScreen> {
-  late AddTaskController controller;
+  late GeneratorTaskController controller;
 
   @override
   void initState() {
-    controller = Get.put(AddTaskController());
+    controller = Get.put(GeneratorTaskController());
     super.initState();
   }
 
@@ -42,13 +40,13 @@ class _GeneratorTaskScreenState extends State<GeneratorTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AddTaskController controller = Get.find();
+    final GeneratorTaskController controller = Get.find();
     return SafeArea(
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
-        Get.delete<AddTaskController>();
+        Get.delete<GeneratorTaskController>();
         Get.delete<MapController>();
       },
       child: Container(
@@ -110,7 +108,7 @@ class TopSection extends StatelessWidget {
     required this.controller,
   });
 
-  final AddTaskController controller;
+  final GeneratorTaskController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +201,7 @@ class BottomPageViewSection extends StatelessWidget {
     required this.sideMenu,
   });
 
-  final AddTaskController controller;
+  final GeneratorTaskController controller;
 
   @override
   Widget build(BuildContext context) {

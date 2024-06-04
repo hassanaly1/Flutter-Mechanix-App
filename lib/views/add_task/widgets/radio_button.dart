@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
+import 'package:mechanix/helpers/reusable_container.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final String heading;
@@ -27,31 +28,29 @@ class CustomRadioButton extends StatelessWidget {
           maxLines: 2,
         ),
         Obx(
-          () => Wrap(
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: options.map((option) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  runAlignment: WrapAlignment.center,
-                  alignment: WrapAlignment.center,
-                  runSpacing: 2.0,
-                  children: [
-                    Radio(
-                      visualDensity: VisualDensity.compact,
-                      activeColor: AppColors.blueTextColor,
-                      value: option,
-                      groupValue: selectedOption.value,
-                      onChanged: (value) {
-                        selectedOption.value = value.toString();
-                      },
-                    ),
-                    CustomTextWidget(text: option, fontSize: 11.0),
-                  ],
-                ),
-              );
-            }).toList(),
+          () => ReUsableContainer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: options.map((option) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Row(
+                    children: [
+                      Radio(
+                        visualDensity: VisualDensity.compact,
+                        activeColor: AppColors.blueTextColor,
+                        value: option,
+                        groupValue: selectedOption.value,
+                        onChanged: (value) {
+                          selectedOption.value = value.toString();
+                        },
+                      ),
+                      CustomTextWidget(text: option),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ],

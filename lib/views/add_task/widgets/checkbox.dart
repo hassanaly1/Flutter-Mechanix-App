@@ -1,47 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/generator_task_controllers.dart';
+import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
+import 'package:mechanix/helpers/reusable_container.dart';
 
 class CustomCheckboxWidget extends StatelessWidget {
-  final String question;
+  final String heading;
   final List<String> options;
   final RxList<String> selectedValues;
-  final AddTaskController controller = Get.find();
 
-  CustomCheckboxWidget(
-      {super.key,
-      required this.options,
-      required this.selectedValues,
-      required this.question});
+  const CustomCheckboxWidget({
+    super.key,
+    required this.options,
+    required this.selectedValues,
+    required this.heading,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AddTaskController>(
-      init: controller,
-      builder: (_) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextWidget(
-              text: question,
-              fontWeight: FontWeight.w600,
-            ),
-            Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomTextWidget(
+          text: heading,
+          fontWeight: FontWeight.w500,
+          maxLines: 2,
+        ),
+        Obx(
+          () => ReUsableContainer(
+            child: Column(
               children: options
                   .map((option) => CheckboxListTile(
+                        activeColor: AppColors.blueTextColor,
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
                         title: CustomTextWidget(text: option),
                         controlAffinity: ListTileControlAffinity.leading,
                         value: selectedValues.contains(option),
-                        onChanged: (value) {
-                          controller.toggleCheckbox(option, selectedValues);
+                        onChanged: (bool? value) {
+                          if (value != null) {
+                            toggleCheckbox(option, selectedValues);
+                          }
                         },
                       ))
                   .toList(),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
+  }
+
+  void toggleCheckbox(String value, RxList<String> list) {
+    if (list.contains(value)) {
+      list.remove(value);
+    } else {
+      list.add(value);
+    }
   }
 }

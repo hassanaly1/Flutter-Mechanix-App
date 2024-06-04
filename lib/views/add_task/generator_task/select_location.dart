@@ -13,7 +13,7 @@ import '../../../../controllers/googlemap_controller.dart';
 
 class SelectLocationScreen extends StatelessWidget {
   final MapController mapController = Get.find();
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
 
   SelectLocationScreen({super.key});
 
@@ -57,7 +57,7 @@ class SelectLocationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMap(BuildContext context, AddTaskController controller) {
+  Widget _buildMap(BuildContext context, GeneratorTaskController controller) {
     return Stack(
       children: [
         GoogleMap(

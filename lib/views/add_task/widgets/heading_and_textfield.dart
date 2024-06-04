@@ -41,7 +41,6 @@ class HeadingAndTextfield extends StatelessWidget {
           CustomTextWidget(
             text: title,
             fontWeight: FontWeight.w500,
-            fontSize: 12,
             maxLines: 1,
           ),
           ReUsableTextField(
@@ -50,7 +49,7 @@ class HeadingAndTextfield extends StatelessWidget {
             onTap: onTap,
             readOnly: readOnly,
             hintText: hintText ?? title,
-            maxLines: 1,
+            maxLines: maxLines ?? 1,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             keyboardType: keyboardType,

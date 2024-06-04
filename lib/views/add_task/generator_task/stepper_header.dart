@@ -11,7 +11,7 @@ class StepperHeader extends StatelessWidget {
     required this.controller,
   });
 
-  final AddTaskController controller;
+  final GeneratorTaskController controller;
 
   @override
   Widget build(BuildContext context) {

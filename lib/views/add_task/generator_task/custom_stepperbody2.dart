@@ -18,7 +18,7 @@ class CustomStepperBody2 extends StatelessWidget {
     required this.isTaskUpdating,
   });
 
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class CustomStepperBody2 extends StatelessWidget {
                 children: [
                   const ContainerHeading(heading: 'Exhaust Gas Sample'),
                   CustomCheckboxWidget(
-                    question: 'Exhaust Gas Sample (As Found)',
+                    heading: 'Exhaust Gas Sample (As Found)',
                     options: const ['OXYGEN', 'CO', 'NOX'],
                     selectedValues: controller.exhaustGasSampleFound,
                   ),
@@ -126,7 +126,7 @@ class CustomStepperBody2 extends StatelessWidget {
                     ],
                   ),
                   CustomCheckboxWidget(
-                    question: 'Exhaust Gas Sample (As ADJUSTED )',
+                    heading: 'Exhaust Gas Sample (As ADJUSTED )',
                     options: const ['OXYGEN', 'CO', 'NOX'],
                     selectedValues: controller.exhaustGasSampleAdjusted,
                   ),

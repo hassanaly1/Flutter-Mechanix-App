@@ -38,7 +38,7 @@ class EnginesController extends GetxController {
 
   @override
   onInit() {
-    getAllEngines();
+    // getAllEngines();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -136,13 +136,6 @@ class EnginesController extends GetxController {
           isGenerator: engineType.value == 'Generator',
           isCompressor: engineType.value == 'Compressor',
         );
-        // debugPrint('UserId: ${newEngine.userId}');
-        // debugPrint('Name: ${newEngine.name}');
-        // debugPrint('ImageUrl: ${newEngine.imageUrl}');
-        // debugPrint('Image: $engineImageInBytes');
-        // debugPrint('Subname: ${newEngine.subname}');
-        // debugPrint('IsGenerator: ${newEngine.isGenerator}');
-        // debugPrint('IsCompressor: ${newEngine.isCompressor}');
         bool success = await engineService.addEngine(
             engineModel: newEngine, engineImageInBytes: engineImageInBytes);
 

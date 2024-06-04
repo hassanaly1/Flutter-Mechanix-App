@@ -26,8 +26,7 @@ class CustomStepperBody4 extends StatelessWidget {
     this.model,
   });
 
-  final AddTaskController controller = Get.find();
-  final GlobalKey<FormState> _partsFormkey = GlobalKey<FormState>();
+  final GeneratorTaskController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -366,7 +365,7 @@ class SinglePartDetail extends StatelessWidget {
 
   SinglePartDetail({super.key, required this.model, required this.index});
 
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {

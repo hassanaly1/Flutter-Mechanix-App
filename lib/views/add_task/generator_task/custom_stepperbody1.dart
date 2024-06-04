@@ -22,7 +22,7 @@ class CustomStepperBody1 extends StatelessWidget {
   });
 
   final UniversalController universalController = Get.find();
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {

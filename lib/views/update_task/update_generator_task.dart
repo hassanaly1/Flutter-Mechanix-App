@@ -21,11 +21,11 @@ class UpdateGeneratorTaskScreen extends StatefulWidget {
 }
 
 class _UpdateGeneratorTaskScreenState extends State<UpdateGeneratorTaskScreen> {
-  late AddTaskController controller;
+  late GeneratorTaskController controller;
 
   @override
   void initState() {
-    controller = Get.put(AddTaskController());
+    controller = Get.put(GeneratorTaskController());
     controller.updateControllers(widget.model);
     controller.setActivePage(0);
     super.initState();

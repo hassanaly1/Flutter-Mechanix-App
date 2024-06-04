@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +20,7 @@ class ScanQrCodeScreen extends StatefulWidget {
 }
 
 class _QrCodeScannerState extends State<ScanQrCodeScreen> {
-  final AddTaskController controller = Get.find();
+  final GeneratorTaskController controller = Get.find();
   late MobileScannerController mobileScannerController;
 
   @override
@@ -57,7 +56,6 @@ class _QrCodeScannerState extends State<ScanQrCodeScreen> {
                 controller: mobileScannerController,
                 onDetect: (capture) async {
                   final List<Barcode> barcodes = capture.barcodes;
-                  final Uint8List? image = capture.image;
 
                   for (final barcode in barcodes) {
                     final String? engineName = barcode.rawValue;
@@ -86,7 +84,7 @@ class _QrCodeScannerState extends State<ScanQrCodeScreen> {
 void _showDialog(
     {required BuildContext context,
     String? engineName,
-    required AddTaskController controller}) {
+    required GeneratorTaskController controller}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,

@@ -12,7 +12,7 @@ import 'package:mechanix/models/task_model.dart';
 import 'package:mechanix/services/generator_task_service.dart';
 import 'package:mechanix/views/add_task/generator_task/custom_stepperbody4.dart';
 
-class AddTaskController extends GetxController {
+class GeneratorTaskController extends GetxController {
   RxBool isLoading = false.obs;
   var activePageIndex = 0.obs;
   final ScrollController scrollController = ScrollController();
@@ -304,7 +304,7 @@ class AddTaskController extends GetxController {
           );
           // await controller.getAllGeneratorTasks();
           sideMenuController.changePage(0);
-          Get.delete<AddTaskController>();
+          Get.delete<GeneratorTaskController>();
           Get.delete<MapController>();
         } else {
           ToastMessage.showToastMessage(
@@ -564,7 +564,7 @@ class AddTaskController extends GetxController {
               backgroundColor: AppColors.blueTextColor);
           controller.getAllGeneratorTasks();
           Get.back();
-          Get.delete<AddTaskController>();
+          Get.delete<GeneratorTaskController>();
           Get.delete<MapController>();
         } else {
           ToastMessage.showToastMessage(
@@ -849,14 +849,14 @@ class AddTaskController extends GetxController {
     activePageIndex.value = index;
   }
 
-  void toggleCheckbox(String value, RxList<String> list) {
-    if (list.contains(value)) {
-      list.remove(value);
-    } else {
-      list.add(value);
-    }
-    update();
-  }
+  // void toggleCheckbox(String value, RxList<String> list) {
+  //   if (list.contains(value)) {
+  //     list.remove(value);
+  //   } else {
+  //     list.add(value);
+  //   }
+  //   update();
+  // }
 
   void nextPage() {
     if (activePageIndex.value < 3) {

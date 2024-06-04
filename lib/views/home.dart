@@ -1,7 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_button.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
@@ -31,9 +30,91 @@ class HomeScreen extends StatelessWidget {
             children: [
               DashboardCard(
                 isRotated: false,
-                // onTap: () => sideMenu.changePage(2),
                 onTap: () {
-                  _showTaskPopup(context: context, sideMenu: sideMenu);
+                  showCustomPopup(
+                      context: context,
+                      width: context.width * 0.9,
+                      sideMenu: sideMenu,
+                      widget: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomTextWidget(
+                                text:
+                                    'Select Task you want to start.\nYou can start only one at a time.',
+                                fontSize: 12.0,
+                                maxLines: 5,
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w500),
+                            const SizedBox(height: 12.0),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create Custom Task',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(1);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create Generator Task',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(2);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create Compressor Task',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(3);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create OverHaul Report V8',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(4);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create OverHaul Report V12',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(5);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText: 'Create OverHaul Report V16',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(6);
+                                  Get.back();
+                                }),
+                            CustomButton(
+                                isLoading: false,
+                                usePrimaryColor: true,
+                                buttonText:
+                                    'Start OverHaul Report Assembly L7042GL C-14871',
+                                fontSize: 12.0,
+                                onTap: () {
+                                  sideMenu.changePage(7);
+                                  Get.back();
+                                }),
+                          ],
+                        ),
+                      ));
                 },
                 title: 'New Report',
                 subtitle: 'Equipment Repair',
@@ -41,35 +122,15 @@ class HomeScreen extends StatelessWidget {
               ),
               DashboardCard(
                 isRotated: false,
-                onTap: () => sideMenu.changePage(8),
+                onTap: () => sideMenu.changePage(9),
                 title: 'Engines',
                 subtitle:
                     'Click here to add new Engines and view their details.',
                 image: 'assets/images/engines.png',
               ),
-              // Wrap(
-              //   alignment: WrapAlignment.center,
-              //   children: [
-              //     // SmallCard(
-              //     //   onTap: () => sideMenu.changePage(8),
-              //     //   title: 'Reports',
-              //     //   icon: Symbols.lab_profile,
-              //     // ),
-              //     // const SmallCard(
-              //     //   // onTap: () => sideMenu.changePage(5),
-              //     //   title: 'Customize Units',
-              //     //   icon: Symbols.dashboard_customize,
-              //     // ),
-              //     // SmallCard(
-              //     //   onTap: () => sideMenu.changePage(8),
-              //     //   title: 'Engines',
-              //     //   icon: Symbols.manufacturing,
-              //     // ),
-              //   ],
-              // ),
               DashboardCard(
                 isRotated: false,
-                onTap: () => sideMenu.changePage(7),
+                onTap: () => sideMenu.changePage(8),
                 title: 'View Reports',
                 subtitle:
                     'Click here to view all submitted repair forms and their details.',
@@ -78,44 +139,6 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SmallCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback? onTap;
-
-  const SmallCard({
-    super.key,
-    required this.title,
-    required this.icon,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: context.isLandscape ? context.width * 0.02 : 0.0),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: onTap,
-            child: ReUsableContainer(
-              color: AppColors.blueTextColor,
-              child: Padding(
-                padding: EdgeInsets.all(context.isLandscape ? 8.0 : 4.0),
-                child: Icon(icon,
-                    color: Colors.white,
-                    size: context.isLandscape ? 60.0 : 40.0),
-              ),
-            ),
-          ),
-          CustomTextWidget(text: title, fontSize: 12.0)
-        ],
       ),
     );
   }
@@ -202,8 +225,11 @@ class DashboardCard extends StatelessWidget {
   }
 }
 
-void _showTaskPopup(
-    {required BuildContext context, required SideMenuController sideMenu}) {
+void showCustomPopup(
+    {required BuildContext context,
+    SideMenuController? sideMenu,
+    required double? width,
+    required Widget widget}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
@@ -219,7 +245,7 @@ void _showTaskPopup(
                   scrollable: true,
                   backgroundColor: Colors.transparent,
                   content: Container(
-                    width: context.width * 0.9,
+                    width: width,
                     // height: context.height * 0.3,
                     padding: EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: context.height * 0.02),
@@ -245,77 +271,7 @@ void _showTaskPopup(
                             spreadRadius: 0.0)
                       ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomTextWidget(
-                              text:
-                                  'Select Task you want to start.\nYou can start only one at a time.',
-                              fontSize: 12.0,
-                              maxLines: 5,
-                              textAlign: TextAlign.center,
-                              fontWeight: FontWeight.w500),
-                          const SizedBox(height: 12.0),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText: 'Start Generator Task',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(1);
-                                Get.back();
-                              }),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText: 'Start Compressor Task',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(2);
-                                Get.back();
-                              }),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText: 'Start OverHaul Report V8',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(3);
-                                Get.back();
-                              }),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText: 'Start OverHaul Report V12',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(4);
-                                Get.back();
-                              }),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText: 'Start OverHaul Report V16',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(5);
-                                Get.back();
-                              }),
-                          CustomButton(
-                              isLoading: false,
-                              usePrimaryColor: true,
-                              buttonText:
-                                  'Start OverHaul Report Assembly L7042GL C-14871',
-                              fontSize: 12.0,
-                              onTap: () {
-                                sideMenu.changePage(6);
-                                Get.back();
-                              }),
-                        ],
-                      ),
-                    ),
+                    child: widget,
                   ))));
     },
   );

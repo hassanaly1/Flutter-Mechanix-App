@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     debugPrint('DashboardScreenOnInitCalled');
     controller.tabController = TabController(
       initialIndex: 0,
-      length: 11,
+      length: 12,
       vsync: this,
     );
   }
@@ -132,11 +132,6 @@ class HomeAppbar extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : const SizedBox(),
-                //todo: Back button functionality remaining.
-                // : IconButton(
-                //     onPressed: () => sideMenu.changePage(0),
-                //     icon: const Icon(Icons.arrow_back_rounded,
-                //         color: Colors.white70)),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: context.isLandscape
@@ -153,7 +148,7 @@ class HomeAppbar extends StatelessWidget {
                       : Obx(
                           () => controller.currentPage.value == 0
                               ? ProfileAvatar(
-                                  onTap: () => sideMenu.changePage(10),
+                                  onTap: () => sideMenu.changePage(11),
                                 )
                               : const CircleAvatar(
                                   radius: 25,
@@ -168,33 +163,33 @@ class HomeAppbar extends StatelessWidget {
                   text: controller.currentPage.value == 0
                       ? 'Service reports made easy'
                       : controller.currentPage.value == 1
-                          ? 'Add Generator Task'
+                          ? 'Add Task'
                           : controller.currentPage.value == 2
-                              ? 'Add Compressor Task'
+                              ? 'Add Generator Task'
                               : controller.currentPage.value == 3
-                                  ? 'Add V8 Report'
+                                  ? 'Add Compressor Task'
                                   : controller.currentPage.value == 4
-                                      ? 'Add V12 Report'
+                                      ? 'Add V8 Report'
                                       : controller.currentPage.value == 5
-                                          ? 'Add V16 Report'
+                                          ? 'Add V12 Report'
                                           : controller.currentPage.value == 6
-                                              ? 'Add Assembly Report'
+                                              ? 'Add V16 Report'
                                               : controller.currentPage.value ==
                                                       7
-                                                  ? 'View Task'
+                                                  ? 'Add Assembly Report'
                                                   : controller.currentPage
                                                               .value ==
                                                           8
-                                                      // ? 'Reports'
-                                                      // : controller.currentPage
-                                                      //             .value ==
-                                                      //         9
-                                                      ? 'Engines'
+                                                      ? 'View Task'
                                                       : controller.currentPage
                                                                   .value ==
-                                                              10
-                                                          ? 'Profile'
-                                                          : '',
+                                                              9
+                                                          ? 'Engines'
+                                                          : controller.currentPage
+                                                                      .value ==
+                                                                  11
+                                                              ? 'Profile'
+                                                              : '',
                   textColor: Colors.white,
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,

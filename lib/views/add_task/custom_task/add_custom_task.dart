@@ -1,27 +1,27 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mechanix/controllers/compressor_task_controller.dart';
+import 'package:mechanix/controllers/custom_task_controller.dart';
 import 'package:mechanix/helpers/appcolors.dart';
 import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
-import 'package:mechanix/views/add_task/compressor_task/cusom_compressor_body.dart';
+import 'package:mechanix/views/add_task/custom_task/custom_task_body.dart';
 
-class CompressorTaskScreen extends StatefulWidget {
+class CustomTaskScreen extends StatefulWidget {
   final SideMenuController sideMenu;
 
-  const CompressorTaskScreen({super.key, required this.sideMenu});
+  const CustomTaskScreen({super.key, required this.sideMenu});
 
   @override
-  State<CompressorTaskScreen> createState() => _CompressorTaskScreenState();
+  State<CustomTaskScreen> createState() => _CustomTaskScreenState();
 }
 
-class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
-  late CompressorTaskController controller;
+class _CustomTaskScreenState extends State<CustomTaskScreen> {
+  late CustomTaskController controller;
 
   @override
   void initState() {
-    controller = Get.put(CompressorTaskController());
+    controller = Get.put(CustomTaskController());
     super.initState();
   }
 
@@ -33,13 +33,13 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final CompressorTaskController controller = Get.find();
+    // final CompressorTaskController controller = Get.find();
     return SafeArea(
         child: PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
         widget.sideMenu.changePage(0);
-        Get.delete<CompressorTaskController>();
+        // Get.delete<CompressorTaskController>();
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -52,7 +52,7 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: NestedScrollView(
-              controller: controller.scrollController,
+              // controller: controller.scrollController,
               // floatHeaderSlivers: true,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
@@ -66,16 +66,15 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
                     forceMaterialTransparency: false,
                     flexibleSpace: ListView(
                       physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        TopSection(controller: controller),
-                      ],
+                      children: const [TopSection()],
                     ),
                   ),
                 ];
               },
               body: BottomPageViewSection(sideMenuController: widget.sideMenu)),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => controller.scrollUp(),
+            // onPressed: () => controller.scrollUp(),
+            onPressed: () {},
             backgroundColor: AppColors.primaryColor,
             mini: true,
             shape: const CircleBorder(),
@@ -88,12 +87,7 @@ class _CompressorTaskScreenState extends State<CompressorTaskScreen> {
 }
 
 class TopSection extends StatelessWidget {
-  const TopSection({
-    super.key,
-    required this.controller,
-  });
-
-  final CompressorTaskController controller;
+  const TopSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +106,7 @@ class TopSection extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: CustomTextWidget(
-                    text: 'Compressor Task',
+                    text: 'Custom Task',
                     fontSize: 16.0,
                     maxLines: 2,
                     textAlign: TextAlign.center,
@@ -140,12 +134,7 @@ class BottomPageViewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-          child: CustomCompressorBody1(
-            isTaskUpdating: false,
-            sideMenuController: sideMenuController,
-          ),
-        ),
+        Expanded(child: CustomTaskBody()),
       ],
     );
   }
