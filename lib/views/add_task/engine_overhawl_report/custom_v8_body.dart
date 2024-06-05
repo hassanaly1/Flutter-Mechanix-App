@@ -61,15 +61,18 @@ class _CustomV8Body1State extends State<CustomV8Body1> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         bottomNavigationBar: Obx(
-          () => CustomButton(
-              isLoading: controller.isLoading.value,
-              buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
-              onTap: () async {
-                widget.isTaskUpdating
-                    ? await controller.updateOverhaulReportTask()
-                    : await controller.addOverhaulReportTask(
-                        context, widget.sideMenuController);
-              }),
+          () => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: CustomButton(
+                isLoading: controller.isLoading.value,
+                buttonText: widget.isTaskUpdating ? 'Update' : 'Submit',
+                onTap: () async {
+                  widget.isTaskUpdating
+                      ? await controller.updateOverhaulReportTask()
+                      : await controller.addOverhaulReportTask(
+                          context, widget.sideMenuController);
+                }),
+          ),
         ),
         body: ListView(
           children: [

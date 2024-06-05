@@ -17,6 +17,8 @@ class ReUsableTextField extends StatelessWidget {
   bool obscureText;
   final String? Function(String?)? validator;
   final bool showBackgroundShadow;
+  final bool showDeleteIcon;
+  final VoidCallback? onDelete;
 
   ReUsableTextField({
     super.key,
@@ -31,12 +33,16 @@ class ReUsableTextField extends StatelessWidget {
     this.onChanged,
     this.obscureText = false,
     this.showBackgroundShadow = true,
+    this.showDeleteIcon = false,
+    this.onDelete,
     this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return ReUsableContainer(
+      showDeleteIcon: showDeleteIcon,
+      onDelete: onDelete,
       showBackgroundShadow: showBackgroundShadow,
       verticalPadding: context.height * 0.012,
       child: TextFormField(

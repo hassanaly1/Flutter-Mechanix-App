@@ -15,6 +15,12 @@ class ApiEndPoints {
   static String updateProfileUrl = '/api/auth/editprofile';
   static String updateProfilePictureUrl = '/api/auth/editprofilefile';
 
+  //Custom-Task
+  static String createCustomTaskUrl = '/api/formbuilder/savecustomform';
+  static String getAllCustomTaskUrl = '/api/formbuilder/getcustomform';
+  static String updateCustomTaskUrl = '/api/formbuilder/updatecustomform';
+  static String deleteCustomTaskUrl = '/api/formbuilder/deletecustomform';
+
   //Generator-Task
   static String createTaskUrl = '/api/task/createtask';
   static String getAllTaskUrl = '/api/task/getalltasks';

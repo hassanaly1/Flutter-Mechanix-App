@@ -129,6 +129,7 @@ class TopSection extends StatelessWidget {
             child: SizedBox(
               width: context.width,
               child: ReUsableContainer(
+                width: context.width * 1,
                 color: AppColors.primaryColor,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),

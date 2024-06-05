@@ -33,28 +33,31 @@ class CustomStepperBody2 extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: Row(
-          children: [
-            Expanded(
-              child: CustomButton(
-                  isLoading: false,
-                  buttonText: 'BACK',
-                  usePrimaryColor: true,
-                  onTap: () {
-                    controller.previousPage();
-                    controller.scrollUp();
-                  }),
-            ),
-            Expanded(
-              child: CustomButton(
-                  isLoading: false,
-                  buttonText: 'Next',
-                  onTap: () {
-                    controller.nextPage();
-                    controller.scrollUp();
-                  }),
-            ),
-          ],
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                    isLoading: false,
+                    buttonText: 'BACK',
+                    usePrimaryColor: true,
+                    onTap: () {
+                      controller.previousPage();
+                      controller.scrollUp();
+                    }),
+              ),
+              Expanded(
+                child: CustomButton(
+                    isLoading: false,
+                    buttonText: 'Next',
+                    onTap: () {
+                      controller.nextPage();
+                      controller.scrollUp();
+                    }),
+              ),
+            ],
+          ),
         ),
         body: ListView(
           children: [

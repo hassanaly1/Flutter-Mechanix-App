@@ -34,6 +34,7 @@ class CustomButton extends StatelessWidget {
     return InkWell(
         onTap: onTap,
         child: ReUsableContainer(
+          width: width,
           verticalPadding: context.height * 0.01,
           height: height ?? 50,
           color: usePrimaryColor

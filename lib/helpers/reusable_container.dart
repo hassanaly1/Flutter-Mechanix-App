@@ -8,6 +8,8 @@ class ReUsableContainer extends StatelessWidget {
   double? verticalPadding;
   double? borderRadius;
   final bool showBackgroundShadow;
+  final bool showDeleteIcon;
+  final VoidCallback? onDelete;
   final Color? color;
   double? height;
   double? width;
@@ -21,6 +23,8 @@ class ReUsableContainer extends StatelessWidget {
     this.width,
     this.borderRadius,
     this.showBackgroundShadow = true,
+    this.showDeleteIcon = false,
+    this.onDelete,
     this.color,
   });
 
@@ -29,7 +33,23 @@ class ReUsableContainer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: verticalPadding ?? context.height * 0.015, horizontal: 4.0),
-      child: _buildContainer(),
+      child: Stack(
+        children: [
+          _buildContainer(),
+          Visibility(
+            visible: showDeleteIcon,
+            child: Positioned(
+                right: 0,
+                child: IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(
+                    Icons.remove_circle,
+                    color: Colors.red,
+                  ),
+                )),
+          )
+        ],
+      ),
     );
   }
 

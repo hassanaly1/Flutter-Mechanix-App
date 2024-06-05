@@ -40,15 +40,19 @@ class CustomCompressorBody1 extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         bottomNavigationBar: Obx(
-          () => CustomButton(
-              isLoading: controller.isLoading.value,
-              buttonText: isTaskUpdating ? 'Update' : 'Submit',
-              onTap: () {
-                isTaskUpdating
-                    ? controller.updateCompressorTask(
-                        taskId: model?.taskId ?? '')
-                    : controller.addCompressorTask(context, sideMenuController);
-              }),
+          () => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: CustomButton(
+                isLoading: controller.isLoading.value,
+                buttonText: isTaskUpdating ? 'Update' : 'Submit',
+                onTap: () {
+                  isTaskUpdating
+                      ? controller.updateCompressorTask(
+                          taskId: model?.taskId ?? '')
+                      : controller.addCompressorTask(
+                          context, sideMenuController);
+                }),
+          ),
         ),
         body: ListView(
           children: [

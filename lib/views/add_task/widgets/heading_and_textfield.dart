@@ -15,21 +15,26 @@ class HeadingAndTextfield extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final bool showDeleteIcon;
+  final VoidCallback? onDelete;
 
-  const HeadingAndTextfield(
-      {super.key,
-      required this.title,
-      this.hintText,
-      this.onTap,
-      this.readOnly,
-      this.validator,
-      this.controller,
-      this.onChanged,
-      this.maxLines,
-      this.suffixIcon,
-      this.prefixIcon,
-      this.keyboardType,
-      this.fontSize});
+  const HeadingAndTextfield({
+    super.key,
+    required this.title,
+    this.hintText,
+    this.onTap,
+    this.readOnly,
+    this.validator,
+    this.controller,
+    this.onChanged,
+    this.maxLines,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.keyboardType,
+    this.fontSize,
+    this.showDeleteIcon = false,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,8 @@ class HeadingAndTextfield extends StatelessWidget {
             maxLines: 1,
           ),
           ReUsableTextField(
+            showDeleteIcon: showDeleteIcon,
+            onDelete: onDelete,
             controller: controller,
             onChanged: onChanged,
             onTap: onTap,

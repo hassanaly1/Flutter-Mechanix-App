@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -9,15 +11,16 @@ import 'package:mechanix/helpers/custom_text.dart';
 import 'package:mechanix/helpers/reusable_container.dart';
 import 'package:mechanix/helpers/reusable_textfield.dart';
 import 'package:mechanix/helpers/validator.dart';
+import 'package:mechanix/models/custom_task_model.dart';
 import 'package:mechanix/views/add_task/widgets/checkbox.dart';
 import 'package:mechanix/views/add_task/widgets/heading_and_textfield.dart';
 import 'package:mechanix/views/add_task/widgets/radio_button.dart';
 import 'package:mechanix/views/home.dart';
 
 class CustomTaskBody extends StatelessWidget {
-  final CustomTaskController controller = Get.find();
-  final TextEditingController hintTextController = TextEditingController();
-  final TextEditingController radioController = TextEditingController();
+  final CustomTaskController _customTaskController = Get.find();
+  final TextEditingController _hintTextController = TextEditingController();
+  final TextEditingController _radioController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   CustomTaskBody({super.key});
@@ -35,10 +38,24 @@ class CustomTaskBody extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: CustomButton(
-          isLoading: false,
-          buttonText: 'Submit',
-          onTap: () {},
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: CustomButton(
+            isLoading: false,
+            buttonText: 'Submit',
+            onTap: () {
+              _customTaskController.sending();
+              // for (var element in _customTaskController.formElements) {
+              //   if (element.controller.runtimeType == TextEditingController) {
+              //     debugPrint(element.controller.text.trim());
+              //   } else if (element.controller.runtimeType == RxString) {
+              //     debugPrint(element.controller.value);
+              //   } else if (element.controller.runtimeType == RxList<String>) {
+              //     debugPrint(element.controller.value.toString());
+              //   }
+              // }
+            },
+          ),
         ),
         body: ListView(
           children: [
@@ -46,52 +63,86 @@ class CustomTaskBody extends StatelessWidget {
               onPressed: () => _showAddElementPopup(context),
               icon: const Icon(FontAwesomeIcons.circlePlus),
             ),
-            ReUsableContainer(
-              showBackgroundShadow: false,
-              color: Colors.grey.shade300,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var element in controller.formElements)
-                        if (element.type == MyCustomTaskType.textfield)
-                          HeadingAndTextfield(
-                            title: element.heading ?? '',
-                            controller: TextEditingController(),
-                          )
-                        else if (element.type == MyCustomTaskType.textArea)
-                          HeadingAndTextfield(
-                            title: element.heading ?? '',
-                            controller: TextEditingController(),
-                            maxLines: 5,
-                          )
-                        else if (element.type == MyCustomTaskType.radioButton)
-                          CustomRadioButton(
-                            options: element.options ?? [],
-                            selectedOption: RxString(''),
-                            heading: element.heading ?? '',
-                          )
-                        else if (element.type == MyCustomTaskType.checkbox)
-                          CustomCheckboxWidget(
-                            options: element.options ?? [],
-                            heading: element.heading ?? '',
-                            selectedValues: <String>[].obs,
-                          )
-                        else if (element.type == MyCustomTaskType.attachment)
-                          HeadingAndTextfield(
-                            title: element.heading ?? '',
-                            readOnly: true,
-                            onTap: () {
-                              ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                            },
+            Obx(
+              () => _customTaskController.formElements.isEmpty
+                  ? Center(
+                      heightFactor: 15,
+                      child: CustomTextWidget(
+                          text: 'No Items Added, Tap on + icon to add items.'),
+                    )
+                  : ReUsableContainer(
+                      showBackgroundShadow: false,
+                      color: Colors.grey.shade300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Obx(
+                          () => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (var element
+                                  in _customTaskController.formElements)
+                                if (element.type == MyCustomTaskType.textfield)
+                                  HeadingAndTextfield(
+                                    title: element.label ?? '',
+                                    controller: element.controller,
+                                    showDeleteIcon: true,
+                                    onDelete: () => _customTaskController
+                                        .removeFormElement(element),
+                                  )
+                                else if (element.type ==
+                                    MyCustomTaskType.textArea)
+                                  HeadingAndTextfield(
+                                    title: element.label ?? '',
+                                    controller: element.controller,
+                                    maxLines: 5,
+                                    showDeleteIcon: true,
+                                    onDelete: () => _customTaskController
+                                        .removeFormElement(element),
+                                  )
+                                else if (element.type ==
+                                    MyCustomTaskType.radioButton)
+                                  CustomRadioButton(
+                                    options: element.options ?? [],
+                                    selectedOption: element.controller,
+                                    heading: element.label ?? '',
+                                    showDeleteIcon: true,
+                                    onDelete: () => _customTaskController
+                                        .removeFormElement(element),
+                                  )
+                                else if (element.type ==
+                                    MyCustomTaskType.checkbox)
+                                  CustomCheckboxWidget(
+                                    options: element.options ?? [],
+                                    heading: element.label ?? '',
+                                    selectedValues: element.controller,
+                                    showDeleteIcon: true,
+                                    onDelete: () => _customTaskController
+                                        .removeFormElement(element),
+                                  )
+                                else if (element.type ==
+                                    MyCustomTaskType.attachment)
+                                  HeadingAndTextfield(
+                                    title: element.label ?? '',
+                                    hintText: element.controller is String
+                                        ? element.controller
+                                        : 'Attachment added',
+                                    readOnly: true,
+                                    onTap: () async {
+                                      XFile? image = await ImagePicker()
+                                          .pickImage(
+                                              source: ImageSource.gallery);
+                                      if (image != null) {
+                                        Uint8List imageBytes =
+                                            await image.readAsBytes();
+                                        element.controller = imageBytes;
+                                      }
+                                    },
+                                  )
+                            ],
                           ),
-                    ],
-                  ),
-                ),
-              ),
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
@@ -178,7 +229,7 @@ class CustomTaskBody extends StatelessWidget {
             key: _formKey,
             child: ReUsableTextField(
               hintText: 'Enter Textfield Name',
-              controller: hintTextController,
+              controller: _hintTextController,
               validator: (value) => AppValidator.validateEmptyText(
                 fieldName: 'Textfield Name',
                 value: value,
@@ -190,16 +241,16 @@ class CustomTaskBody extends StatelessWidget {
             buttonText: 'Add Textfield',
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                controller.addFormElement(
-                  MyCustomTaskModel(
-                    heading: hintTextController.text,
-                    type: isTextArea
-                        ? MyCustomTaskType.textArea
-                        : MyCustomTaskType.textfield,
-                  ),
+                MyCustomTaskModel myCustomTaskModel = MyCustomTaskModel(
+                  label: _hintTextController.text,
+                  type: isTextArea
+                      ? MyCustomTaskType.textArea
+                      : MyCustomTaskType.textfield,
+                  controller: TextEditingController(),
                 );
+                _customTaskController.addFormElement(myCustomTaskModel);
                 Get.back();
-                hintTextController.clear();
+                _hintTextController.clear();
               }
             },
             isLoading: false,
@@ -219,7 +270,7 @@ class CustomTaskBody extends StatelessWidget {
             key: _formKey,
             child: ReUsableTextField(
               hintText: 'Enter Heading',
-              controller: hintTextController,
+              controller: _hintTextController,
               validator: (value) => AppValidator.validateEmptyText(
                 fieldName: 'Heading',
                 value: value,
@@ -231,14 +282,15 @@ class CustomTaskBody extends StatelessWidget {
             buttonText: 'Add Attachment',
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                controller.addFormElement(
+                _customTaskController.addFormElement(
                   MyCustomTaskModel(
-                    heading: hintTextController.text,
+                    label: _hintTextController.text,
                     type: MyCustomTaskType.attachment,
+                    controller: Uint8List(0),
                   ),
                 );
                 Get.back();
-                hintTextController.clear();
+                _hintTextController.clear();
               }
             },
             isLoading: false,
@@ -262,7 +314,7 @@ class CustomTaskBody extends StatelessWidget {
                 children: [
                   ReUsableTextField(
                     hintText: 'Enter Heading',
-                    controller: hintTextController,
+                    controller: _hintTextController,
                     validator: (value) => AppValidator.validateEmptyText(
                       fieldName: 'Heading',
                       value: value,
@@ -270,7 +322,7 @@ class CustomTaskBody extends StatelessWidget {
                   ),
                   ReUsableTextField(
                     hintText: 'Enter Option',
-                    controller: radioController,
+                    controller: _radioController,
                   ),
                   Wrap(
                     children: [
@@ -296,9 +348,9 @@ class CustomTaskBody extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      if (radioController.text.isEmpty) return;
-                      options.add(radioController.text.trim());
-                      radioController.clear();
+                      if (_radioController.text.isEmpty) return;
+                      options.add(_radioController.text.trim());
+                      _radioController.clear();
                     },
                     child: CustomTextWidget(
                       text: 'Add Option',
@@ -313,17 +365,19 @@ class CustomTaskBody extends StatelessWidget {
               buttonText: isCheckbox ? 'Add Checkbox' : 'Add Radio Button',
               onTap: () {
                 if (_formKey.currentState!.validate() && options.isNotEmpty) {
-                  controller.addFormElement(
+                  _customTaskController.addFormElement(
                     MyCustomTaskModel(
-                      heading: hintTextController.text,
+                      label: _hintTextController.text,
                       type: isCheckbox
                           ? MyCustomTaskType.checkbox
                           : MyCustomTaskType.radioButton,
                       options: options,
+                      controller:
+                          isCheckbox ? RxList<String>([]) : RxString(''),
                     ),
                   );
                   Get.back();
-                  hintTextController.clear();
+                  _hintTextController.clear();
                 }
               },
               isLoading: false,

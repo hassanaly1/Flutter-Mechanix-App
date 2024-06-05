@@ -68,14 +68,26 @@ class EnginesScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        CustomButton(
-                          isLoading: false,
-                          buttonText: '+ Add Engine',
-                          onTap: () => _openAddEngineDialog(
-                              context: context, controller: controller),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.width * 0.1),
+                          child: CustomButton(
+                            usePrimaryColor: true,
+                            isLoading: false,
+                            buttonText: '+ Add Engine',
+                            onTap: () => _openAddEngineDialog(
+                                context: context, controller: controller),
+                          ),
                         ),
                         //TabBar
-                        CustomTabBar(title1: 'Generator', title2: 'Compressor'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.isLandscape
+                                  ? context.width * 0.05
+                                  : context.width * 0.1),
+                          child: CustomTabBar(
+                              title1: 'Generator', title2: 'Compressor'),
+                        ),
                         Expanded(
                           child: Obx(
                             () => TabBarView(

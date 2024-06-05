@@ -8,12 +8,16 @@ class CustomRadioButton extends StatelessWidget {
   final String heading;
   final List<String> options;
   final Rx<String?> selectedOption;
+  final bool showDeleteIcon;
+  final VoidCallback? onDelete;
 
   const CustomRadioButton({
     super.key,
     required this.options,
     required this.selectedOption,
     required this.heading,
+    this.showDeleteIcon = false,
+    this.onDelete,
   });
 
   @override
@@ -29,6 +33,8 @@ class CustomRadioButton extends StatelessWidget {
         ),
         Obx(
           () => ReUsableContainer(
+            showDeleteIcon: showDeleteIcon,
+            onDelete: onDelete,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: options.map((option) {

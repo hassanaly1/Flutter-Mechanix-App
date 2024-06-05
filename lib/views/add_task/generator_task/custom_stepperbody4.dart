@@ -41,34 +41,37 @@ class CustomStepperBody4 extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: Row(
-          children: [
-            Expanded(
-              child: CustomButton(
-                  isLoading: false,
-                  buttonText: 'BACK',
-                  usePrimaryColor: true,
-                  onTap: () {
-                    controller.previousPage();
-                    controller.scrollUp();
-                  }),
-            ),
-            Expanded(
-              child: Obx(
-                () => CustomButton(
-                    isLoading: controller.isLoading.value,
-                    buttonText: isTaskUpdating ? 'Update' : 'SUBMIT',
-                    onTap: () async {
-                      isTaskUpdating
-                          ? await controller
-                              .updateTask(model?.task?.taskId ?? '')
-                          : await controller.addTask(context, sideMenu!);
-                      // showConfirmationPopup(
-                      //     context: context, payload: model!);
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                    isLoading: false,
+                    buttonText: 'BACK',
+                    usePrimaryColor: true,
+                    onTap: () {
+                      controller.previousPage();
+                      controller.scrollUp();
                     }),
               ),
-            ),
-          ],
+              Expanded(
+                child: Obx(
+                  () => CustomButton(
+                      isLoading: controller.isLoading.value,
+                      buttonText: isTaskUpdating ? 'Update' : 'SUBMIT',
+                      onTap: () async {
+                        isTaskUpdating
+                            ? await controller
+                                .updateTask(model?.task?.taskId ?? '')
+                            : await controller.addTask(context, sideMenu!);
+                        // showConfirmationPopup(
+                        //     context: context, payload: model!);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
         body: ListView(
           children: [

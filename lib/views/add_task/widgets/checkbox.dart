@@ -8,12 +8,16 @@ class CustomCheckboxWidget extends StatelessWidget {
   final String heading;
   final List<String> options;
   final RxList<String> selectedValues;
+  final bool showDeleteIcon;
+  final VoidCallback? onDelete;
 
   const CustomCheckboxWidget({
     super.key,
     required this.options,
     required this.selectedValues,
     required this.heading,
+    this.showDeleteIcon = false,
+    this.onDelete,
   });
 
   @override
@@ -28,6 +32,8 @@ class CustomCheckboxWidget extends StatelessWidget {
         ),
         Obx(
           () => ReUsableContainer(
+            showDeleteIcon: showDeleteIcon,
+            onDelete: onDelete,
             child: Column(
               children: options
                   .map((option) => CheckboxListTile(
